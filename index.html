@@ -18,17 +18,17 @@
     <link rel="manifest"
         href='data:application/manifest+json,{"name":"CFA Level 2 Tracker","short_name":"CFA L2","start_url":".","display":"standalone","background_color":"%23FFFBF9","theme_color":"%23FF4B2B","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/3233/3233514.png","sizes":"512x512","type":"image/png"}]}'>
 
-    <!-- Fonts -->
+    <!-- Fonts: Mali + Nunito -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <style>
         :root {
             --bg-base: #FFFBF9;
-            --bg-surface: rgba(255, 255, 255, 0.9);
+            --bg-surface: rgba(255, 255, 255, 0.92);
             --bg-accent: #FFECE5;
             --sunset-coral: #FF4B2B;
             --sunset-orange: #FF416C;
@@ -52,14 +52,14 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Nunito', sans-serif;
         }
 
         h1,
         h2,
         h3,
         .heading-font {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Mali', cursive;
         }
 
         body {
@@ -70,7 +70,7 @@
             color: var(--text-main);
             min-height: 100vh;
             min-height: 100dvh;
-            padding-bottom: 80px;
+            padding-bottom: 85px;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -83,7 +83,7 @@
         /* Header */
         .header {
             text-align: center;
-            padding: 1.25rem 0.5rem 1rem;
+            padding: 1rem 0.5rem 0.75rem;
         }
 
         .header-label {
@@ -92,17 +92,17 @@
             letter-spacing: 1.5px;
             color: var(--text-label);
             font-weight: 700;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
+            font-family: 'Nunito', sans-serif;
         }
 
         .header h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 1.6rem;
+            font-weight: 700;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.03em;
         }
 
         /* Screen Views */
@@ -118,7 +118,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(8px);
             }
 
             to {
@@ -129,11 +129,10 @@
 
         /* ========== HOME SCREEN ========== */
 
-        /* Countdown Banner */
         .countdown-banner {
             background: var(--gradient-primary);
             border-radius: var(--radius-xl);
-            padding: 1.75rem 1.5rem;
+            padding: 1.5rem;
             color: var(--text-on-accent);
             text-align: center;
             margin-bottom: 1rem;
@@ -142,60 +141,38 @@
             overflow: hidden;
         }
 
-        .countdown-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
-            animation: shine 6s infinite linear;
-        }
-
-        @keyframes shine {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .countdown-days {
-            font-size: 4rem;
-            font-weight: 800;
-            font-family: 'Outfit';
+            font-size: 3.5rem;
+            font-weight: 700;
+            font-family: 'Mali', cursive;
             line-height: 1;
-            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
         }
 
         .countdown-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             opacity: 0.9;
-            font-weight: 600;
-            margin-top: 0.25rem;
+            font-weight: 700;
+            margin-top: 0.2rem;
         }
 
         .exam-date {
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            opacity: 0.9;
-            font-weight: 500;
-            background: rgba(255, 255, 255, 0.15);
+            font-size: 0.8rem;
+            margin-top: 0.75rem;
+            opacity: 0.95;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.18);
             display: inline-block;
-            padding: 0.4rem 1rem;
+            padding: 0.35rem 0.9rem;
             border-radius: 100px;
         }
 
-        /* Progress Card */
         .progress-card {
             background: var(--bg-surface);
             border-radius: var(--radius-xl);
-            padding: 1.5rem;
+            padding: 1.25rem;
             margin-bottom: 1rem;
             box-shadow: var(--shadow-float);
         }
@@ -204,7 +181,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .progress-title {
@@ -213,36 +190,35 @@
         }
 
         .progress-percent {
-            font-size: 1.5rem;
-            font-weight: 800;
-            font-family: 'Outfit';
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'Mali', cursive;
             color: var(--sunset-coral);
         }
 
         .progress-bar-outer {
-            height: 12px;
+            height: 10px;
             background: var(--bg-accent);
-            border-radius: 6px;
+            border-radius: 5px;
             overflow: hidden;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .progress-bar-inner {
             height: 100%;
             background: var(--gradient-primary);
-            border-radius: 6px;
+            border-radius: 5px;
             transition: width 0.6s ease-out;
-            box-shadow: 0 2px 8px rgba(255, 75, 43, 0.3);
         }
 
         .progress-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-sub);
+            font-weight: 600;
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -253,38 +229,37 @@
         .stat-card {
             background: var(--bg-surface);
             border-radius: var(--radius-lg);
-            padding: 1.25rem;
+            padding: 1rem;
             text-align: center;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
         }
 
         .stat-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
         }
 
         .stat-value {
-            font-size: 1.75rem;
-            font-weight: 800;
-            font-family: 'Outfit';
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Mali', cursive;
             color: var(--text-main);
             line-height: 1;
         }
 
         .stat-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-label);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-weight: 600;
-            margin-top: 0.35rem;
+            font-weight: 700;
+            margin-top: 0.3rem;
         }
 
-        /* Topic Progress Summary */
         .topics-summary {
             background: var(--bg-surface);
             border-radius: var(--radius-xl);
-            padding: 1.25rem;
+            padding: 1rem;
             box-shadow: var(--shadow-float);
         }
 
@@ -292,18 +267,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .topics-summary-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
         }
 
         .view-all-btn {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--sunset-coral);
-            font-weight: 600;
+            font-weight: 700;
             background: none;
             border: none;
             cursor: pointer;
@@ -312,7 +287,7 @@
         .topic-row {
             display: flex;
             align-items: center;
-            padding: 0.6rem 0;
+            padding: 0.5rem 0;
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
 
@@ -321,23 +296,200 @@
         }
 
         .topic-row-icon {
-            font-size: 1.1rem;
-            margin-right: 0.75rem;
+            font-size: 1rem;
+            margin-right: 0.6rem;
         }
 
         .topic-row-name {
             flex: 1;
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 0.8rem;
+            font-weight: 600;
             color: var(--text-main);
         }
 
         .topic-row-progress {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--sunset-coral);
-            min-width: 45px;
+            min-width: 40px;
             text-align: right;
+        }
+
+        /* ========== PLAN SCREEN ========== */
+
+        .plan-header {
+            margin-bottom: 1rem;
+        }
+
+        .plan-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .plan-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        .plan-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .plan-stat {
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .plan-stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Mali', cursive;
+            color: var(--sunset-coral);
+        }
+
+        .plan-stat-label {
+            font-size: 0.6rem;
+            color: var(--text-label);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .week-card {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .week-card.current {
+            border: 2px solid var(--sunset-coral);
+        }
+
+        .week-card.trip {
+            opacity: 0.6;
+            background: #f5f5f5;
+        }
+
+        .week-header {
+            padding: 0.9rem 1rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .week-header:active {
+            background: var(--bg-accent);
+        }
+
+        .week-number {
+            background: var(--bg-accent);
+            color: var(--sunset-coral);
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.25rem 0.5rem;
+            border-radius: 100px;
+            margin-right: 0.75rem;
+        }
+
+        .week-card.current .week-number {
+            background: var(--gradient-primary);
+            color: #fff;
+        }
+
+        .week-card.trip .week-number {
+            background: #e0e0e0;
+            color: #888;
+        }
+
+        .week-info {
+            flex: 1;
+        }
+
+        .week-dates {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .week-card.trip .week-dates {
+            color: var(--text-label);
+        }
+
+        .week-lms-preview {
+            font-size: 0.7rem;
+            color: var(--text-sub);
+            margin-top: 0.15rem;
+        }
+
+        .week-hours {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-label);
+            text-align: right;
+        }
+
+        .week-chevron {
+            color: var(--text-label);
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .week-card.expanded .week-chevron {
+            transform: rotate(180deg);
+        }
+
+        .week-details {
+            display: none;
+            padding: 0 1rem 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .week-card.expanded .week-details {
+            display: block;
+        }
+
+        .week-lm-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .week-lm-item:last-child {
+            border-bottom: none;
+        }
+
+        .week-lm-num {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--sunset-coral);
+            min-width: 40px;
+        }
+
+        .week-lm-name {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .trip-badge {
+            display: inline-block;
+            background: #FFD700;
+            color: #333;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 100px;
+            margin-left: 0.5rem;
         }
 
         /* ========== SYLLABUS SCREEN ========== */
@@ -347,30 +499,30 @@
         }
 
         .syllabus-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
         }
 
         .syllabus-subtitle {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-sub);
+            font-weight: 600;
         }
 
         .topic-card {
             background: #fff;
             border-radius: var(--radius-lg);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.7rem;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
         }
 
         .topic-header {
-            padding: 1rem 1.25rem;
+            padding: 0.9rem 1rem;
             display: flex;
             align-items: center;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
         .topic-header:active {
@@ -378,8 +530,8 @@
         }
 
         .topic-icon {
-            font-size: 1.25rem;
-            margin-right: 0.75rem;
+            font-size: 1.15rem;
+            margin-right: 0.7rem;
         }
 
         .topic-info {
@@ -387,25 +539,26 @@
         }
 
         .topic-name {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--text-main);
         }
 
         .topic-meta {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-label);
-            margin-top: 0.15rem;
+            font-weight: 600;
+            margin-top: 0.1rem;
         }
 
         .topic-badge {
             background: var(--bg-accent);
             color: var(--sunset-coral);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            padding: 0.25rem 0.6rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 100px;
-            margin-right: 0.5rem;
+            margin-right: 0.4rem;
         }
 
         .topic-badge.complete {
@@ -424,7 +577,7 @@
 
         .topic-lms {
             display: none;
-            padding: 0 1.25rem 1rem;
+            padding: 0 1rem 0.75rem;
         }
 
         .topic-card.expanded .topic-lms {
@@ -434,7 +587,7 @@
         .lm-item {
             display: flex;
             align-items: flex-start;
-            padding: 0.75rem 0;
+            padding: 0.6rem 0;
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
 
@@ -443,12 +596,12 @@
         }
 
         .lm-check {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: 2px solid #E5E5EA;
-            margin-right: 0.75rem;
-            margin-top: 2px;
+            margin-right: 0.65rem;
+            margin-top: 1px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -467,8 +620,8 @@
         }
 
         .lm-check svg {
-            width: 11px;
-            height: 11px;
+            width: 10px;
+            height: 10px;
             stroke: #fff;
             stroke-width: 3;
             opacity: 0;
@@ -486,17 +639,16 @@
         }
 
         .lm-number {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: var(--sunset-coral);
             font-weight: 700;
-            margin-bottom: 0.15rem;
         }
 
         .lm-name {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-main);
-            font-weight: 500;
-            line-height: 1.4;
+            font-weight: 600;
+            line-height: 1.3;
         }
 
         .lm-item.completed .lm-name {
@@ -514,11 +666,11 @@
             background: var(--bg-surface);
             backdrop-filter: var(--blur-glass);
             -webkit-backdrop-filter: var(--blur-glass);
-            padding: 0.5rem 1.5rem;
-            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+            padding: 0.4rem 1rem;
+            padding-bottom: calc(0.4rem + env(safe-area-inset-bottom));
             display: flex;
             justify-content: center;
-            gap: 3rem;
+            gap: 2rem;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
 
@@ -526,46 +678,40 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border: none;
             background: none;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .nav-item-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.2rem;
-            transition: transform 0.2s;
+            font-size: 1.35rem;
+            margin-bottom: 0.15rem;
         }
 
         .nav-item-label {
-            font-size: 0.65rem;
-            font-weight: 600;
+            font-size: 0.6rem;
+            font-weight: 700;
             color: var(--text-label);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .nav-item.active .nav-item-label {
             color: var(--sunset-coral);
         }
 
-        .nav-item.active .nav-item-icon {
-            transform: scale(1.1);
-        }
-
         /* Toast */
         .toast {
             position: fixed;
-            bottom: 100px;
+            bottom: 95px;
             left: 50%;
             transform: translateX(-50%) translateY(20px);
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.88);
             color: #fff;
-            padding: 0.75rem 1.25rem;
+            padding: 0.7rem 1.1rem;
             border-radius: 100px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             opacity: 0;
             transition: all 0.3s;
@@ -589,14 +735,12 @@
 
         <!-- HOME SCREEN -->
         <div id="screen-home" class="screen active">
-            <!-- Countdown -->
             <div class="countdown-banner">
                 <div class="countdown-days" id="countdownDays">--</div>
                 <div class="countdown-label">Days Remaining</div>
                 <div class="exam-date">📅 May 23, 2026</div>
             </div>
 
-            <!-- Progress -->
             <div class="progress-card">
                 <div class="progress-header">
                     <div class="progress-title">Overall Progress</div>
@@ -606,12 +750,11 @@
                     <div class="progress-bar-inner" id="overallBar" style="width: 0%"></div>
                 </div>
                 <div class="progress-meta">
-                    <span><span id="completedLMs">0</span> of <span id="totalLMs">45</span> modules</span>
+                    <span><span id="completedLMs">0</span> / 45 modules</span>
                     <span id="avgPerDay">--</span>
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">📚</div>
@@ -625,21 +768,45 @@
                 </div>
             </div>
 
-            <!-- Topics Summary -->
             <div class="topics-summary">
                 <div class="topics-summary-header">
                     <div class="topics-summary-title">Progress by Topic</div>
-                    <button class="view-all-btn" onclick="showScreen('syllabus')">View Syllabus →</button>
+                    <button class="view-all-btn" onclick="showScreen('syllabus')">View All →</button>
                 </div>
                 <div id="topicsSummaryList"></div>
             </div>
         </div>
 
+        <!-- PLAN SCREEN -->
+        <div id="screen-plan" class="screen">
+            <div class="plan-header">
+                <div class="plan-title">Study Plan</div>
+                <div class="plan-subtitle">Dec 27, 2025 → Apr 20, 2026 (Target)</div>
+            </div>
+
+            <div class="plan-stats">
+                <div class="plan-stat">
+                    <div class="plan-stat-value">~360</div>
+                    <div class="plan-stat-label">Total Hours</div>
+                </div>
+                <div class="plan-stat">
+                    <div class="plan-stat-value">~8</div>
+                    <div class="plan-stat-label">Hrs / Module</div>
+                </div>
+                <div class="plan-stat">
+                    <div class="plan-stat-value">16</div>
+                    <div class="plan-stat-label">Weeks</div>
+                </div>
+            </div>
+
+            <div id="planContainer"></div>
+        </div>
+
         <!-- SYLLABUS SCREEN -->
         <div id="screen-syllabus" class="screen">
             <div class="syllabus-header">
-                <div class="syllabus-title">CFA Level II Syllabus</div>
-                <div class="syllabus-subtitle">45 Learning Modules across 10 Topics</div>
+                <div class="syllabus-title">Full Syllabus</div>
+                <div class="syllabus-subtitle">45 Learning Modules • 10 Topics</div>
             </div>
             <div id="syllabusContainer"></div>
         </div>
@@ -651,22 +818,23 @@
             <span class="nav-item-icon">🏠</span>
             <span class="nav-item-label">Home</span>
         </button>
+        <button class="nav-item" onclick="showScreen('plan')" id="nav-plan">
+            <span class="nav-item-icon">📅</span>
+            <span class="nav-item-label">Plan</span>
+        </button>
         <button class="nav-item" onclick="showScreen('syllabus')" id="nav-syllabus">
             <span class="nav-item-icon">📖</span>
             <span class="nav-item-label">Syllabus</span>
         </button>
     </nav>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script>
-        // CFA Level 2 Full Syllabus (45 Learning Modules)
+        // CFA Level 2 Full Syllabus
         const SYLLABUS = [
             {
-                id: 'quant',
-                name: 'Quantitative Methods',
-                icon: '📐',
+                id: 'quant', name: 'Quantitative Methods', icon: '📐',
                 lms: [
                     { id: 'lm1', num: 'LM 1', name: 'Basics of Multiple Regression' },
                     { id: 'lm2', num: 'LM 2', name: 'Evaluating Regression Model Fit' },
@@ -678,18 +846,14 @@
                 ]
             },
             {
-                id: 'econ',
-                name: 'Economics',
-                icon: '🌍',
+                id: 'econ', name: 'Economics', icon: '🌍',
                 lms: [
                     { id: 'lm8', num: 'LM 8', name: 'Currency Exchange Rates' },
                     { id: 'lm9', num: 'LM 9', name: 'Economic Growth' }
                 ]
             },
             {
-                id: 'fra',
-                name: 'Financial Statement Analysis',
-                icon: '📊',
+                id: 'fra', name: 'Financial Statement Analysis', icon: '📊',
                 lms: [
                     { id: 'lm10', num: 'LM 10', name: 'Intercorporate Investments' },
                     { id: 'lm11', num: 'LM 11', name: 'Employee Compensation' },
@@ -700,54 +864,44 @@
                 ]
             },
             {
-                id: 'corp',
-                name: 'Corporate Issuers',
-                icon: '🏢',
+                id: 'corp', name: 'Corporate Issuers', icon: '🏢',
                 lms: [
-                    { id: 'lm16', num: 'LM 16', name: 'Analysis of Dividends and Share Repurchases' },
-                    { id: 'lm17', num: 'LM 17', name: 'ESG Considerations in Investment Analysis' },
-                    { id: 'lm18', num: 'LM 18', name: 'Cost of Capital: Advanced Topics' },
+                    { id: 'lm16', num: 'LM 16', name: 'Dividends and Share Repurchases' },
+                    { id: 'lm17', num: 'LM 17', name: 'ESG Considerations' },
+                    { id: 'lm18', num: 'LM 18', name: 'Cost of Capital: Advanced' },
                     { id: 'lm19', num: 'LM 19', name: 'Corporate Restructuring' }
                 ]
             },
             {
-                id: 'equity',
-                name: 'Equity Valuation',
-                icon: '📈',
+                id: 'equity', name: 'Equity Valuation', icon: '📈',
                 lms: [
-                    { id: 'lm20', num: 'LM 20', name: 'Equity Valuation: Applications and Processes' },
+                    { id: 'lm20', num: 'LM 20', name: 'Equity Valuation: Applications' },
                     { id: 'lm21', num: 'LM 21', name: 'Discounted Dividend Valuation' },
                     { id: 'lm22', num: 'LM 22', name: 'Free Cash Flow Valuation' },
-                    { id: 'lm23', num: 'LM 23', name: 'Market-Based Valuation (Multiples)' },
+                    { id: 'lm23', num: 'LM 23', name: 'Market-Based Valuation' },
                     { id: 'lm24', num: 'LM 24', name: 'Residual Income Valuation' },
                     { id: 'lm25', num: 'LM 25', name: 'Private Company Valuation' }
                 ]
             },
             {
-                id: 'fi',
-                name: 'Fixed Income',
-                icon: '💵',
+                id: 'fi', name: 'Fixed Income', icon: '💵',
                 lms: [
-                    { id: 'lm26', num: 'LM 26', name: 'Term Structure and Interest Rate Dynamics' },
-                    { id: 'lm27', num: 'LM 27', name: 'Arbitrage-Free Valuation Framework' },
+                    { id: 'lm26', num: 'LM 26', name: 'Term Structure & Interest Rates' },
+                    { id: 'lm27', num: 'LM 27', name: 'Arbitrage-Free Valuation' },
                     { id: 'lm28', num: 'LM 28', name: 'Bonds with Embedded Options' },
                     { id: 'lm29', num: 'LM 29', name: 'Credit Analysis Models' },
                     { id: 'lm30', num: 'LM 30', name: 'Credit Default Swaps' }
                 ]
             },
             {
-                id: 'deriv',
-                name: 'Derivatives',
-                icon: '🔀',
+                id: 'deriv', name: 'Derivatives', icon: '🔀',
                 lms: [
-                    { id: 'lm31', num: 'LM 31', name: 'Pricing and Valuation of Forward Commitments' },
+                    { id: 'lm31', num: 'LM 31', name: 'Pricing Forward Commitments' },
                     { id: 'lm32', num: 'LM 32', name: 'Valuation of Contingent Claims' }
                 ]
             },
             {
-                id: 'alts',
-                name: 'Alternative Investments',
-                icon: '🏠',
+                id: 'alts', name: 'Alternative Investments', icon: '🏠',
                 lms: [
                     { id: 'lm33', num: 'LM 33', name: 'Commodities' },
                     { id: 'lm34', num: 'LM 34', name: 'Real Estate Investments' },
@@ -756,79 +910,85 @@
                 ]
             },
             {
-                id: 'pm',
-                name: 'Portfolio Management',
-                icon: '💼',
+                id: 'pm', name: 'Portfolio Management', icon: '💼',
                 lms: [
-                    { id: 'lm37', num: 'LM 37', name: 'Exchange-Traded Funds (ETFs)' },
+                    { id: 'lm37', num: 'LM 37', name: 'Exchange-Traded Funds' },
                     { id: 'lm38', num: 'LM 38', name: 'Multifactor Models' },
-                    { id: 'lm39', num: 'LM 39', name: 'Measuring and Managing Market Risk' },
+                    { id: 'lm39', num: 'LM 39', name: 'Measuring Market Risk' },
                     { id: 'lm40', num: 'LM 40', name: 'Backtesting and Simulation' },
-                    { id: 'lm41', num: 'LM 41', name: 'Economics and Investment Markets' },
-                    { id: 'lm42', num: 'LM 42', name: 'Analysis of Active Portfolio Management' }
+                    { id: 'lm41', num: 'LM 41', name: 'Economics & Investment Markets' },
+                    { id: 'lm42', num: 'LM 42', name: 'Active Portfolio Management' }
                 ]
             },
             {
-                id: 'ethics',
-                name: 'Ethics & Professional Standards',
-                icon: '⚖️',
+                id: 'ethics', name: 'Ethics & Standards', icon: '⚖️',
                 lms: [
-                    { id: 'lm43', num: 'LM 43', name: 'Code of Ethics and Standards' },
+                    { id: 'lm43', num: 'LM 43', name: 'Code of Ethics' },
                     { id: 'lm44', num: 'LM 44', name: 'Guidance for Standards I–VII' },
-                    { id: 'lm45', num: 'LM 45', name: 'Application of Code and Standards' }
+                    { id: 'lm45', num: 'LM 45', name: 'Application of Standards' }
                 ]
             }
         ];
 
+        // Study Plan: Mon-Sat 2h, Sun 12h, unavailable Jan 26 - Feb 2
+        const STUDY_PLAN = [
+            { week: 1, start: 'Dec 27', end: 'Jan 2', hours: 22, lms: ['lm1', 'lm2', 'lm3'], trip: false },
+            { week: 2, start: 'Jan 3', end: 'Jan 9', hours: 24, lms: ['lm4', 'lm5', 'lm6'], trip: false },
+            { week: 3, start: 'Jan 10', end: 'Jan 16', hours: 24, lms: ['lm7', 'lm8', 'lm9'], trip: false },
+            { week: 4, start: 'Jan 17', end: 'Jan 23', hours: 24, lms: ['lm10', 'lm11', 'lm12'], trip: false },
+            { week: 5, start: 'Jan 24', end: 'Jan 25', hours: 4, lms: [], note: 'Pre-trip buffer', trip: false },
+            { week: 6, start: 'Jan 26', end: 'Feb 2', hours: 0, lms: [], note: '🏝️ Andamans Trip', trip: true },
+            { week: 7, start: 'Feb 3', end: 'Feb 9', hours: 24, lms: ['lm13', 'lm14', 'lm15'], trip: false },
+            { week: 8, start: 'Feb 10', end: 'Feb 16', hours: 24, lms: ['lm16', 'lm17', 'lm18'], trip: false },
+            { week: 9, start: 'Feb 17', end: 'Feb 23', hours: 24, lms: ['lm19', 'lm20', 'lm21'], trip: false },
+            { week: 10, start: 'Feb 24', end: 'Mar 2', hours: 24, lms: ['lm22', 'lm23', 'lm24'], trip: false },
+            { week: 11, start: 'Mar 3', end: 'Mar 9', hours: 24, lms: ['lm25', 'lm26', 'lm27'], trip: false },
+            { week: 12, start: 'Mar 10', end: 'Mar 16', hours: 24, lms: ['lm28', 'lm29', 'lm30'], trip: false },
+            { week: 13, start: 'Mar 17', end: 'Mar 23', hours: 24, lms: ['lm31', 'lm32', 'lm33'], trip: false },
+            { week: 14, start: 'Mar 24', end: 'Mar 30', hours: 24, lms: ['lm34', 'lm35', 'lm36'], trip: false },
+            { week: 15, start: 'Mar 31', end: 'Apr 6', hours: 24, lms: ['lm37', 'lm38', 'lm39'], trip: false },
+            { week: 16, start: 'Apr 7', end: 'Apr 13', hours: 24, lms: ['lm40', 'lm41', 'lm42'], trip: false },
+            { week: 17, start: 'Apr 14', end: 'Apr 20', hours: 24, lms: ['lm43', 'lm44', 'lm45'], trip: false }
+        ];
+
         const EXAM_DATE = new Date('2026-05-23');
-        const STORAGE_KEY = 'cfa_l2_tracker_v3';
+        const STORAGE_KEY = 'cfa_l2_tracker_v4';
 
-        // State
-        let state = {
-            completedLMs: []
-        };
+        let state = { completedLMs: [] };
 
-        // Initialize
         function init() {
             loadState();
             updateCountdown();
             renderSyllabus();
             renderTopicsSummary();
+            renderPlan();
             updateStats();
         }
 
-        // Storage
         function loadState() {
             const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                state = JSON.parse(saved);
-            }
+            if (saved) state = JSON.parse(saved);
         }
 
         function saveState() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         }
 
-        // Countdown
         function updateCountdown() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const diff = Math.ceil((EXAM_DATE - today) / (1000 * 60 * 60 * 24));
             document.getElementById('countdownDays').textContent = diff;
 
-            // Calculate required pace
-            const totalLMs = 45;
             const completed = state.completedLMs.length;
-            const remaining = totalLMs - completed;
+            const remaining = 45 - completed;
             if (diff > 0 && remaining > 0) {
-                const pace = (remaining / diff).toFixed(2);
-                document.getElementById('avgPerDay').textContent = `${pace} LMs/day to finish`;
+                document.getElementById('avgPerDay').textContent = `${(remaining / (diff / 7)).toFixed(1)} LMs/week needed`;
             } else if (remaining === 0) {
-                document.getElementById('avgPerDay').textContent = '🎉 Complete!';
+                document.getElementById('avgPerDay').textContent = '🎉 Syllabus Complete!';
             }
         }
 
-        // Navigation
         function showScreen(screen) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -836,13 +996,11 @@
             document.getElementById(`nav-${screen}`).classList.add('active');
         }
 
-        // Render Topics Summary (Home)
         function renderTopicsSummary() {
             const container = document.getElementById('topicsSummaryList');
             container.innerHTML = SYLLABUS.map(topic => {
                 const completed = topic.lms.filter(lm => state.completedLMs.includes(lm.id)).length;
-                const total = topic.lms.length;
-                const percent = Math.round((completed / total) * 100);
+                const percent = Math.round((completed / topic.lms.length) * 100);
                 return `
                     <div class="topic-row">
                         <span class="topic-row-icon">${topic.icon}</span>
@@ -853,14 +1011,71 @@
             }).join('');
         }
 
-        // Render Syllabus
+        function getLMInfo(lmId) {
+            for (const topic of SYLLABUS) {
+                const lm = topic.lms.find(l => l.id === lmId);
+                if (lm) return lm;
+            }
+            return null;
+        }
+
+        function renderPlan() {
+            const container = document.getElementById('planContainer');
+            const today = new Date();
+            const currentWeekNum = getCurrentWeek();
+
+            container.innerHTML = STUDY_PLAN.map(week => {
+                const isCurrent = week.week === currentWeekNum;
+                const isTrip = week.trip;
+                const lmsInfo = week.lms.map(id => getLMInfo(id)).filter(Boolean);
+                const lmsPreview = lmsInfo.length > 0
+                    ? lmsInfo.map(l => l.num).join(', ')
+                    : (week.note || 'No modules');
+
+                return `
+                    <div class="week-card ${isCurrent ? 'current' : ''} ${isTrip ? 'trip' : ''}" id="week-${week.week}">
+                        <div class="week-header" onclick="toggleWeek(${week.week})">
+                            <span class="week-number">W${week.week}</span>
+                            <div class="week-info">
+                                <div class="week-dates">${week.start} – ${week.end}${isTrip ? '<span class="trip-badge">🏝️ Trip</span>' : ''}</div>
+                                <div class="week-lms-preview">${lmsPreview}</div>
+                            </div>
+                            <div class="week-hours">${week.hours}h</div>
+                            ${!isTrip ? `<span class="week-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg></span>` : ''}
+                        </div>
+                        ${!isTrip && lmsInfo.length > 0 ? `
+                            <div class="week-details">
+                                ${lmsInfo.map(lm => `
+                                    <div class="week-lm-item">
+                                        <span class="week-lm-num">${lm.num}</span>
+                                        <span class="week-lm-name">${lm.name}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getCurrentWeek() {
+            // Simplified: return week 1 for now (Dec 27 - Jan 2)
+            return 1;
+        }
+
+        function toggleWeek(weekNum) {
+            const card = document.getElementById(`week-${weekNum}`);
+            if (!card.classList.contains('trip')) {
+                card.classList.toggle('expanded');
+            }
+        }
+
         function renderSyllabus() {
             const container = document.getElementById('syllabusContainer');
             container.innerHTML = SYLLABUS.map(topic => {
                 const completed = topic.lms.filter(lm => state.completedLMs.includes(lm.id)).length;
-                const total = topic.lms.length;
-                const percent = Math.round((completed / total) * 100);
-                const isComplete = completed === total;
+                const percent = Math.round((completed / topic.lms.length) * 100);
+                const isComplete = completed === topic.lms.length;
 
                 return `
                     <div class="topic-card" id="topic-${topic.id}">
@@ -868,13 +1083,11 @@
                             <span class="topic-icon">${topic.icon}</span>
                             <div class="topic-info">
                                 <div class="topic-name">${topic.name}</div>
-                                <div class="topic-meta">${completed}/${total} modules</div>
+                                <div class="topic-meta">${completed}/${topic.lms.length} modules</div>
                             </div>
                             <span class="topic-badge ${isComplete ? 'complete' : ''}">${percent}%</span>
                             <span class="topic-chevron">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </span>
                         </div>
                         <div class="topic-lms">
@@ -883,9 +1096,7 @@
                     return `
                                     <div class="lm-item ${isChecked ? 'completed' : ''}">
                                         <div class="lm-check ${isChecked ? 'checked' : ''}" onclick="toggleLM('${lm.id}')">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                                <polyline points="20 6 9 17 4 12"></polyline>
-                                            </svg>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                         </div>
                                         <div class="lm-content">
                                             <div class="lm-number">${lm.num}</div>
@@ -901,17 +1112,16 @@
         }
 
         function toggleTopic(topicId) {
-            const card = document.getElementById(`topic-${topicId}`);
-            card.classList.toggle('expanded');
+            document.getElementById(`topic-${topicId}`).classList.toggle('expanded');
         }
 
         function toggleLM(lmId) {
-            const index = state.completedLMs.indexOf(lmId);
-            if (index === -1) {
+            const idx = state.completedLMs.indexOf(lmId);
+            if (idx === -1) {
                 state.completedLMs.push(lmId);
                 showToast('Module completed! 🎉');
             } else {
-                state.completedLMs.splice(index, 1);
+                state.completedLMs.splice(idx, 1);
             }
             saveState();
             renderSyllabus();
@@ -920,38 +1130,31 @@
             updateCountdown();
         }
 
-        // Update Stats
         function updateStats() {
-            const totalLMs = 45;
             const completed = state.completedLMs.length;
-            const percent = Math.round((completed / totalLMs) * 100);
+            const percent = Math.round((completed / 45) * 100);
 
             document.getElementById('overallPercent').textContent = percent + '%';
             document.getElementById('overallBar').style.width = percent + '%';
             document.getElementById('completedLMs').textContent = completed;
-            document.getElementById('totalLMs').textContent = totalLMs;
 
-            // Topics stats
-            let started = 0;
-            let done = 0;
+            let started = 0, done = 0;
             SYLLABUS.forEach(topic => {
-                const completedInTopic = topic.lms.filter(lm => state.completedLMs.includes(lm.id)).length;
-                if (completedInTopic > 0) started++;
-                if (completedInTopic === topic.lms.length) done++;
+                const c = topic.lms.filter(lm => state.completedLMs.includes(lm.id)).length;
+                if (c > 0) started++;
+                if (c === topic.lms.length) done++;
             });
             document.getElementById('topicsStarted').textContent = started;
             document.getElementById('topicsCompleted').textContent = done;
         }
 
-        // Toast
-        function showToast(message) {
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.textContent = msg;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        // Start
         init();
     </script>
 </body>
