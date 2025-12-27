@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CFA L2 | Study Tracker</title>
+    <meta name="description" content="Track your CFA Level 2 study progress - Exam May 23, 2026">
+
+    <!-- PWA & Mobile -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CFA L2">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FF4B2B">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3233/3233514.png">
+    <link rel="manifest"
+        href='data:application/manifest+json,{"name":"CFA Level 2 Tracker","short_name":"CFA L2","start_url":".","display":"standalone","background_color":"%23FFFBF9","theme_color":"%23FF4B2B","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/3233/3233514.png","sizes":"512x512","type":"image/png"}]}'>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #FFFBF9;
+            --bg-surface: rgba(255, 255, 255, 0.85);
+            --bg-accent: #FFECE5;
+            --sunset-coral: #FF4B2B;
+            --sunset-orange: #FF416C;
+            --gradient-primary: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+            --text-main: #1C1C1E;
+            --text-sub: #636366;
+            --text-label: #8E8E93;
+            --text-on-accent: #FFFFFF;
+            --success: #34C759;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+            --info: #007AFF;
+            --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-press: 0 4px 12px rgba(255, 75, 43, 0.2);
+            --blur-glass: blur(20px);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .heading-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-base);
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(255, 75, 43, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(255, 65, 108, 0.06) 0%, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 1.5rem 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-label);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.03em;
+        }
+
+        /* Countdown Banner */
+        .countdown-banner {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            color: var(--text-on-accent);
+            text-align: center;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-press);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(-50%) rotate(0deg);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(-50%) rotate(180deg);
+            }
+        }
+
+        .countdown-days {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+            line-height: 1;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .countdown-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .exam-date {
+            font-size: 0.8rem;
+            margin-top: 0.75rem;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        /* Stats Grid */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background: var(--bg-surface);
+            backdrop-filter: var(--blur-glass);
+            border-radius: var(--radius-md);
+            padding: 1rem 0.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+            color: var(--text-main);
+        }
+
+        .stat-value.accent {
+            color: var(--sunset-coral);
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-label);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        /* Progress Ring */
+        .progress-section {
+            background: var(--bg-surface);
+            backdrop-filter: var(--blur-glass);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-float);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .ring-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+        }
+
+        .ring-svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: var(--bg-accent);
+            stroke-width: 10;
+        }
+
+        .ring-fill {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 10;
+            stroke-linecap: round;
+            stroke-dasharray: 251.33;
+            stroke-dashoffset: 251.33;
+            transition: stroke-dashoffset 1s ease-out;
+            filter: drop-shadow(0 2px 4px rgba(255, 75, 43, 0.3));
+        }
+
+        .ring-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .ring-percent .value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+            display: block;
+        }
+
+        .ring-percent .label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            color: var(--text-label);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-details h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-container {
+            height: 6px;
+            background: var(--bg-accent);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            transition: width 0.5s ease-out;
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: #F2F2F7;
+            border-radius: var(--radius-md);
+            padding: 4px;
+            margin-bottom: 1rem;
+            position: sticky;
+            top: 0.5rem;
+            z-index: 100;
+        }
+
+        .nav-tab {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            border-radius: calc(var(--radius-md) - 4px);
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .nav-tab.active {
+            background: #fff;
+            color: var(--text-main);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-tab span {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        /* Screen Views */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Topic Cards */
+        .topic-card {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .topic-header {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .topic-header:active {
+            background: var(--bg-accent);
+        }
+
+        .topic-info {
+            flex: 1;
+        }
+
+        .topic-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .topic-meta {
+            font-size: 0.7rem;
+            color: var(--text-label);
+        }
+
+        .topic-progress {
+            text-align: right;
+        }
+
+        .topic-percent {
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+            color: var(--sunset-coral);
+        }
+
+        .topic-mini-bar {
+            width: 60px;
+            height: 4px;
+            background: var(--bg-accent);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .topic-mini-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.3s;
+        }
+
+        .topic-chevron {
+            color: var(--text-label);
+            transition: transform 0.3s;
+            margin-left: 0.75rem;
+        }
+
+        .topic-card.expanded .topic-chevron {
+            transform: rotate(180deg);
+        }
+
+        .topic-readings {
+            display: none;
+            padding: 0 1rem 1rem;
+            border-top: 1px solid var(--bg-accent);
+        }
+
+        .topic-card.expanded .topic-readings {
+            display: block;
+        }
+
+        .reading-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--bg-accent);
+        }
+
+        .reading-item:last-child {
+            border-bottom: none;
+        }
+
+        .reading-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-accent);
+            margin-right: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .reading-check:hover {
+            border-color: var(--sunset-coral);
+        }
+
+        .reading-check.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .reading-check svg {
+            width: 12px;
+            height: 12px;
+            stroke: #fff;
+            stroke-width: 3;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s;
+        }
+
+        .reading-check.checked svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .reading-name {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            flex: 1;
+        }
+
+        .reading-item.completed .reading-name {
+            color: var(--text-label);
+            text-decoration: line-through;
+        }
+
+        /* Log Screen */
+        .log-section {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .log-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .log-input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .log-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid var(--bg-accent);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .log-input:focus {
+            outline: none;
+            border-color: var(--sunset-coral);
+        }
+
+        .log-input-label {
+            font-size: 0.7rem;
+            color: var(--text-label);
+            text-align: center;
+            margin-top: 0.25rem;
+        }
+
+        .log-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--gradient-primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .log-btn:active {
+            transform: scale(0.98);
+        }
+
+        .log-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Today's Summary */
+        .today-summary {
+            background: var(--bg-accent);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .today-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--sunset-coral);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .today-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .today-stat {
+            text-align: center;
+        }
+
+        .today-stat .value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+        }
+
+        .today-stat .label {
+            font-size: 0.65rem;
+            color: var(--text-sub);
+        }
+
+        /* History List */
+        .history-list {
+            margin-top: 1rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--bg-accent);
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .history-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        .history-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Stats Screen */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .stats-card.wide {
+            grid-column: span 2;
+        }
+
+        .stats-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-card .value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+            color: var(--text-main);
+        }
+
+        .stats-card .value.success {
+            color: var(--success);
+        }
+
+        .stats-card .label {
+            font-size: 0.7rem;
+            color: var(--text-label);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
+        }
+
+        /* Milestones */
+        .milestone-section {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .milestone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .milestone-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .add-milestone-btn {
+            background: var(--bg-accent);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: var(--sunset-coral);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--bg-accent);
+        }
+
+        .milestone-item:last-child {
+            border-bottom: none;
+        }
+
+        .milestone-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .milestone-item.achieved .milestone-icon {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .milestone-content {
+            flex: 1;
+        }
+
+        .milestone-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .milestone-date {
+            font-size: 0.7rem;
+            color: var(--text-label);
+        }
+
+        .milestone-delete {
+            background: none;
+            border: none;
+            color: var(--text-label);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            width: 100%;
+            max-width: 480px;
+            padding: 1.5rem;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--bg-accent);
+            border-radius: 2px;
+            margin: 0 auto 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--bg-accent);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--sunset-coral);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.875rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .modal-btn.primary {
+            background: var(--gradient-primary);
+            color: #fff;
+        }
+
+        .modal-btn.secondary {
+            background: var(--bg-accent);
+            color: var(--text-main);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 0.75rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2000;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Footer Actions */
+        .footer-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-surface);
+            backdrop-filter: var(--blur-glass);
+            padding: 0.75rem 1rem;
+            padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .footer-btn.secondary {
+            background: #F2F2F7;
+            color: var(--text-main);
+        }
+
+        .footer-btn.danger {
+            background: rgba(255, 59, 48, 0.1);
+            color: var(--danger);
+        }
+
+        .footer-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="header-label">CFA Level II</div>
+            <h1>Study Tracker</h1>
+        </header>
+
+        <!-- Countdown Banner -->
+        <div class="countdown-banner">
+            <div class="countdown-days" id="countdownDays">--</div>
+            <div class="countdown-label">Days Until Exam</div>
+            <div class="exam-date">📅 May 23, 2026</div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value accent" id="statStreak">0</div>
+                <div class="stat-label">🔥 Streak</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statHours">0</div>
+                <div class="stat-label">⏱️ Hours</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statQuestions">0</div>
+                <div class="stat-label">📝 Questions</div>
+            </div>
+        </div>
+
+        <!-- Progress Ring -->
+        <div class="progress-section">
+            <div class="ring-container">
+                <svg class="ring-svg" width="100" height="100">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FF4B2B" />
+                            <stop offset="100%" stop-color="#FF416C" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="ring-bg" cx="50" cy="50" r="40" />
+                    <circle class="ring-fill" id="progressRing" cx="50" cy="50" r="40" />
+                </svg>
+                <div class="ring-percent">
+                    <span class="value" id="progressPercent">0%</span>
+                    <span class="label">Complete</span>
+                </div>
+            </div>
+            <div class="progress-details">
+                <h3>Overall Progress</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+                <p class="progress-text"><span id="completedReadings">0</span> of <span id="totalReadings">29</span>
+                    readings done</p>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showScreen('topics')">
+                <span>📚</span> Topics
+            </button>
+            <button class="nav-tab" onclick="showScreen('log')">
+                <span>📝</span> Log
+            </button>
+            <button class="nav-tab" onclick="showScreen('stats')">
+                <span>📊</span> Stats
+            </button>
+        </nav>
+
+        <!-- Topics Screen -->
+        <div id="screen-topics" class="screen active">
+            <div id="topicsContainer"></div>
+        </div>
+
+        <!-- Log Screen -->
+        <div id="screen-log" class="screen">
+            <div class="log-section">
+                <div class="log-title">⏱️ Log Today's Study</div>
+                <div class="log-input-group">
+                    <div style="flex:1">
+                        <input type="number" class="log-input" id="inputHours" placeholder="0" min="0" max="24"
+                            step="0.5">
+                        <div class="log-input-label">Hours</div>
+                    </div>
+                    <div style="flex:1">
+                        <input type="number" class="log-input" id="inputQuestions" placeholder="0" min="0">
+                        <div class="log-input-label">Questions</div>
+                    </div>
+                    <div style="flex:1">
+                        <input type="number" class="log-input" id="inputCorrect" placeholder="0" min="0">
+                        <div class="log-input-label">Correct</div>
+                    </div>
+                </div>
+                <button class="log-btn" onclick="logStudy()">Log Study Session</button>
+
+                <div class="today-summary" id="todaySummary" style="display:none">
+                    <div class="today-title">Today's Progress</div>
+                    <div class="today-stats">
+                        <div class="today-stat">
+                            <div class="value" id="todayHours">0</div>
+                            <div class="label">Hours</div>
+                        </div>
+                        <div class="today-stat">
+                            <div class="value" id="todayQuestions">0</div>
+                            <div class="label">Questions</div>
+                        </div>
+                        <div class="today-stat">
+                            <div class="value" id="todayAccuracy">--%</div>
+                            <div class="label">Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="log-section">
+                <div class="log-title">📅 Recent History</div>
+                <div class="history-list" id="historyList">
+                    <p style="text-align:center; color:var(--text-label); padding:1rem; font-size:0.85rem;">No study
+                        logs yet. Start logging!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Screen -->
+        <div id="screen-stats" class="screen">
+            <div class="stats-overview">
+                <div class="stats-card">
+                    <div class="icon">⏱️</div>
+                    <div class="value" id="totalHoursStats">0</div>
+                    <div class="label">Total Hours</div>
+                </div>
+                <div class="stats-card">
+                    <div class="icon">📝</div>
+                    <div class="value" id="totalQuestionsStats">0</div>
+                    <div class="label">Questions Done</div>
+                </div>
+                <div class="stats-card">
+                    <div class="icon">✅</div>
+                    <div class="value success" id="accuracyStats">--%</div>
+                    <div class="label">Accuracy</div>
+                </div>
+                <div class="stats-card">
+                    <div class="icon">🔥</div>
+                    <div class="value" id="maxStreakStats">0</div>
+                    <div class="label">Best Streak</div>
+                </div>
+                <div class="stats-card wide">
+                    <div class="icon">📆</div>
+                    <div class="value" id="studyDaysStats">0</div>
+                    <div class="label">Days Studied</div>
+                </div>
+            </div>
+
+            <div class="milestone-section">
+                <div class="milestone-header">
+                    <div class="milestone-title">🎯 Milestones</div>
+                    <button class="add-milestone-btn" onclick="openMilestoneModal()">+</button>
+                </div>
+                <div id="milestonesList">
+                    <p style="text-align:center; color:var(--text-label); padding:1rem; font-size:0.85rem;">Add
+                        milestones to track your goals!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="footer-actions">
+        <button class="footer-btn secondary" onclick="exportData()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Export
+        </button>
+        <button class="footer-btn secondary" onclick="importData()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Import
+        </button>
+        <button class="footer-btn danger" onclick="resetAll()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            Reset
+        </button>
+    </div>
+
+    <!-- Milestone Modal -->
+    <div class="modal-overlay" id="milestoneModal" onclick="closeMilestoneModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div>
+            <div class="modal-title">Add Milestone</div>
+            <input type="text" class="modal-input" id="milestoneNameInput" placeholder="e.g., Complete FRA">
+            <input type="date" class="modal-input" id="milestoneDateInput">
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeMilestoneModal()">Cancel</button>
+                <button class="modal-btn primary" onclick="addMilestone()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // CFA Level 2 Curriculum Data
+        const CURRICULUM = [
+            {
+                id: 'quant',
+                name: 'Quantitative Methods',
+                icon: '📐',
+                readings: [
+                    { id: 'quant-1', name: 'Basics of Multiple Regression' },
+                    { id: 'quant-2', name: 'Evaluating Regression Model Fit and Interpreting Model Results' }
+                ]
+            },
+            {
+                id: 'econ',
+                name: 'Economics',
+                icon: '🌍',
+                readings: [
+                    { id: 'econ-1', name: 'Currency Exchange Rates' },
+                    { id: 'econ-2', name: 'Economic Growth' }
+                ]
+            },
+            {
+                id: 'fra',
+                name: 'Financial Statement Analysis',
+                icon: '📊',
+                readings: [
+                    { id: 'fra-1', name: 'Intercorporate Investments' },
+                    { id: 'fra-2', name: 'Employee Compensation' },
+                    { id: 'fra-3', name: 'Multinational Operations' },
+                    { id: 'fra-4', name: 'Analysis of Financial Institutions' }
+                ]
+            },
+            {
+                id: 'corp',
+                name: 'Corporate Issuers',
+                icon: '🏢',
+                readings: [
+                    { id: 'corp-1', name: 'Analysis of Dividends and Share Repurchases' },
+                    { id: 'corp-2', name: 'Cost of Capital: Advanced Topics' }
+                ]
+            },
+            {
+                id: 'equity',
+                name: 'Equity Valuation',
+                icon: '📈',
+                readings: [
+                    { id: 'equity-1', name: 'Equity Valuation: Applications and Processes' },
+                    { id: 'equity-2', name: 'Discounted Dividend Valuation' },
+                    { id: 'equity-3', name: 'Free Cash Flow Valuation' },
+                    { id: 'equity-4', name: 'Market-Based Valuation: Price and Enterprise Value Multiples' },
+                    { id: 'equity-5', name: 'Residual Income Valuation' }
+                ]
+            },
+            {
+                id: 'fi',
+                name: 'Fixed Income',
+                icon: '💵',
+                readings: [
+                    { id: 'fi-1', name: 'The Term Structure and Interest Rate Dynamics' },
+                    { id: 'fi-2', name: 'The Arbitrage-Free Valuation Framework' },
+                    { id: 'fi-3', name: 'Valuation and Analysis of Bonds with Embedded Options' }
+                ]
+            },
+            {
+                id: 'deriv',
+                name: 'Derivatives',
+                icon: '🔀',
+                readings: [
+                    { id: 'deriv-1', name: 'Pricing and Valuation of Forward Commitments' },
+                    { id: 'deriv-2', name: 'Valuation of Contingent Claims' },
+                    { id: 'deriv-3', name: 'Derivative Strategies' }
+                ]
+            },
+            {
+                id: 'alts',
+                name: 'Alternative Investments',
+                icon: '🏠',
+                readings: [
+                    { id: 'alts-1', name: 'Private Capital, Real Estate, Infrastructure' },
+                    { id: 'alts-2', name: 'Natural Resources, Hedge Funds' }
+                ]
+            },
+            {
+                id: 'pm',
+                name: 'Portfolio Management',
+                icon: '💼',
+                readings: [
+                    { id: 'pm-1', name: 'Exchange-Traded Funds' },
+                    { id: 'pm-2', name: 'Using Multifactor Models' },
+                    { id: 'pm-3', name: 'Measuring and Managing Market Risk' },
+                    { id: 'pm-4', name: 'Economics and Investment Markets' }
+                ]
+            },
+            {
+                id: 'ethics',
+                name: 'Ethical & Professional Standards',
+                icon: '⚖️',
+                readings: [
+                    { id: 'ethics-1', name: 'Code of Ethics and Standards of Professional Conduct' },
+                    { id: 'ethics-2', name: 'Guidance for Standards I–VII' }
+                ]
+            }
+        ];
+
+        const EXAM_DATE = new Date('2026-05-23');
+        const STORAGE_KEY = 'cfa_l2_tracker_v2';
+
+        // State
+        let state = {
+            completedReadings: [],
+            studyLogs: [],
+            milestones: [],
+            streak: 0,
+            maxStreak: 0,
+            lastStudyDate: null
+        };
+
+        // Initialize
+        function init() {
+            loadState();
+            updateCountdown();
+            renderTopics();
+            updateProgress();
+            updateStats();
+            renderHistory();
+            renderMilestones();
+            checkStreak();
+        }
+
+        // Storage
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                state = { ...state, ...JSON.parse(saved) };
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        // Countdown
+        function updateCountdown() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const diff = Math.ceil((EXAM_DATE - today) / (1000 * 60 * 60 * 24));
+            document.getElementById('countdownDays').textContent = diff;
+        }
+
+        // Topics
+        function renderTopics() {
+            const container = document.getElementById('topicsContainer');
+            container.innerHTML = CURRICULUM.map(topic => {
+                const completedCount = topic.readings.filter(r =>
+                    state.completedReadings.includes(r.id)
+                ).length;
+                const percent = Math.round((completedCount / topic.readings.length) * 100);
+
+                return `
+                    <div class="topic-card" id="topic-${topic.id}">
+                        <div class="topic-header" onclick="toggleTopic('${topic.id}')">
+                            <div class="topic-info">
+                                <div class="topic-name">${topic.icon} ${topic.name}</div>
+                                <div class="topic-meta">${completedCount}/${topic.readings.length} readings</div>
+                            </div>
+                            <div class="topic-progress">
+                                <div class="topic-percent">${percent}%</div>
+                                <div class="topic-mini-bar">
+                                    <div class="topic-mini-fill" style="width:${percent}%"></div>
+                                </div>
+                            </div>
+                            <div class="topic-chevron">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="topic-readings">
+                            ${topic.readings.map(r => {
+                    const isCompleted = state.completedReadings.includes(r.id);
+                    return `
+                                    <div class="reading-item ${isCompleted ? 'completed' : ''}">
+                                        <div class="reading-check ${isCompleted ? 'checked' : ''}" onclick="toggleReading('${r.id}')">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </div>
+                                        <div class="reading-name">${r.name}</div>
+                                    </div>
+                                `;
+                }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleTopic(topicId) {
+            document.getElementById(`topic-${topicId}`).classList.toggle('expanded');
+        }
+
+        function toggleReading(readingId) {
+            const index = state.completedReadings.indexOf(readingId);
+            if (index === -1) {
+                state.completedReadings.push(readingId);
+                showToast('Reading completed! 🎉');
+            } else {
+                state.completedReadings.splice(index, 1);
+            }
+            saveState();
+            renderTopics();
+            updateProgress();
+            updateStats();
+        }
+
+        // Progress
+        function updateProgress() {
+            const total = CURRICULUM.reduce((sum, t) => sum + t.readings.length, 0);
+            const completed = state.completedReadings.length;
+            const percent = Math.round((completed / total) * 100);
+
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('completedReadings').textContent = completed;
+            document.getElementById('totalReadings').textContent = total;
+            document.getElementById('progressBar').style.width = percent + '%';
+
+            // Update ring
+            const ring = document.getElementById('progressRing');
+            const circumference = 2 * Math.PI * 40;
+            ring.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+        }
+
+        // Navigation
+        function showScreen(screen) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`screen-${screen}`).classList.add('active');
+            event.target.closest('.nav-tab').classList.add('active');
+        }
+
+        // Log Study
+        function logStudy() {
+            const hours = parseFloat(document.getElementById('inputHours').value) || 0;
+            const questions = parseInt(document.getElementById('inputQuestions').value) || 0;
+            const correct = parseInt(document.getElementById('inputCorrect').value) || 0;
+
+            if (hours === 0 && questions === 0) {
+                showToast('Please enter hours or questions');
+                return;
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            const existingIndex = state.studyLogs.findIndex(l => l.date === today);
+
+            if (existingIndex !== -1) {
+                state.studyLogs[existingIndex].hours += hours;
+                state.studyLogs[existingIndex].questions += questions;
+                state.studyLogs[existingIndex].correct += correct;
+            } else {
+                state.studyLogs.push({ date: today, hours, questions, correct });
+            }
+
+            state.lastStudyDate = today;
+            checkStreak();
+            saveState();
+
+            document.getElementById('inputHours').value = '';
+            document.getElementById('inputQuestions').value = '';
+            document.getElementById('inputCorrect').value = '';
+
+            updateStats();
+            renderHistory();
+            showToast('Study session logged! 📚');
+        }
+
+        // Streak
+        function checkStreak() {
+            const today = new Date().toISOString().split('T')[0];
+            const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+            if (state.lastStudyDate === today) {
+                // Already studied today, streak maintained
+            } else if (state.lastStudyDate === yesterday) {
+                state.streak++;
+            } else if (state.lastStudyDate !== null) {
+                state.streak = 1;
+            } else {
+                state.streak = 0;
+            }
+
+            if (state.streak > state.maxStreak) {
+                state.maxStreak = state.streak;
+            }
+
+            document.getElementById('statStreak').textContent = state.streak;
+            saveState();
+        }
+
+        // Stats
+        function updateStats() {
+            const totalHours = state.studyLogs.reduce((sum, l) => sum + l.hours, 0);
+            const totalQuestions = state.studyLogs.reduce((sum, l) => sum + l.questions, 0);
+            const totalCorrect = state.studyLogs.reduce((sum, l) => sum + l.correct, 0);
+            const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+
+            document.getElementById('statHours').textContent = totalHours.toFixed(1);
+            document.getElementById('statQuestions').textContent = totalQuestions;
+
+            document.getElementById('totalHoursStats').textContent = totalHours.toFixed(1);
+            document.getElementById('totalQuestionsStats').textContent = totalQuestions;
+            document.getElementById('accuracyStats').textContent = totalQuestions > 0 ? accuracy + '%' : '--%';
+            document.getElementById('maxStreakStats').textContent = state.maxStreak;
+            document.getElementById('studyDaysStats').textContent = state.studyLogs.length;
+
+            // Today's summary
+            const today = new Date().toISOString().split('T')[0];
+            const todayLog = state.studyLogs.find(l => l.date === today);
+            const summaryEl = document.getElementById('todaySummary');
+
+            if (todayLog) {
+                summaryEl.style.display = 'block';
+                document.getElementById('todayHours').textContent = todayLog.hours.toFixed(1);
+                document.getElementById('todayQuestions').textContent = todayLog.questions;
+                const todayAcc = todayLog.questions > 0
+                    ? Math.round((todayLog.correct / todayLog.questions) * 100) + '%'
+                    : '--%';
+                document.getElementById('todayAccuracy').textContent = todayAcc;
+            } else {
+                summaryEl.style.display = 'none';
+            }
+        }
+
+        // History
+        function renderHistory() {
+            const container = document.getElementById('historyList');
+            const logs = [...state.studyLogs].reverse().slice(0, 10);
+
+            if (logs.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-label); padding:1rem; font-size:0.85rem;">No study logs yet. Start logging!</p>';
+                return;
+            }
+
+            container.innerHTML = logs.map(log => {
+                const date = new Date(log.date);
+                const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                const acc = log.questions > 0 ? Math.round((log.correct / log.questions) * 100) : 0;
+
+                return `
+                    <div class="history-item">
+                        <div class="history-date">${dateStr}</div>
+                        <div class="history-stats">
+                            <span>⏱️ ${log.hours}h</span>
+                            <span>📝 ${log.questions}q</span>
+                            ${log.questions > 0 ? `<span>✅ ${acc}%</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Milestones
+        function openMilestoneModal() {
+            document.getElementById('milestoneModal').classList.add('active');
+            document.getElementById('milestoneNameInput').focus();
+        }
+
+        function closeMilestoneModal() {
+            document.getElementById('milestoneModal').classList.remove('active');
+            document.getElementById('milestoneNameInput').value = '';
+            document.getElementById('milestoneDateInput').value = '';
+        }
+
+        function addMilestone() {
+            const name = document.getElementById('milestoneNameInput').value.trim();
+            const date = document.getElementById('milestoneDateInput').value;
+
+            if (!name || !date) {
+                showToast('Please fill all fields');
+                return;
+            }
+
+            state.milestones.push({
+                id: Date.now(),
+                name,
+                date,
+                achieved: false
+            });
+
+            saveState();
+            renderMilestones();
+            closeMilestoneModal();
+            showToast('Milestone added! 🎯');
+        }
+
+        function renderMilestones() {
+            const container = document.getElementById('milestonesList');
+            const milestones = state.milestones.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if (milestones.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-label); padding:1rem; font-size:0.85rem;">Add milestones to track your goals!</p>';
+                return;
+            }
+
+            container.innerHTML = milestones.map(m => {
+                const date = new Date(m.date);
+                const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const isPast = date < new Date();
+
+                return `
+                    <div class="milestone-item ${m.achieved ? 'achieved' : ''}">
+                        <div class="milestone-icon" onclick="toggleMilestone(${m.id})">
+                            ${m.achieved ? '✓' : (isPast ? '⚠️' : '🎯')}
+                        </div>
+                        <div class="milestone-content">
+                            <div class="milestone-name">${m.name}</div>
+                            <div class="milestone-date">${dateStr}</div>
+                        </div>
+                        <button class="milestone-delete" onclick="deleteMilestone(${m.id})">✕</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleMilestone(id) {
+            const milestone = state.milestones.find(m => m.id === id);
+            if (milestone) {
+                milestone.achieved = !milestone.achieved;
+                saveState();
+                renderMilestones();
+                showToast(milestone.achieved ? 'Milestone achieved! 🎉' : 'Milestone unmarked');
+            }
+        }
+
+        function deleteMilestone(id) {
+            state.milestones = state.milestones.filter(m => m.id !== id);
+            saveState();
+            renderMilestones();
+        }
+
+        // Export/Import
+        function exportData() {
+            const data = JSON.stringify(state, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cfa_l2_tracker_backup.json';
+            a.click();
+            showToast('Data exported! 💾');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = event => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        state = { ...state, ...imported };
+                        saveState();
+                        init();
+                        showToast('Data imported! ✅');
+                    } catch {
+                        showToast('Invalid file format');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function resetAll() {
+            if (confirm('Are you sure? This will delete ALL your progress!')) {
+                localStorage.removeItem(STORAGE_KEY);
+                state = {
+                    completedReadings: [],
+                    studyLogs: [],
+                    milestones: [],
+                    streak: 0,
+                    maxStreak: 0,
+                    lastStudyDate: null
+                };
+                init();
+                showToast('Progress reset');
+            }
+        }
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+
+</html>
