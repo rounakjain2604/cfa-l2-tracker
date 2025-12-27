@@ -1,0 +1,24 @@
+{
+    "name": "CFA Level 2 Tracker",
+    "short_name": "CFA L2",
+    "description": "Track your CFA Level 2 study progress",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#FFFBF9",
+    "theme_color": "#FF4B2B",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

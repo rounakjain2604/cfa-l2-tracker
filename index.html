@@ -16,8 +16,7 @@
     <meta name="theme-color" content="#FF4B2B">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="manifest"
-        href='data:application/manifest+json,{"name":"CFA Level 2 Tracker","short_name":"CFA L2","start_url":".","display":"standalone","background_color":"%23FFFBF9","theme_color":"%23FF4B2B","icons":[{"src":"logo.png","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="manifest" href="manifest.json">
 
     <!-- Fonts: Mali + Nunito -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1194,6 +1193,13 @@
                     showToast('Use Chrome/Edge → Install from address bar');
                 }
             }
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW failed', err));
         }
     </script>
 </body>
