@@ -30,6 +30,7 @@
             --bg-base: #FFFBF9;
             --bg-surface: rgba(255, 255, 255, 0.92);
             --bg-accent: #FFECE5;
+            --bg-card: #FFFFFF;
             --sunset-coral: #FF4B2B;
             --sunset-orange: #FF416C;
             --gradient-primary: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
@@ -45,6 +46,26 @@
             --radius-lg: 16px;
             --radius-md: 12px;
             --radius-sm: 8px;
+            --border-subtle: rgba(0, 0, 0, 0.04);
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-base: #0D0D0F;
+            --bg-surface: rgba(30, 30, 32, 0.95);
+            --bg-accent: #2A1A17;
+            --bg-card: #1C1C1E;
+            --text-main: #F5F5F7;
+            --text-sub: #A1A1A6;
+            --text-label: #6E6E73;
+            --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-theme="dark"] body {
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(255, 75, 43, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(255, 65, 108, 0.12) 0%, transparent 50%);
         }
 
         * {
@@ -84,6 +105,48 @@
         .header {
             text-align: center;
             padding: 1rem 0.5rem 0.75rem;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 0.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-surface);
+            color: var(--text-sub);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-accent);
+            color: var(--sunset-coral);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .theme-toggle .icon-sun,
+        [data-theme="dark"] .theme-toggle .icon-moon {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .icon-sun {
+            display: block;
+        }
+
+        .theme-toggle .icon-moon {
+            display: block;
         }
 
         .header-logo {
@@ -740,6 +803,24 @@
 <body>
     <div class="app">
         <header class="header">
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
             <div class="header-label">CFA Level II 2026</div>
             <h1>Study Tracker</h1>
         </header>
@@ -1224,6 +1305,25 @@
                 .then(reg => console.log('SW registered'))
                 .catch(err => console.log('SW failed', err));
         }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('cfa_theme', newTheme);
+        }
+
+        // Initialize theme from localStorage or system preference
+        (function initTheme() {
+            const saved = localStorage.getItem('cfa_theme');
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', saved);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
     </script>
 </body>
 
