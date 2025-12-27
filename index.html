@@ -88,11 +88,7 @@
         }
 
         .header-logo {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 0.5rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(255, 75, 43, 0.2);
+            display: none;
         }
 
         .header-label {
@@ -738,7 +734,6 @@
 <body>
     <div class="app">
         <header class="header">
-            <img src="logo.png" alt="CFA L2 Tracker" class="header-logo">
             <div class="header-label">CFA Level II 2026</div>
             <h1>Study Tracker</h1>
         </header>
@@ -835,6 +830,10 @@
         <button class="nav-item" onclick="showScreen('syllabus')" id="nav-syllabus">
             <span class="nav-item-icon">📖</span>
             <span class="nav-item-label">Syllabus</span>
+        </button>
+        <button class="nav-item" onclick="installApp()" id="nav-install">
+            <span class="nav-item-icon">📲</span>
+            <span class="nav-item-label">Install</span>
         </button>
     </nav>
 
@@ -1166,6 +1165,36 @@
         }
 
         init();
+
+        // PWA Install
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((result) => {
+                    if (result.outcome === 'accepted') {
+                        showToast('App installed! 🎉');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Show manual install instructions
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                const isAndroid = /Android/.test(navigator.userAgent);
+                if (isIOS) {
+                    showToast('Tap Share → Add to Home Screen');
+                } else if (isAndroid) {
+                    showToast('Tap ⋮ menu → Install App');
+                } else {
+                    showToast('Use Chrome/Edge → Install from address bar');
+                }
+            }
+        }
     </script>
 </body>
 
