@@ -882,15 +882,17 @@
                         <div class="svg-label bad">Curved (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Rule:</strong> Driving further should cost more.</p>
-                <p><strong>Uber Context:</strong> If 5 miles costs $10, and 10 miles costs $20, that's a straight line.
-                    That's good.</p>
-                <p><strong>The Trap:</strong> If 100 miles suddenly costs $5 because of a glitch, the relationship isn't
-                    a straight line anymore. Your simple calculator breaks.</p>
+                <p><strong>The Rule (Analogy):</strong> Driving further should cost more (Straight Line).</p>
+                <p><strong>The Bookish Definition (Formal):</strong> The relationship between the dependent variable
+                    ($Y$) and independent variables ($X_k$) is linear in the coefficients ($ \beta_k $).</p>
+                <div class="note tip" style="margin-top:8px; font-size:0.9rem;">
+                    <strong>Exam Note:</strong> "Linear in parameters" means you can't have $\beta^2$. But you CAN have
+                    $X^2$ (which is just a transformed variable).
+                </div>
             </div>
 
             <div class="card">
-                <h4>2. Homoskedasticity ("Same Scatter"): "The Economy vs. Luxury Rule"</h4>
+                <h4>2. Homoskedasticity: "The Economy vs. Luxury Rule"</h4>
                 <div class="svg-container">
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -911,15 +913,13 @@
                         <div class="svg-label bad">Wild Guessing (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Rule:</strong> The app should be equally accurate for short rides and long rides.</p>
-                <p><strong>Uber Context:</strong></p>
-                <ul>
-                    <li><strong>Good:</strong> It misses by $\pm \$1$ for a $10 ride, and misses by $\pm \$1$ for a $100
-                        ride.</li>
-                    <li><strong>Bad (Heteroskedastic):</strong> It misses by $\$1$ for short rides, but for a Long
-                        Airport Trip ($100), it might guess $50 or $150. The error "fans out." You can't trust it for
-                        big trips.</li>
-                </ul>
+                <p><strong>The Rule (Analogy):</strong> Reliable accuracy for both short and long rides.</p>
+                <p><strong>The Bookish Definition (Formal):</strong> The variance of the error term ($\varepsilon$) is
+                    constant for all observations. $\text{Var}(\varepsilon_i) = \sigma^2$.</p>
+                <div class="note tip" style="margin-top:8px; font-size:0.9rem;">
+                    <strong>Exam Translaction:</strong> "Homoskedastic" = Equal Variance. "Heteroskedastic" = Different
+                    Variance (Bad).
+                </div>
             </div>
 
             <div class="card">
@@ -945,9 +945,13 @@
                         <div class="svg-label bad">Pattern (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Rule:</strong> Overcharging one customer shouldn't make you overcharge the next one.</p>
-                <p><strong>Uber Context:</strong> If the app accidentally charges Rider A too much, it shouldn't "learn"
-                    from that and charge Rider B too much as well. Each mistake must be a one-off accident.</p>
+                <p><strong>The Rule (Analogy):</strong> One bad trip shouldn't effectively guarantee the next one is bad
+                    too.</p>
+                <p><strong>The Bookish Definition (Formal):</strong> The error term $\varepsilon_i$ is uncorrelated
+                    across observations. $E[\varepsilon_i \varepsilon_j] = 0$ for $i \neq j$.</p>
+                <div class="note tip" style="margin-top:8px; font-size:0.9rem;">
+                    <strong>Exam Synonym:</strong> "No Serial Correlation" or "No Autocorrelation".
+                </div>
             </div>
 
             <div class="card">
@@ -969,10 +973,14 @@
                         <div class="svg-label bad">Disasters (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Rule:</strong> Most mistakes should be tiny. Huge mistakes should be basically
-                    impossible.</p>
-                <p><strong>Uber Context:</strong> It's okay if the app is off by few cents often. But if once a week it
-                    charges someone <strong>$10,000</strong> for a $10 ride, your model is broken ("Fat Tails").</p>
+                <p><strong>The Rule (Analogy):</strong> Most errors are small; huge pricing anomalies are impossible.
+                </p>
+                <p><strong>The Bookish Definition (Formal):</strong> The error term $\varepsilon$ is normally
+                    distributed with a mean of zero. $\varepsilon \sim N(0, \sigma^2)$.</p>
+                <div class="note tip" style="margin-top:8px; font-size:0.9rem;">
+                    <strong>Exam Note:</strong> This is critical for <strong>T-Tests</strong> to work. If errors aren't
+                    normal, your T-stats are fake news.
+                </div>
             </div>
 
             <div class="card">
@@ -995,11 +1003,13 @@
                         <div class="svg-label bad">Redundant (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Rule:</strong> Don't use the same input twice with different names.</p>
-                <p><strong>Uber Context:</strong> You calculate price using <strong>Distance in Miles</strong>. You
-                    cannot ALSO add <strong>Distance in Kilometers</strong> as a second input.</p>
-                <p>Why? Because if distance doubles, the computer won't know if it should credit the "Miles" input or
-                    the "Km" input. It gets confused and the math blows up.</p>
+                <p><strong>The Rule (Analogy):</strong> Do not use two inputs that measure the same thing.</p>
+                <p><strong>The Bookish Definition (Formal):</strong> No independent variable is a perfect linear
+                    combination of other independent variables.</p>
+                <div class="note tip" style="margin-top:8px; font-size:0.9rem;">
+                    <strong>Exam Result:</strong> If you violate this, your coefficient standard errors will be
+                    <strong>Inflated</strong> (Too High), making T-stats <strong>Too Low</strong> (Insignificant).
+                </div>
             </div>
             <div class="note warn">
                 <div class="note-title">⚠️ Important</div>
