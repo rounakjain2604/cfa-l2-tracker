@@ -2502,6 +2502,16 @@
         const PLAN_START = new Date('2025-12-28');
         const STORAGE_KEY = 'cfa_l2_tracker_v7';
 
+        // Exam countdown milestones
+        const MILESTONES = [
+            { days: 146, emoji: '🚀', message: "The journey begins! You've got 146 days to master the curriculum. Start strong!" },
+            { days: 100, emoji: '💯', message: "100 days to go! You're well into your prep. Keep the momentum going!" },
+            { days: 60, emoji: '📈', message: "60 days left! Time to intensify. Focus on practice problems." },
+            { days: 30, emoji: '🎯', message: "30 days! Final stretch. Review weak areas and do mock exams." },
+            { days: 14, emoji: '⚡', message: "2 weeks! Light review only. Trust your preparation. You're ready!" },
+            { days: 7, emoji: '🌟', message: "1 week to go! Rest well, eat healthy, stay confident. You've got this!" }
+        ];
+
         let state = {
             completedLMs: [],
             completedDays: [], // Array of date strings 'YYYY-MM-DD'
@@ -3473,16 +3483,6 @@
             closeNotes();
             renderSyllabus(); // Refresh to show notes icon
         }
-
-        // ========== EXAM COUNTDOWN MILESTONES ==========
-        const MILESTONES = [
-            { days: 146, emoji: '🚀', message: "The journey begins! You've got 146 days to master the curriculum. Start strong!" },
-            { days: 100, emoji: '💯', message: "100 days to go! You're well into your prep. Keep the momentum going!" },
-            { days: 60, emoji: '📈', message: "60 days left! Time to intensify. Focus on practice problems." },
-            { days: 30, emoji: '🎯', message: "30 days! Final stretch. Review weak areas and do mock exams." },
-            { days: 14, emoji: '⚡', message: "2 weeks! Light review only. Trust your preparation. You're ready!" },
-            { days: 7, emoji: '🌟', message: "1 week to go! Rest well, eat healthy, stay confident. You've got this!" }
-        ];
 
         function checkMilestones() {
             const today = new Date();
