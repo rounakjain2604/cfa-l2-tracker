@@ -593,25 +593,73 @@
             <p>It lets us answer specific questions like: <em>"If inflation goes up by 1%, but GDP stays flat, what
                     happens to my portfolio?"</em> A simple model couldn't tell you that because it can't separate
                 Inflation from GDP.</p>
-            <h3>The Regression Process</h3>
+            <h3>The Regression Process: A "Chef's Workflow"</h3>
+            <div class="note info">
+                <div class="note-title">👨‍🍳 Analogy: Cooking a Michelin Goal</div>
+                <p>Running a regression is like cooking a high-stakes meal. You have a process you must follow:</p>
+            </div>
+
             <div class="flow-diagram">
-                <div class="flow-step"><span class="flow-num">1</span><span class="flow-text">Is $Y$ continuous? → If
-                        no, use <strong>Logistic Regression</strong></span></div>
-                <div class="flow-step"><span class="flow-num">2</span><span class="flow-text">Specify the model (choose
-                        $Y$ and $X$s)</span></div>
-                <div class="flow-step"><span class="flow-num">3</span><span class="flow-text">Estimate using software
-                        (Excel, Python, R)</span></div>
-                <div class="flow-step"><span class="flow-num">4</span><span class="flow-text">Check assumptions
-                        (residual plots)</span></div>
-                <div class="flow-step"><span class="flow-num">5</span><span class="flow-text">Evaluate fit (Is $F$-stat
-                        significant?)</span></div>
-                <div class="flow-step"><span class="flow-num">6</span><span class="flow-text">If OK → Use for
-                        prediction/analysis</span></div>
+                <div class="flow-step">
+                    <span class="flow-num">1</span>
+                    <div class="flow-text">
+                        <strong>Check Ingredients (Continuous Y?)</strong>
+                        <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--ink-light);">You can't make a soup
+                            with a rock. Your target ($Y$) must be a number that moves (Example: Returns), not a binary
+                            "Yes/No". If it's binary, stop. Use Logistic Regression.</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-num">2</span>
+                    <div class="flow-text">
+                        <strong>Write the Recipe (Specify Model)</strong>
+                        <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--ink-light);">Decide what inputs
+                            ($X$s) belong in the pot. Inflation? GDP? P/E? (Don't just throw in everything; that's
+                            "Kitchen Sink" regression, and it tastes bad).</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-num">3</span>
+                    <div class="flow-text">
+                        <strong>Let the Oven Work (Estimate)</strong>
+                        <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--ink-light);">Feed data into software
+                            (Excel/Python). It finds the line of best fit that minimizes mistakes (SSE).</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-num">4</span>
+                    <div class="flow-text">
+                        <strong>Taste Test (Check Assumptions)</strong>
+                        <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--ink-light);"><strong>CRITICAL
+                                STEP.</strong> Check the residuals. Is there a weird aftertaste? (Serial correlation?).
+                            Is the texture uneven? (Heteroskedasticity?). If yes, fix it before serving.</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-num">5</span>
+                    <div class="flow-text">
+                        <strong>Critic Review (Hypothesis Testing)</strong>
+                        <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--ink-light);">Does the meal actually
+                            taste like anything? (Is $F$-stat significant?). Does the salt matter? (Is $t$-stat
+                            significant?).</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-num">6</span>
+                    <div class="flow-text">
+                        <strong>Serve (Prediction)</strong>
+                        <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--ink-light);">Only if Step 4 & 5 pass,
+                            use the model to predict the future.</p>
+                    </div>
+                </div>
             </div>
 
             <div class="trap">
-                If the dependent variable is <strong>binary</strong> (0/1, Yes/No, Bankrupt/Not), you CANNOT use linear
-                regression. Use <strong>Logistic Regression</strong> instead.
+                <strong>⚠️ MAJOR EXAM TRAP</strong><br>
+                Never use Linear Regression for a <strong>Binary Dependent Variable</strong> (e.g., Will the company
+                default? Yes/No).
+                <br>This violates the assumption that $Y$ is continuous. You must answer "Logistic Regression" or
+                "Probit/Logit" for these cases.
             </div>
         </section>
 
