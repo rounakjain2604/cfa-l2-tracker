@@ -9,7 +9,7 @@
         href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 
-    <!-- KaTeX for better formula rendering -->
+    <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
@@ -46,8 +46,7 @@
         body {
             font-family: 'Mali', cursive;
             background-color: var(--bg);
-            background-image:
-                linear-gradient(rgba(13, 13, 13, 0.03) 1px, transparent 1px),
+            background-image: linear-gradient(rgba(13, 13, 13, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(13, 13, 13, 0.03) 1px, transparent 1px);
             background-size: 20px 20px;
             color: var(--ink);
@@ -127,7 +126,6 @@
 
         .section.active {
             display: block;
-            opacity: 1;
         }
 
         h2 {
@@ -205,7 +203,6 @@
             margin: 14px 0;
             text-align: center;
             overflow-x: auto;
-            max-width: 100%;
         }
 
         .formula-box .label {
@@ -230,7 +227,6 @@
             margin-top: 8px;
         }
 
-        /* Compact Tables */
         .table-wrap {
             width: 100%;
             margin: 12px 0;
@@ -393,43 +389,19 @@
             margin-bottom: 4px;
         }
 
-        .flow-diagram {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            margin: 14px 0;
+        blockquote {
+            background: #F5F5F5;
+            border-left: 3px solid var(--accent);
+            padding: 10px 14px;
+            margin: 12px 0;
+            font-style: italic;
+            font-size: 0.9rem;
         }
 
-        .flow-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--border);
-        }
-
-        .flow-step:last-child {
-            border-bottom: none;
-        }
-
-        .flow-num {
-            background: var(--accent);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .flow-text {
-            flex: 1;
-            font-size: 0.85rem;
+        hr {
+            border: none;
+            border-top: 1px dashed var(--border);
+            margin: 16px 0;
         }
 
         .footer-spacer {
@@ -447,12 +419,12 @@
 
     <nav class="nav-pills">
         <button class="nav-pill active" data-section="overview">Overview</button>
-        <button class="nav-pill" data-section="rsquared">R² & Adj R²</button>
-        <button class="nav-pill" data-section="aicbic">AIC & BIC</button>
-        <button class="nav-pill" data-section="anova">ANOVA</button>
-        <button class="nav-pill" data-section="coefficients">Coefficients</button>
-        <button class="nav-pill" data-section="intervals">Intervals</button>
-        <button class="nav-pill" data-section="traps">Exam Traps</button>
+        <button class="nav-pill" data-section="intuition">Step 1: Intuition</button>
+        <button class="nav-pill" data-section="concepts">Step 2: Concepts</button>
+        <button class="nav-pill" data-section="formulas">Step 3: Formulas</button>
+        <button class="nav-pill" data-section="exhibits">Step 4: Exhibits</button>
+        <button class="nav-pill" data-section="exam">Step 5: Exam</button>
+        <button class="nav-pill" data-section="practice">Practice</button>
     </nav>
 
     <main class="content">
@@ -461,194 +433,884 @@
         <section class="section active" id="overview">
             <h2>📌 Module Overview</h2>
 
-            <div class="note info">
-                <div class="note-title">🎯 Learning Outcome Statement (LOS)</div>
-                <p><strong>Evaluate</strong> how well a multiple regression model explains the dependent variable by
-                    analyzing ANOVA table results and measures of goodness of fit.</p>
-            </div>
+            <p>This module covers how to evaluate whether a multiple regression model adequately explains the dependent
+                variable and how to interpret model outputs for exam and professional applications.</p>
 
-            <h3>The Core Problem</h3>
-            <p>In multiple regression, <span class="hl">R² always increases</span> when you add variables — even useless
-                ones! This creates a dangerous trap called <strong>overfitting</strong>.</p>
-
-            <div class="note warn">
-                <div class="note-title">⚠️ Overfitting Defined (CFAI)</div>
-                <p>"Overfitting is a situation in which the model is too complex, meaning there may be <span
-                        class="hl-pink">too many independent variables relative to the number of observations</span>. A
-                    result is that the coefficients may not represent true relationships with the dependent variable."
-                </p>
-            </div>
-
-            <h3>What You'll Learn</h3>
+            <h3>Key Learning Outcomes Covered:</h3>
             <ul>
-                <li><strong>R² vs Adjusted R²</strong> — Why plain R² is problematic</li>
-                <li><strong>The |t| > 1 Rule</strong> — When adding variables helps</li>
-                <li><strong>AIC & BIC</strong> — Model selection criteria</li>
-                <li><strong>ANOVA & F-test</strong> — Overall model significance</li>
-                <li><strong>Prediction vs Confidence Intervals</strong> — Critical distinction</li>
+                <li><strong>LOS 2.02: Goodness of Fit</strong> (R², Adjusted R², AIC, BIC)</li>
+                <li>Hypothesis testing of coefficients (t-tests)</li>
+                <li>Joint F-tests and General Linear F-tests</li>
+                <li>Prediction and confidence intervals in multiple regression</li>
             </ul>
 
-            <div class="comparison-grid">
-                <div class="comparison-card">
-                    <h4>📉 Simple Regression</h4>
-                    <p>• R² is adequate for fit</p>
-                    <p>• Only one independent variable</p>
-                    <p>• No overfitting concern</p>
-                </div>
-                <div class="comparison-card">
-                    <h4>📊 Multiple Regression</h4>
-                    <p>• R² alone is <span class="hl-pink">problematic</span></p>
-                    <p>• Need Adjusted R², AIC, BIC</p>
-                    <p>• Must penalize complexity</p>
-                </div>
+            <div class="note info">
+                <div class="note-title">🎯 Learning Outcome Statement</div>
+                <p><em>"The candidate should be able to <strong>evaluate</strong> how well a multiple regression model
+                        explains the dependent variable by analyzing ANOVA table results and measures of goodness of
+                        fit."</em></p>
             </div>
         </section>
 
-        <!-- R-SQUARED -->
-        <section class="section" id="rsquared">
-            <h2>📈 R² and Adjusted R²</h2>
+        <!-- STEP 1: INTUITION -->
+        <section class="section" id="intuition">
+            <h2>🧠 STEP 1: INTUITION FIRST</h2>
 
-            <h3>Coefficient of Determination (R²)</h3>
-            <p>R² measures the <span class="hl">proportion of total variation</span> in Y that is explained by the
-                independent variables.</p>
+            <h3>Why Does This Concept Exist?</h3>
+
+            <p>Imagine you're a portfolio manager at an Indian AMC trying to explain what drives your fund's returns.
+                You run a regression with 5 factors (say, market, size, value, momentum, quality). The model spits out
+                numbers—but how do you know if these factors actually <em>explain</em> the returns, or if you've just
+                added noise?</p>
+
+            <h3>The Core Problem:</h3>
+            <ul>
+                <li>In simple regression (1 independent variable), R² tells you what percentage of the dependent
+                    variable's variance is explained by the model.</li>
+                <li>But in multiple regression, every time you add a variable, R² will <span class="hl-pink">never
+                        decrease</span>—even if that variable is useless garbage.</li>
+                <li>This creates a dangerous trap: you could keep adding variables and R² keeps rising, fooling you into
+                    thinking you have a "better" model when you're actually <strong>overfitting</strong>.</li>
+            </ul>
+
+            <div class="note">
+                <div class="note-title">🍛 Real-World Analogy (Indian Context)</div>
+                <p>Think of it like adding masalas to a dish. Adding jeera and dhania improves taste (genuine
+                    improvement). But if you keep adding random spices just because "more spices = better," the dish
+                    becomes a confused mess. You need a metric that <span class="hl">penalizes unnecessary
+                        additions</span>.</p>
+            </div>
+
+            <h3>What This LOS Solves:</h3>
+            <ul>
+                <li><strong>Adjusted R²</strong> adjusts for the number of variables, penalizing model complexity</li>
+                <li><strong>AIC and BIC</strong> provide rigorous model comparison frameworks</li>
+                <li>We learn when to add variables and when to stop</li>
+            </ul>
+        </section>
+
+        <!-- STEP 2: CONCEPTS -->
+        <section class="section" id="concepts">
+            <h2>📚 STEP 2: CFAI CONCEPT BREAKDOWN</h2>
+
+            <h3>2.1 Coefficient of Determination (R²) in Multiple Regression</h3>
+
+            <blockquote>
+                <strong>CFAI Definition:</strong> R² is the ratio of the variation of the dependent variable explained
+                by the independent variables (Sum of Squares Regression, SSR) to the total variation of the dependent
+                variable (Sum of Squares Total, SST).
+            </blockquote>
 
             <div class="formula-box">
                 <div class="label">R-Squared Formula</div>
-                <div class="formula">$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$</div>
-                <div class="desc">SSR = Explained | SSE = Unexplained | SST = Total = SSR + SSE</div>
+                <div class="formula">$$R^2 = \frac{SSR}{SST} = \frac{\sum(\hat{Y}_i - \bar{Y})^2}{\sum(Y_i -
+                    \bar{Y})^2}$$</div>
+            </div>
+
+            <div class="formula-box">
+                <div class="label">Alternative Expression</div>
+                <div class="formula">$$R^2 = 1 - \frac{SSE}{SST}$$</div>
+            </div>
+
+            <div class="card">
+                <h4>Variable Definitions:</h4>
+                <ul>
+                    <li><strong>n</strong> = Number of observations</li>
+                    <li><strong>Yᵢ</strong> = Actual observed value of dependent variable</li>
+                    <li><strong>Ŷᵢ</strong> = Predicted value from regression model</li>
+                    <li><strong>Ȳ</strong> = Mean of the dependent variable</li>
+                    <li><strong>SSR</strong> = Sum of Squares Regression (explained variation)</li>
+                    <li><strong>SSE</strong> = Sum of Squares Error/Residual (unexplained variation)</li>
+                    <li><strong>SST</strong> = Sum of Squares Total = SSR + SSE</li>
+                </ul>
+                <p><strong>Interpretation:</strong> R² = 0.62 means 62% of the variation in Y is explained by the
+                    independent variables in the model.</p>
+            </div>
+
+            <hr>
+
+            <h3>2.2 The Fatal Flaw of R² in Multiple Regression</h3>
+
+            <p><strong>CFAI explicitly states three problems with R² in multiple regression:</strong></p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Problem</th>
+                            <th>Explanation</th>
+                            <th>Exam Trap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. Cannot tell if coefficients are significant</strong></td>
+                            <td>High R² doesn't mean β coefficients are statistically ≠ zero</td>
+                            <td>Don't confuse model fit with coefficient significance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. Cannot detect biased coefficients</strong></td>
+                            <td>Model can have high R² but produce biased forecasts</td>
+                            <td>Residual analysis still required</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. Cannot distinguish good vs bad models</strong></td>
+                            <td>Good models may have low R²; overfitted models have high R²</td>
+                            <td>High R² ≠ Good Model</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note warn">
+                <div class="note-title">Overfitting Defined (CFAI)</div>
+                <p><em>"Overfitting is a situation in which the model is too complex, meaning there may be <span
+                            class="hl-pink">too many independent variables relative to the number of
+                            observations</span>. A result is that the coefficients may not represent true relationships
+                        with the dependent variable."</em></p>
             </div>
 
             <div class="trap">
-                <strong>3 Fatal Flaws of R² in Multiple Regression:</strong>
-                <ol>
-                    <li>Cannot tell if coefficients are <strong>statistically significant</strong></li>
-                    <li>Cannot detect <strong>biased</strong> coefficients or predictions</li>
-                    <li>Cannot distinguish <strong>good vs bad models</strong> (high R² may = overfitting)</li>
-                </ol>
+                When you see a model with many variables and high R², immediately suspect overfitting. CFAI loves
+                testing this concept.
             </div>
 
-            <h3>Adjusted R² — The Fix</h3>
-            <p>Adjusted R² <span class="hl-purple">penalizes</span> adding variables that don't improve the model. It
-                only increases if the new variable adds genuine explanatory power.</p>
+            <hr>
+
+            <h3>2.3 Adjusted R² (R̄²)</h3>
+
+            <blockquote>
+                <strong>CFAI Definition:</strong> "An alternative measure of goodness of fit that does not automatically
+                increase when another independent variable is added. It adjusts for degrees of freedom by incorporating
+                the number of independent variables."
+            </blockquote>
 
             <div class="formula-box">
-                <div class="label">Adjusted R-Squared</div>
-                <div class="formula">$$\bar{R}^2 = 1 - \left[\frac{n-1}{n-k-1}\right] \times (1 - R^2)$$</div>
-                <div class="desc">n = observations | k = independent variables (excl. intercept)</div>
+                <div class="label">Adjusted R-Squared (Primary Form)</div>
+                <div class="formula">$$\bar{R}^2 = 1 - \left[\frac{n - 1}{n - k - 1}\right] \times (1 - R^2)$$</div>
+                <div class="desc">n = observations | k = independent variables (excluding intercept)</div>
             </div>
+
+            <hr>
+
+            <h3>2.4 Key Properties of Adjusted R²</h3>
 
             <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
                             <th>Property</th>
-                            <th>R²</th>
-                            <th>Adjusted R²</th>
+                            <th>Explanation</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Minimum value</td>
-                            <td>0</td>
-                            <td>Can be negative</td>
+                            <td><strong>Always ≤ R²</strong></td>
+                            <td>When k ≥ 1, adjusted R² is strictly less than R²</td>
                         </tr>
                         <tr>
-                            <td>When variable added</td>
-                            <td>Always ≥</td>
-                            <td>May ↑ or ↓</td>
+                            <td><strong>Can be negative</strong></td>
+                            <td>Unlike R² (minimum = 0), adjusted R² can go below zero</td>
                         </tr>
                         <tr>
-                            <td>Threshold for ↑</td>
-                            <td>Any variable</td>
-                            <td>|t| > 1.0</td>
+                            <td><strong>Increases with "good" variables</strong></td>
+                            <td>If added variable's |t-statistic| > 1.0</td>
                         </tr>
                         <tr>
-                            <td>Penalizes complexity?</td>
-                            <td>No</td>
-                            <td>Yes</td>
+                            <td><strong>Decreases with "bad" variables</strong></td>
+                            <td>If added variable's |t-statistic| < 1.0</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="key-point">
-                <strong>The |t| > 1 Rule (CRITICAL FOR EXAM):</strong>
+                <strong>Critical Insight (Exam Favorite):</strong>
+                <p>The threshold of <span class="hl">|t-statistic| = 1.0</span> is <strong>NOT</strong> the same as
+                    statistical significance!</p>
                 <ul>
-                    <li>If added variable's <span class="hl">|t-statistic| > 1.0</span> → Adjusted R²
-                        <strong>increases</strong></li>
-                    <li>If added variable's |t-statistic| < 1.0 → Adjusted R² <strong>decreases</strong></li>
+                    <li>At 5% significance with ~50 observations, critical t ≈ 2.0</li>
+                    <li>So a variable with |t| = 1.2 will <em>increase</em> adjusted R² but is still <em>not
+                            statistically significant</em></li>
+                    <li><em>"Adjusted R² does not set a very high bar for the statistic to increase"</em> — CFAI</li>
                 </ul>
-                <p style="margin-top:8px;"><em>⚠️ Warning: |t| = 1.0 is NOT statistical significance! Significance needs
-                        |t| ≈ 2.0</em></p>
             </div>
 
-            <div class="example">
-                <div class="example-title">📝 Example: CAPEX Model</div>
-                <p><strong>Model 1:</strong> ROA ~ CAPEX only → R² = 0.880, Adj R² = 0.875</p>
-                <p><strong>Model 2:</strong> ROA ~ CAPEX + ADV → R² = 0.881, Adj R² = 0.870</p>
-                <p>ADV coefficient: t-stat = −0.332</p>
-                <hr style="border-top:1px dashed var(--border);margin:10px 0;">
-                <p><strong>Analysis:</strong></p>
-                <ul>
-                    <li>R² increased (0.880 → 0.881) — expected, R² never decreases</li>
-                    <li>Adj R² <span class="hl-pink">decreased</span> (0.875 → 0.870)</li>
-                    <li>|t-stat| = 0.332 < 1.0 → Variable hurts model</li>
-                </ul>
-                <p><strong>Conclusion:</strong> Do NOT add ADV. Stick with Model 1.</p>
+            <div class="note info">
+                <div class="note-title">Exam Checkpoint ✓</div>
+                <p><strong>Q:</strong> If adding a variable increases adjusted R², is that variable definitely
+                    significant?</p>
+                <p><strong>A:</strong> <span class="hl-pink">NO!</span> The bar for increasing adjusted R² (|t| > 1.0)
+                    is lower than typical significance thresholds (|t| > ~2.0).</p>
             </div>
-        </section>
 
-        <!-- AIC & BIC -->
-        <section class="section" id="aicbic">
-            <h2>⚖️ AIC & BIC Model Selection</h2>
+            <hr>
 
-            <p>When adjusted R² is not enough, use <span class="hl-purple">information criteria</span> to select the
-                best model from a set of candidates.</p>
+            <h3>2.5 Akaike's Information Criterion (AIC)</h3>
+
+            <blockquote>
+                <strong>CFAI Definition:</strong> "A measure to evaluate a collection of models that explain the same
+                dependent variable. AIC is a measure of model parsimony, so a <strong>lower AIC indicates a
+                    better-fitting model</strong>."
+            </blockquote>
 
             <div class="formula-box">
-                <div class="label">Akaike's Information Criterion (AIC)</div>
+                <div class="label">AIC Formula</div>
                 <div class="formula">$$AIC = n \times \ln\left(\frac{SSE}{n}\right) + 2(k + 1)$$</div>
-                <div class="desc">Penalty: 2(k+1) — Lighter | LOWER = BETTER | Preferred for <span
+                <div class="desc">2(k+1) = Penalty term for complexity | LOWER = BETTER | Preferred for <span
                         class="hl-green">PREDICTION</span></div>
             </div>
 
+            <hr>
+
+            <h3>2.6 Schwarz's Bayesian Information Criterion (BIC/SBC)</h3>
+
             <div class="formula-box">
-                <div class="label">Bayesian Information Criterion (BIC)</div>
+                <div class="label">BIC Formula</div>
                 <div class="formula">$$BIC = n \times \ln\left(\frac{SSE}{n}\right) + \ln(n) \times (k + 1)$$</div>
-                <div class="desc">Penalty: ln(n)(k+1) — Heavier | LOWER = BETTER | Preferred for <span
+                <div class="desc">ln(n)(k+1) = Heavier penalty | LOWER = BETTER | Preferred for <span
                         class="hl-blue">PARSIMONY</span></div>
             </div>
+
+            <p><strong>Key Points:</strong></p>
+            <ul>
+                <li>BIC applies a <strong>heavier penalty</strong> than AIC because ln(n) > 2 for n > 7</li>
+                <li>BIC tends to select smaller, simpler models than AIC</li>
+            </ul>
+
+            <hr>
+
+            <h3>2.7 AIC vs. BIC Decision Framework</h3>
 
             <div class="comparison-grid">
                 <div class="comparison-card">
                     <h4>🎯 AIC</h4>
-                    <p>• Lighter penalty: 2(k+1)</p>
-                    <p>• Best for <span class="hl-green">PREDICTION</span></p>
+                    <p>• Penalty: 2(k+1) — <strong>Lighter</strong></p>
+                    <p>• Preferred for <span class="hl-green">PREDICTION</span></p>
                     <p>• Tends to select larger models</p>
-                    <p>• Memory: <strong>A</strong>IC = <strong>A</strong>ccurate Prediction</p>
+                    <p>• Memory: <strong>A</strong>IC = <strong>A</strong>ccurate <strong>P</strong>rediction</p>
                 </div>
                 <div class="comparison-card">
                     <h4>⚖️ BIC</h4>
-                    <p>• Heavier penalty: ln(n)(k+1)</p>
-                    <p>• Best for <span class="hl-blue">GOODNESS OF FIT</span></p>
+                    <p>• Penalty: ln(n)(k+1) — <strong>Heavier</strong></p>
+                    <p>• Preferred for <span class="hl-blue">GOODNESS OF FIT</span></p>
                     <p>• Tends to select smaller models</p>
                     <p>• Memory: <strong>B</strong>IC = <strong>B</strong>est fit / <strong>B</strong>asic</p>
                 </div>
             </div>
 
             <div class="trap">
-                <strong>AIC/BIC Values Alone Are Meaningless!</strong>
-                <p>Only <span class="hl">relative values</span> matter. You can ONLY compare models with the
-                    <strong>same dependent variable</strong>.</p>
+                <strong>Critical Rule:</strong> "The value of these measures considered alone is meaningless; the <span
+                    class="hl">relative values</span> of AIC or BIC among a set of models is what really matters." You
+                can ONLY compare models with the <strong>same dependent variable</strong>.
+            </div>
+        </section>
+
+        <!-- STEP 3: FORMULAS -->
+        <section class="section" id="formulas">
+            <h2>📐 STEP 3: FORMULAS AND MECHANICS</h2>
+
+            <h3>Summary Formula Card</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Formula</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>R²</strong></td>
+                            <td>$\frac{SSR}{SST} = 1 - \frac{SSE}{SST}$</td>
+                            <td>Basic fit (problematic in multiple regression)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adj R²</strong></td>
+                            <td>$1 - \left[\frac{n-1}{n-k-1}\right](1 - R^2)$</td>
+                            <td>Penalized model fit</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AIC</strong></td>
+                            <td>$n \ln(SSE/n) + 2(k+1)$</td>
+                            <td>Model selection for prediction</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BIC</strong></td>
+                            <td>$n \ln(SSE/n) + \ln(n)(k+1)$</td>
+                            <td>Model selection for parsimony</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Computing Adjusted R² from ANOVA Table</h3>
+
+            <p>Given ANOVA output with:</p>
+            <ul>
+                <li>SSR (Sum of Squares Regression)</li>
+                <li>SSE (Sum of Squares Error/Residual)</li>
+                <li>SST (Sum of Squares Total) = SSR + SSE</li>
+                <li>n (observations)</li>
+                <li>k (independent variables)</li>
+            </ul>
+
+            <div class="card">
+                <h4>Step 1: Calculate R²</h4>
+                <p>$$R^2 = \frac{SSR}{SST}$$</p>
+
+                <h4>Step 2: Calculate Adjusted R²</h4>
+                <p>$$\bar{R}^2 = 1 - \left[\frac{n-1}{n-k-1}\right] \times (1 - R^2)$$</p>
+            </div>
+        </section>
+
+        <!-- STEP 4: EXHIBITS -->
+        <section class="section" id="exhibits">
+            <h2>📋 STEP 4: EXHIBITS AND EXAMPLES</h2>
+
+            <h3>Exhibit 1: Portfolio Regression on Five Factors (CFAI)</h3>
+
+            <div class="card">
+                <h4>Regression Output:</h4>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Statistic</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Multiple R</td>
+                                <td>0.7845</td>
+                            </tr>
+                            <tr>
+                                <td>R-Squared</td>
+                                <td>0.6155</td>
+                            </tr>
+                            <tr>
+                                <td>Adjusted R-Squared</td>
+                                <td>0.5718</td>
+                            </tr>
+                            <tr>
+                                <td>Standard Error</td>
+                                <td>0.0113</td>
+                            </tr>
+                            <tr>
+                                <td>Observations</td>
+                                <td>50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>ANOVA Table:</h4>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th>df</th>
+                                <th>SS</th>
+                                <th>MS</th>
+                                <th>F</th>
+                                <th>p-value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Regression</td>
+                                <td>5</td>
+                                <td>90.6234</td>
+                                <td>18.1247</td>
+                                <td>14.0853</td>
+                                <td>
+                                    <0.0000< /td>
+                            </tr>
+                            <tr>
+                                <td>Residual</td>
+                                <td>44</td>
+                                <td>56.6182</td>
+                                <td>1.2868</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td>49</td>
+                                <td>147.2416</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Coefficient Table:</h4>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Coef</th>
+                                <th>Std Error</th>
+                                <th>t-Stat</th>
+                                <th>P-value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Intercept</td>
+                                <td>−2.1876</td>
+                                <td>0.1767</td>
+                                <td>−12.38</td>
+                                <td>0.0000</td>
+                            </tr>
+                            <tr>
+                                <td>Factor 1</td>
+                                <td>1.5992</td>
+                                <td>0.2168</td>
+                                <td><strong>7.38</strong></td>
+                                <td>0.0000</td>
+                            </tr>
+                            <tr>
+                                <td>Factor 2</td>
+                                <td>0.1923</td>
+                                <td>0.7406</td>
+                                <td><strong>0.26</strong></td>
+                                <td>0.7964</td>
+                            </tr>
+                            <tr>
+                                <td>Factor 3</td>
+                                <td>−0.7126</td>
+                                <td>0.5854</td>
+                                <td><strong>−1.22</strong></td>
+                                <td>0.2300</td>
+                            </tr>
+                            <tr>
+                                <td>Factor 4</td>
+                                <td>3.3376</td>
+                                <td>1.3493</td>
+                                <td><strong>2.47</strong></td>
+                                <td>0.0173</td>
+                            </tr>
+                            <tr>
+                                <td>Factor 5</td>
+                                <td>−2.6832</td>
+                                <td>8.3919</td>
+                                <td><strong>−0.32</strong></td>
+                                <td>0.7507</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Verification of R² and Adjusted R²:</h3>
+
+            <div class="example">
+                <div class="example-title">📝 Step-by-Step Calculation</div>
+                <p><strong>Step 1:</strong> R² = SSR / SST = 90.6234 / 147.2416 = <span class="hl">0.6155</span> ✓</p>
+                <p><strong>Step 2:</strong> Adj R² = 1 − [(50−1)/(50−5−1)] × (1−0.6155)</p>
+                <p>= 1 − [49/44] × 0.3845</p>
+                <p>= 1 − 1.1136 × 0.3845</p>
+                <p>= 1 − 0.4282 = <span class="hl">0.5718</span> ✓</p>
+            </div>
+
+            <h3>Factor Analysis Using |t-statistic| > 1 Rule:</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Factor Added</th>
+                            <th>|t-stat|</th>
+                            <th>|t| > 1?</th>
+                            <th>Adj R² Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Factor 1 (base)</td>
+                            <td>7.38</td>
+                            <td>Yes</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>+ Factor 2</td>
+                            <td>0.26</td>
+                            <td style="background:#FFE0E0;"><strong>No</strong></td>
+                            <td style="background:#FFE0E0;"><strong>Decreases</strong></td>
+                        </tr>
+                        <tr>
+                            <td>+ Factor 3</td>
+                            <td>1.22</td>
+                            <td>Yes</td>
+                            <td>Increases</td>
+                        </tr>
+                        <tr>
+                            <td>+ Factor 4</td>
+                            <td>2.47</td>
+                            <td>Yes</td>
+                            <td>Increases</td>
+                        </tr>
+                        <tr>
+                            <td>+ Factor 5</td>
+                            <td>0.32</td>
+                            <td style="background:#FFE0E0;"><strong>No</strong></td>
+                            <td style="background:#FFE0E0;"><strong>Decreases</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h3>Exhibit 4: Model Comparison (CFAI)</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>R²</th>
+                            <th>Adj R²</th>
+                            <th>AIC</th>
+                            <th>BIC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Factor 1 only</td>
+                            <td>0.541</td>
+                            <td>0.531</td>
+                            <td>19.08</td>
+                            <td style="background:#E8FFF0;font-weight:700;">22.90 ✓</td>
+                        </tr>
+                        <tr>
+                            <td>Factors 1+2</td>
+                            <td>0.541</td>
+                            <td>0.521</td>
+                            <td>21.08</td>
+                            <td>26.81</td>
+                        </tr>
+                        <tr>
+                            <td>Factors 1+2+3</td>
+                            <td>0.562</td>
+                            <td>0.533</td>
+                            <td>20.74</td>
+                            <td>28.39</td>
+                        </tr>
+                        <tr>
+                            <td>Factors 1-4</td>
+                            <td>0.615</td>
+                            <td>0.580</td>
+                            <td style="background:#E8FFF0;font-weight:700;">16.33 ✓</td>
+                            <td>25.89</td>
+                        </tr>
+                        <tr>
+                            <td>All 5 Factors</td>
+                            <td>0.615</td>
+                            <td>0.572</td>
+                            <td>18.22</td>
+                            <td>29.69</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h4>Key Observations (CFAI):</h4>
+                <ol>
+                    <li><strong>R² never decreases</strong> as variables are added (0.541 → 0.541 → 0.562 → 0.615 →
+                        0.615)</li>
+                    <li><strong>Adjusted R² can decrease</strong> when poor variables are added:
+                        <ul>
+                            <li>Drops when Factor 2 added (0.531 → 0.521)</li>
+                            <li>Drops when Factor 5 added (0.580 → 0.572)</li>
+                        </ul>
+                    </li>
+                    <li><strong>AIC is minimized</strong> with 4-factor model (16.33) → Best for <span
+                            class="hl-green">prediction</span></li>
+                    <li><strong>BIC is minimized</strong> with 1-factor model (22.90) → Best for <span
+                            class="hl-blue">parsimonious fit</span></li>
+                </ol>
+            </div>
+
+            <hr>
+
+            <h3>Knowledge Check 1: CAPEX Model Analysis (CFAI)</h3>
+
+            <div class="example">
+                <div class="example-title">📝 Model Comparison</div>
+                <p><strong>Model 1 (CAPEX only):</strong> R² = 0.8799, Adj R² = 0.8749 | n = 26, k = 1</p>
+                <p><strong>Model 2 (CAPEX + ADV):</strong> R² = 0.8805, Adj R² = 0.8701 | n = 26, k = 2</p>
+                <p><strong>ADV coefficient:</strong> t-statistic = −0.3320</p>
+                <hr>
+                <h4>Analysis:</h4>
+                <ol>
+                    <li>R² increased slightly: 0.8799 → 0.8805 (expected; R² never decreases)</li>
+                    <li>Adjusted R² <span class="hl-pink">decreased</span>: 0.8749 → 0.8701</li>
+                    <li>This occurred because |t-stat of ADV| = 0.3320 < 1.0</li>
+                    <li>The ADV variable does not add meaningful explanatory power</li>
+                </ol>
+                <p><strong>Conclusion:</strong> Adding ADV worsens the model. <span class="hl">Stick with Model
+                        1.</span></p>
+            </div>
+
+            <hr>
+
+            <h3>Knowledge Check 2: Model Comparison Using AIC/BIC</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Model 1 (CAPEX)</th>
+                            <th>Model 2 (CAPEX + ADV)</th>
+                            <th>Better?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>R²</td>
+                            <td>0.880</td>
+                            <td>0.881</td>
+                            <td>Model 2 (marginally)</td>
+                        </tr>
+                        <tr>
+                            <td>Adjusted R²</td>
+                            <td>0.875</td>
+                            <td>0.870</td>
+                            <td style="background:#E8FFF0;"><strong>Model 1</strong></td>
+                        </tr>
+                        <tr>
+                            <td>AIC</td>
+                            <td>23.90</td>
+                            <td>25.80</td>
+                            <td style="background:#E8FFF0;"><strong>Model 1</strong></td>
+                        </tr>
+                        <tr>
+                            <td>BIC</td>
+                            <td>26.52</td>
+                            <td>28.79</td>
+                            <td style="background:#E8FFF0;"><strong>Model 1</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note tip">
+                <div class="note-title">Interpretation</div>
+                <p>Despite R² being marginally higher for Model 2, <strong>all three penalty-adjusted metrics</strong>
+                    (Adjusted R², AIC, BIC) favor Model 1. Model 2 is penalized for adding an insignificant variable.
+                    <strong>Model 1 is the better model</strong> for both prediction and parsimony.</p>
+            </div>
+        </section>
+
+        <!-- STEP 5: EXAM -->
+        <section class="section" id="exam">
+            <h2>🎯 STEP 5: EXAM ANGLE</h2>
+
+            <h3>Frequently Tested Concepts</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>How It's Tested</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>R² vs. Adjusted R²</td>
+                            <td>"Which increases when a variable is added?" (R² always, Adj R² depends on |t|)</td>
+                        </tr>
+                        <tr>
+                            <td>|t| > 1 rule</td>
+                            <td>Given t-stats, predict adjusted R² change</td>
+                        </tr>
+                        <tr>
+                            <td>AIC vs. BIC</td>
+                            <td>"Which criterion for prediction?" (AIC)</td>
+                        </tr>
+                        <tr>
+                            <td>Overfitting</td>
+                            <td>Identifying models with too many variables relative to n</td>
+                        </tr>
+                        <tr>
+                            <td>Model selection</td>
+                            <td>Choose best model given multiple metrics</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>High-Probability Mistakes</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mistake</th>
+                            <th>Correct Understanding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Thinking high R² = good model</td>
+                            <td>High R² can indicate overfitting; check adjusted R²</td>
+                        </tr>
+                        <tr>
+                            <td>Confusing |t| > 1 with significance</td>
+                            <td>|t| > 1 increases adj R², but significance requires |t| > ~2</td>
+                        </tr>
+                        <tr>
+                            <td>Using AIC for parsimony</td>
+                            <td>AIC is for prediction; BIC is for parsimony</td>
+                        </tr>
+                        <tr>
+                            <td>Comparing AIC/BIC across different Y</td>
+                            <td>AIC/BIC only valid for models with <strong>same dependent variable</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Command Word Guide for This LOS</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Command Word</th>
+                            <th>What to Do</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Evaluate</strong></td>
+                            <td>Assess multiple metrics (R², Adj R², AIC, BIC) and synthesize conclusion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Analyze</strong></td>
+                            <td>Break down ANOVA table, compute metrics, interpret</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interpret</strong></td>
+                            <td>Explain what the number means in context</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compare</strong></td>
+                            <td>State which model is better and why (using specific metrics)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Calculate</strong></td>
+                            <td>Show formula application with numbers</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Exam Checkpoints ✓</h3>
+
+            <div class="card">
+                <p>After reading a regression output, always verify:</p>
+                <ul>
+                    <li>☐ Is R² > Adjusted R²? (Should always be true if k ≥ 1)</li>
+                    <li>☐ Are there variables with |t| < 1? (Candidates for removal)</li>
+                    <li>☐ Does adding this variable increase or decrease adjusted R²?</li>
+                    <li>☐ For model comparison: Is AIC lower (prediction) or BIC lower (parsimony)?</li>
+                    <li>☐ Are all models being compared using the <strong>same dependent variable</strong>?</li>
+                </ul>
+            </div>
+
+            <h3>Quick Reference Summary</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Key Point</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>R² in multiple regression</td>
+                            <td>Problematic—always increases with more variables</td>
+                        </tr>
+                        <tr>
+                            <td>Adjusted R²</td>
+                            <td>Penalizes for k; use |t| > 1 rule to predict changes</td>
+                        </tr>
+                        <tr>
+                            <td>|t| > 1 rule</td>
+                            <td>If added variable's |t-stat| > 1.0, adj R² increases</td>
+                        </tr>
+                        <tr>
+                            <td>Overfitting</td>
+                            <td>Too many variables relative to n; inflates R² artificially</td>
+                        </tr>
+                        <tr>
+                            <td>AIC</td>
+                            <td>Lower = better; preferred for <strong>prediction</strong></td>
+                        </tr>
+                        <tr>
+                            <td>BIC</td>
+                            <td>Lower = better; heavier penalty; preferred for <strong>parsimony</strong></td>
+                        </tr>
+                        <tr>
+                            <td>AIC vs BIC threshold</td>
+                            <td>ln(n) > 2 always (since n > 7), so BIC is always stricter</td>
+                        </tr>
+                        <tr>
+                            <td>Model comparison rule</td>
+                            <td>Only compare AIC/BIC for models with <strong>same dependent variable</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PRACTICE -->
+        <section class="section" id="practice">
+            <h2>✏️ Practice Questions</h2>
+
+            <div class="example">
+                <div class="example-title">Q1: Calculate & Interpret</div>
+                <p>You estimate a multiple regression with <strong>60 observations</strong> and <strong>4 independent
+                        variables</strong>. The ANOVA table shows: SSR = 450, SSE = 300.</p>
+                <p>Calculate R² and adjusted R², and interpret the adjusted R².</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>Step 1:</strong> SST = SSR + SSE = 450 + 300 = 750</p>
+                    <p><strong>Step 2:</strong> R² = SSR/SST = 450/750 = <span class="hl">0.60</span></p>
+                    <p><strong>Step 3:</strong> Adj R² = 1 − [(59/55) × (1 − 0.60)] = 1 − [1.0727 × 0.40] = 1 − 0.4291 =
+                        <span class="hl">0.5709</span></p>
+                    <p><strong>Interpretation:</strong> After adjusting for the four independent variables,
+                        approximately 57.1% of the variation in the dependent variable is explained by the model. The
+                        adjusted R² of 0.5709 is lower than R² of 0.60, reflecting the penalty for including 4
+                        independent variables.</p>
+                </details>
             </div>
 
             <div class="example">
-                <div class="example-title">📝 Model Selection Example</div>
+                <div class="example-title">Q2: Model Selection</div>
+                <p>A researcher tests three models for predicting stock returns:</p>
                 <div class="table-wrap">
                     <table>
                         <thead>
                             <tr>
                                 <th>Model</th>
+                                <th>Variables</th>
                                 <th>R²</th>
                                 <th>Adj R²</th>
                                 <th>AIC</th>
@@ -657,322 +1319,102 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Factor 1 only</td>
-                                <td>0.541</td>
-                                <td>0.531</td>
-                                <td>19.08</td>
-                                <td style="background:#E8FFF0;font-weight:700;">22.90 ✓</td>
+                                <td>A</td>
+                                <td>Market only</td>
+                                <td>0.42</td>
+                                <td>0.41</td>
+                                <td>125.3</td>
+                                <td>128.1</td>
                             </tr>
                             <tr>
-                                <td>Factors 1-2</td>
-                                <td>0.541</td>
-                                <td>0.521</td>
-                                <td>21.08</td>
-                                <td>26.81</td>
+                                <td>B</td>
+                                <td>Market + Size</td>
+                                <td>0.48</td>
+                                <td>0.46</td>
+                                <td>118.7</td>
+                                <td>123.8</td>
                             </tr>
                             <tr>
-                                <td>Factors 1-4</td>
-                                <td>0.615</td>
-                                <td>0.580</td>
-                                <td style="background:#E8FFF0;font-weight:700;">16.33 ✓</td>
-                                <td>25.89</td>
-                            </tr>
-                            <tr>
-                                <td>All 5 Factors</td>
-                                <td>0.615</td>
-                                <td>0.572</td>
-                                <td>18.22</td>
-                                <td>29.69</td>
+                                <td>C</td>
+                                <td>Market + Size + Value + Mom</td>
+                                <td>0.51</td>
+                                <td>0.45</td>
+                                <td>120.2</td>
+                                <td>130.5</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <p><strong>For Prediction:</strong> Choose 4-factor model (lowest AIC = 16.33)</p>
-                <p><strong>For Parsimony:</strong> Choose 1-factor model (lowest BIC = 22.90)</p>
-            </div>
-        </section>
-
-        <!-- ANOVA -->
-        <section class="section" id="anova">
-            <h2>📐 ANOVA Table & F-Test</h2>
-
-            <h3>ANOVA Table Structure</h3>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Source</th>
-                            <th>SS</th>
-                            <th>df</th>
-                            <th>MS</th>
-                            <th>F</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Regression</strong></td>
-                            <td>SSR</td>
-                            <td>k</td>
-                            <td>MSR = SSR/k</td>
-                            <td rowspan="2">MSR/MSE</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Error</strong></td>
-                            <td>SSE</td>
-                            <td>n−k−1</td>
-                            <td>MSE = SSE/(n−k−1)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Total</strong></td>
-                            <td>SST</td>
-                            <td>n−1</td>
-                            <td>—</td>
-                            <td>—</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3>F-Test for Overall Significance</h3>
-            <div class="formula-box">
-                <div class="label">F-Statistic</div>
-                <div class="formula">$$F = \frac{MSR}{MSE} = \frac{SSR/k}{SSE/(n-k-1)}$$</div>
-                <div class="desc">df₁ = k (numerator) | df₂ = n − k − 1 (denominator)</div>
-            </div>
-
-            <div class="comparison-grid">
-                <div class="comparison-card">
-                    <h4>H₀: Null Hypothesis</h4>
-                    <p>All slope coefficients = 0</p>
-                    <p>$b_1 = b_2 = ... = b_k = 0$</p>
-                    <p><em>Model has no explanatory power</em></p>
-                </div>
-                <div class="comparison-card">
-                    <h4>H₁: Alternative</h4>
-                    <p>At least one slope ≠ 0</p>
-                    <p><em>Model explains some variation</em></p>
-                    <p><span class="hl-green">Reject H₀ if F > F-critical</span></p>
-                </div>
-            </div>
-
-            <div class="trap">
-                <strong>F-Test vs t-Test:</strong> A significant F-test means the model as a whole is significant, but
-                it does <strong>NOT</strong> mean all individual coefficients are significant. You still need t-tests
-                for individual variables!
+                <p>Which model should be selected if the goal is: (a) prediction, and (b) parsimonious fit?</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>(a) For Prediction (use AIC):</strong></p>
+                    <ul>
+                        <li>Model A: AIC = 125.3</li>
+                        <li>Model B: AIC = <span class="hl-green">118.7 ← Lowest</span></li>
+                        <li>Model C: AIC = 120.2</li>
+                    </ul>
+                    <p><strong>Select Model B</strong> for prediction purposes.</p>
+                    <p><strong>(b) For Parsimonious Fit (use BIC):</strong></p>
+                    <ul>
+                        <li>Model A: BIC = 128.1</li>
+                        <li>Model B: BIC = <span class="hl-blue">123.8 ← Lowest</span></li>
+                        <li>Model C: BIC = 130.5</li>
+                    </ul>
+                    <p><strong>Select Model B</strong> for parsimonious fit as well.</p>
+                    <p><em>Note: In this case, both criteria agree. Model C is heavily penalized for its 4
+                            variables.</em></p>
+                </details>
             </div>
 
             <div class="example">
-                <div class="example-title">📝 Computing from ANOVA</div>
-                <p>Given: SSR = 90.62, SSE = 56.62, n = 50, k = 5</p>
-                <hr style="border-top:1px dashed var(--border);margin:10px 0;">
-                <p><strong>Step 1:</strong> SST = 90.62 + 56.62 = 147.24</p>
-                <p><strong>Step 2:</strong> R² = 90.62 / 147.24 = <span class="hl">0.6155</span></p>
-                <p><strong>Step 3:</strong> Adj R² = 1 − [(49/44) × 0.3845] = 1 − 0.4282 = <span
-                        class="hl">0.5718</span></p>
-            </div>
-        </section>
-
-        <!-- COEFFICIENTS -->
-        <section class="section" id="coefficients">
-            <h2>🧮 Interpreting Coefficients</h2>
-
-            <h3>Slope Coefficient Meaning</h3>
-            <div class="formula-box">
-                <div class="label">Coefficient Interpretation</div>
-                <div class="formula">$$b_i = \frac{\Delta Y}{\Delta X_i}$$ <span style="font-size:0.85rem;">(holding all
-                        other X's constant)</span></div>
-                <div class="desc">A one-unit increase in Xᵢ → bᵢ unit change in Y, <em>ceteris paribus</em></div>
-            </div>
-
-            <div class="key-point">
-                <strong>THE GOLDEN RULE:</strong> You must always include the phrase <span class="hl">"holding all other
-                    variables constant"</span> when interpreting a coefficient.
-            </div>
-
-            <h3>t-Test for Individual Coefficients</h3>
-            <div class="formula-box">
-                <div class="label">t-Statistic</div>
-                <div class="formula">$$t = \frac{b_i - 0}{s_{b_i}} = \frac{b_i}{s_{b_i}}$$</div>
-                <div class="desc">H₀: bᵢ = 0 (variable has no effect) | df = n − k − 1</div>
-            </div>
-
-            <div class="example">
-                <div class="example-title">📝 Example: Interpreting Output</div>
-                <p>Regression: <strong>Sales = 50 + 2.5(Advertising) + 0.8(Price)</strong></p>
-                <ul>
-                    <li><span class="hl">b₁ = 2.5</span>: Each $1 ↑ in Advertising → $2.50 ↑ in Sales <em>(holding Price
-                            constant)</em></li>
-                    <li><span class="hl-green">b₂ = 0.8</span>: Each $1 ↑ in Price → $0.80 ↑ in Sales <em>(holding
-                            Advertising constant)</em></li>
-                </ul>
-            </div>
-
-            <h3>Standard Error of Estimate (SEE)</h3>
-            <div class="formula-box">
-                <div class="label">SEE Formula</div>
-                <div class="formula">$$SEE = \sqrt{MSE} = \sqrt{\frac{SSE}{n-k-1}}$$</div>
-                <div class="desc">Measures standard deviation of residuals | Lower = Better fit | Same units as Y</div>
-            </div>
-        </section>
-
-        <!-- INTERVALS -->
-        <section class="section" id="intervals">
-            <h2>📏 Prediction vs Confidence Intervals</h2>
-
-            <div class="comparison-grid">
-                <div class="comparison-card">
-                    <h4>🎯 Confidence Interval</h4>
-                    <p>For the <span class="hl-blue">mean value</span> of Y</p>
-                    <p>Given X = x₀, what is μᵧ?</p>
-                    <p><strong>Narrower interval</strong></p>
-                    <p><em>Less uncertainty about average</em></p>
+                <div class="example-title">Q3: Interpret & Evaluate</div>
+                <p>A quantitative analyst adds a "sentiment" factor to an existing 2-factor model:</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>2-Factor Model</th>
+                                <th>3-Factor Model</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>R²</td>
+                                <td>0.54</td>
+                                <td>0.545</td>
+                            </tr>
+                            <tr>
+                                <td>Adjusted R²</td>
+                                <td>0.52</td>
+                                <td>0.51</td>
+                            </tr>
+                            <tr>
+                                <td>t-stat (Sentiment)</td>
+                                <td>—</td>
+                                <td>0.68</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="comparison-card">
-                    <h4>📊 Prediction Interval</h4>
-                    <p>For an <span class="hl-pink">individual value</span> of Y</p>
-                    <p>Given X = x₀, what will Y be?</p>
-                    <p><strong>Wider interval</strong></p>
-                    <p><em>More uncertainty about single obs</em></p>
-                </div>
-            </div>
-
-            <div class="key-point">
-                <strong>Prediction Interval > Confidence Interval — ALWAYS</strong>
-                <p>Prediction intervals include <em>extra variance</em> from individual observation uncertainty around
-                    the mean.</p>
-            </div>
-
-            <div class="trap">
-                <strong>Common Exam Question:</strong> "Which interval is wider?"
-                <p>Answer: <span class="hl">Prediction interval</span> is ALWAYS wider because it accounts for both:</p>
-                <ul>
-                    <li>Uncertainty in the mean (what CI captures)</li>
-                    <li>Variability of individual observations around that mean</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- EXAM TRAPS -->
-        <section class="section" id="traps">
-            <h2>🎯 Exam Summary & Traps</h2>
-
-            <h3>Quick Formulas</h3>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Measure</th>
-                            <th>Formula</th>
-                            <th>When to Use</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>R²</td>
-                            <td>1 − SSE/SST</td>
-                            <td>Basic fit (problematic)</td>
-                        </tr>
-                        <tr>
-                            <td>Adj R²</td>
-                            <td>1 − [(n−1)/(n−k−1)](1−R²)</td>
-                            <td>Compare models</td>
-                        </tr>
-                        <tr>
-                            <td>F-stat</td>
-                            <td>MSR / MSE</td>
-                            <td>Overall significance</td>
-                        </tr>
-                        <tr>
-                            <td>t-stat</td>
-                            <td>bᵢ / s(bᵢ)</td>
-                            <td>Individual significance</td>
-                        </tr>
-                        <tr>
-                            <td>SEE</td>
-                            <td>√MSE</td>
-                            <td>Prediction accuracy</td>
-                        </tr>
-                        <tr>
-                            <td>AIC</td>
-                            <td>n·ln(SSE/n) + 2(k+1)</td>
-                            <td>Prediction</td>
-                        </tr>
-                        <tr>
-                            <td>BIC</td>
-                            <td>n·ln(SSE/n) + ln(n)(k+1)</td>
-                            <td>Parsimony</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3>⚠️ The 7 Exam Traps</h3>
-
-            <div class="trap">
-                <strong>1. R² Always Increases:</strong> Adding any variable (even random noise!) increases R². Use
-                <span class="hl">Adjusted R²</span> for model comparison.
-            </div>
-
-            <div class="trap">
-                <strong>2. Significant F ≠ All Significant Coefficients:</strong> F-test is for the whole model;
-                individual coefficients need separate t-tests.
-            </div>
-
-            <div class="trap">
-                <strong>3. Prediction vs Confidence:</strong> <span class="hl-pink">Prediction intervals are
-                    WIDER</span> because they include individual observation variance.
-            </div>
-
-            <div class="trap">
-                <strong>4. Degrees of Freedom:</strong> For F-test: df₁ = k, df₂ = <span class="hl">n − k − 1</span>
-                (not n−k or n−1)
-            </div>
-
-            <div class="trap">
-                <strong>5. |t| > 1 ≠ Significance:</strong> |t-stat| > 1.0 increases Adjusted R², but statistical
-                significance requires |t| ≈ 2.0. Don't confuse these!
-            </div>
-
-            <div class="trap">
-                <strong>6. AIC/BIC Values Alone Mean Nothing:</strong> Only <span class="hl">relative values</span>
-                matter. Can ONLY compare models with <strong>same dependent variable</strong>.
-            </div>
-
-            <div class="trap">
-                <strong>7. AIC vs BIC:</strong> AIC for <span class="hl-green">Prediction</span> (larger models). BIC
-                for <span class="hl-blue">Parsimony</span> (smaller models). BIC penalty is heavier since ln(n) > 2.
-            </div>
-
-            <h3>Decision Tree: Which Metric?</h3>
-            <div class="flow-diagram">
-                <div class="flow-step">
-                    <span class="flow-num">1</span>
-                    <div class="flow-text">Is model significant overall? → <strong>F-test</strong></div>
-                </div>
-                <div class="flow-step">
-                    <span class="flow-num">2</span>
-                    <div class="flow-text">Which variables matter? → <strong>t-tests</strong></div>
-                </div>
-                <div class="flow-step">
-                    <span class="flow-num">3</span>
-                    <div class="flow-text">How much variation explained? → <strong>R²</strong></div>
-                </div>
-                <div class="flow-step">
-                    <span class="flow-num">4</span>
-                    <div class="flow-text">Comparing models (different # of vars)? → <strong>Adjusted R²</strong></div>
-                </div>
-                <div class="flow-step">
-                    <span class="flow-num">5</span>
-                    <div class="flow-text">Best model for prediction? → <strong>AIC</strong> (lower = better)</div>
-                </div>
-                <div class="flow-step">
-                    <span class="flow-num">6</span>
-                    <div class="flow-text">Best parsimonious model? → <strong>BIC</strong> (lower = better)</div>
-                </div>
-                <div class="flow-step">
-                    <span class="flow-num">7</span>
-                    <div class="flow-text">Prediction accuracy? → <strong>SEE</strong></div>
-                </div>
+                <p>Evaluate whether the sentiment factor should be included.</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>Observation 1:</strong> R² increased marginally (0.54 → 0.545) — expected, R² never
+                        decreases.</p>
+                    <p><strong>Observation 2:</strong> Adjusted R² <span class="hl-pink">decreased</span> (0.52 → 0.51),
+                        indicating sentiment factor doesn't add sufficient explanatory power.</p>
+                    <p><strong>Observation 3:</strong> The sentiment factor's |t-statistic| = 0.68 < 1.0, confirming it
+                            fails the threshold for increasing adjusted R².</p>
+                            <p><strong>Observation 4:</strong> t-statistic of 0.68 is far below significance thresholds
+                                (~2.0 for 5% level), so the coefficient is also not statistically significant.</p>
+                            <p><strong>Conclusion:</strong> The sentiment factor should <span class="hl-pink">NOT be
+                                    included</span>. It marginally inflates R² but worsens model quality after adjusting
+                                for complexity, and it is not statistically significant.</p>
+                </details>
             </div>
         </section>
 
@@ -993,8 +1435,7 @@
                 sections.forEach(s => s.classList.remove('active'));
                 document.getElementById(sectionId).classList.add('active');
 
-                // Scroll to top of content
-                document.querySelector('.content').scrollTop = 0;
+                window.scrollTo(0, 0);
             });
         });
     </script>
