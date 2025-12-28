@@ -125,13 +125,16 @@
 
         .section {
             display: none;
-            animation: fadeIn 0.3s ease;
+            /* animation: fadeIn 0.3s ease; REMOVED for mobile stability */
         }
 
         .section.active {
             display: block;
+            opacity: 1;
+            /* Force visibility */
         }
 
+        /* 
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -142,7 +145,8 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
+        } 
+        */
 
         h2 {
             font-size: 1.15rem;
@@ -1278,6 +1282,54 @@
             </div>
         </section>
 
+        <!-- PRACTICE -->
+        <section class="section" id="practice">
+            <h2>📝 Practice Problems: "The Asset Manager"</h2>
+
+            <div class="note info">
+                <div class="note-title">Vignette</div>
+                <p>You are a junior analyst. Your supervisor asks you to model portfolio excess returns
+                    (<strong>RET</strong>) against:
+                    <strong>MRKT</strong> (Market Excess Return), <strong>HML</strong> (Value Factor), and
+                    <strong>VIX</strong> (% Change in Volatility).
+                </p>
+                <p><strong>Equation:</strong> $Y_{RET} = -0.999 + 1.817 X_{MRKT} + 0.489 X_{HML} + 0.037 X_{VIX}$</p>
+                <p>You generate the following diagnostic charts:</p>
+            </div>
+
+            <div class="svg-container">
+                <!-- Chart 1: RET vs VIX -->
+                <div class="svg-card" style="height:160px; width:100%;">
+                    <canvas id="chart-prac-1"></canvas>
+                    <div class="svg-label" style="background:#555; color:white;">Chart 1: RET vs VIX</div>
+                </div>
+            </div>
+            <div class="svg-container">
+                <!-- Chart 2: RET vs MRKT -->
+                <div class="svg-card" style="height:160px; width:100%;">
+                    <canvas id="chart-prac-2"></canvas>
+                    <div class="svg-label" style="background:#555; color:white;">Chart 2: RET vs MRKT</div>
+                </div>
+            </div>
+            <div class="svg-container">
+                <!-- Chart 3: MRKT vs HML -->
+                <div class="svg-card" style="height:160px;">
+                    <canvas id="chart-prac-3"></canvas>
+                    <div class="svg-label" style="background:#555; color:white;">Chart 3: MRKT vs HML</div>
+                </div>
+                <!-- Chart 4: Residuals vs Predicted -->
+                <div class="svg-card" style="height:160px;">
+                    <canvas id="chart-prac-4"></canvas>
+                    <div class="svg-label" style="background:#555; color:white;">Chart 4: Residuals vs Predicted</div>
+                </div>
+            </div>
+
+            <h3>Quiz Time</h3>
+            <div id="quiz-container"></div>
+            <div id="score-card" style="display:none;" class="note info"></div>
+
+        </section>
+
     </main>
 
     <div class="footer-spacer"></div>
@@ -1322,123 +1374,161 @@
         };
 
         const createChart = (ctxId, type, data, options = {}) => {
-            const ctx = document.getElementById(ctxId).getContext('2d');
-            return new Chart(ctx, {
-                type: type,
-                data: data,
-                options: { ...commonOptions, ...options }
+            const canvas = document.getElementById(ctxId);
+            if (!canvas) return;
+
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js not loaded');
+                // Optional: visual fallback
+                const ctx = canvas.getContext('2d');
+                ctx.font = '12px sans-serif';
+                ctx.fillStyle = '#FF4B2B';
+                ctx.fillText('Chart unavailable (Offline)', 10, 50);
+                return;
+            }
+
+            try {
+                const ctx = canvas.getContext('2d');
+                return new Chart(ctx, {
+                    type: type,
+                    data: data,
+                    options: { ...commonOptions, ...options }
+                });
+            } catch (e) {
+                console.error(`Failed to create chart ${ctxId}`, e);
+            }
+        };
+
+        // Wrap chart generation in a function to isolate errors
+        const initCharts = () => {
+            if (typeof Chart === 'undefined') return;
+
+            // 1. Linearity Data
+            const linGoodData = Array.from({ length: 20 }, (_, i) => ({ x: i, y: 10 + 2 * i + (Math.random() * 4 - 2) }));
+            const linBadData = Array.from({ length: 20 }, (_, i) => ({ x: i, y: 50 - 2 * i + 0.15 * i * i + (Math.random() * 4 - 2) }));
+
+            createChart('chart-lin-good', 'scatter', {
+                datasets: [{ data: linGoodData, backgroundColor: '#00B894', pointRadius: 4 }]
+            });
+            createChart('chart-lin-bad', 'scatter', {
+                datasets: [{ data: linBadData, backgroundColor: '#FF4B2B', pointRadius: 4 }]
+            });
+
+            // 2. Homoskedasticity Data
+            const homGoodData = Array.from({ length: 30 }, (_, i) => ({ x: i, y: 20 + (Math.random() * 10 - 5) }));
+            const homBadData = Array.from({ length: 30 }, (_, i) => ({ x: i, y: 20 + (Math.random() * (i + 5) - (i + 5) / 2) }));
+
+            createChart('chart-hom-good', 'scatter', {
+                datasets: [{ data: homGoodData, backgroundColor: '#00B894', pointRadius: 4 }]
+            });
+            createChart('chart-hom-bad', 'scatter', {
+                datasets: [{ data: homBadData, backgroundColor: '#FF4B2B', pointRadius: 4 }]
+            });
+
+            // 3. Independence Data (Line Chart)
+            const indGoodData = Array.from({ length: 20 }, (_, i) => Math.random() * 10 - 5);
+            const indBadData = Array.from({ length: 20 }, (_, i) => Math.sin(i / 3) * 8 + Math.random() * 2);
+
+            createChart('chart-ind-good', 'line', {
+                labels: Array.from({ length: 20 }, (_, i) => i),
+                datasets: [{ data: indGoodData, borderColor: '#00B894', borderWidth: 2, pointRadius: 0, tension: 0.4 }]
+            });
+            createChart('chart-ind-bad', 'line', {
+                labels: Array.from({ length: 20 }, (_, i) => i),
+                datasets: [{ data: indBadData, borderColor: '#FF4B2B', borderWidth: 2, pointRadius: 0, tension: 0.4 }]
+            });
+
+            // 4. Normality Data (Bar/Bell)
+            try {
+                createChart('chart-norm-good', 'bar', {
+                    labels: [-3, -2, -1, 0, 1, 2, 3],
+                    datasets: [{ data: [2, 10, 25, 40, 25, 10, 2], backgroundColor: '#00B894', borderRadius: 4 }]
+                });
+                createChart('chart-norm-bad', 'bar', {
+                    labels: [-3, -2, -1, 0, 1, 2, 3],
+                    datasets: [{ data: [15, 5, 5, 50, 5, 5, 15], backgroundColor: '#FF4B2B', borderRadius: 4 }]
+                });
+            } catch (e) { console.error("Normality chart error", e); }
+
+
+            // 5. Multicollinearity (Scatter X1 vs X2)
+            const mulGoodData = Array.from({ length: 20 }, () => ({ x: Math.random() * 10, y: Math.random() * 10 }));
+            const mulBadData = Array.from({ length: 20 }, (_, i) => ({ x: i + Math.random(), y: i + Math.random() }));
+
+            createChart('chart-mul-good', 'scatter', {
+                datasets: [{ data: mulGoodData, backgroundColor: '#00B894', pointRadius: 4 }]
+            });
+            createChart('chart-mul-bad', 'scatter', {
+                datasets: [{ data: mulBadData, backgroundColor: '#FF4B2B', pointRadius: 4 }]
             });
         };
 
-        // 1. Linearity Data
-        const linGoodData = Array.from({ length: 20 }, (_, i) => ({ x: i, y: 10 + 2 * i + (Math.random() * 4 - 2) }));
-        const linBadData = Array.from({ length: 20 }, (_, i) => ({ x: i, y: 50 - 2 * i + 0.15 * i * i + (Math.random() * 4 - 2) }));
-
-        createChart('chart-lin-good', 'scatter', {
-            datasets: [{ data: linGoodData, backgroundColor: '#00B894', pointRadius: 4 }]
-        });
-        createChart('chart-lin-bad', 'scatter', {
-            datasets: [{ data: linBadData, backgroundColor: '#FF4B2B', pointRadius: 4 }]
-        });
-
-        // 2. Homoskedasticity Data
-        const homGoodData = Array.from({ length: 30 }, (_, i) => ({ x: i, y: 20 + (Math.random() * 10 - 5) }));
-        const homBadData = Array.from({ length: 30 }, (_, i) => ({ x: i, y: 20 + (Math.random() * (i + 5) - (i + 5) / 2) }));
-
-        createChart('chart-hom-good', 'scatter', {
-            datasets: [{ data: homGoodData, backgroundColor: '#00B894', pointRadius: 4 }]
-        });
-        createChart('chart-hom-bad', 'scatter', {
-            datasets: [{ data: homBadData, backgroundColor: '#FF4B2B', pointRadius: 4 }]
-        });
-
-        // 3. Independence Data (Line Chart)
-        const indGoodData = Array.from({ length: 20 }, (_, i) => Math.random() * 10 - 5);
-        const indBadData = Array.from({ length: 20 }, (_, i) => Math.sin(i / 3) * 8 + Math.random() * 2);
-
-        createChart('chart-ind-good', 'line', {
-            labels: Array.from({ length: 20 }, (_, i) => i),
-            datasets: [{ data: indGoodData, borderColor: '#00B894', borderWidth: 2, pointRadius: 0, tension: 0.4 }]
-        });
-        createChart('chart-ind-bad', 'line', {
-            labels: Array.from({ length: 20 }, (_, i) => i),
-            datasets: [{ data: indBadData, borderColor: '#FF4B2B', borderWidth: 2, pointRadius: 0, tension: 0.4 }]
-        });
-
-        // 4. Normality Data (Bar/Bell)
+        // Initialize Charts safely
         try {
-            createChart('chart-norm-good', 'bar', {
-                labels: [-3, -2, -1, 0, 1, 2, 3],
-                datasets: [{ data: [2, 10, 25, 40, 25, 10, 2], backgroundColor: '#00B894', borderRadius: 4 }]
-            });
-            createChart('chart-norm-bad', 'bar', {
-                labels: [-3, -2, -1, 0, 1, 2, 3],
-                datasets: [{ data: [15, 5, 5, 50, 5, 5, 15], backgroundColor: '#FF4B2B', borderRadius: 4 }]
-            });
-        } catch (e) { console.error("Normality chart error", e); }
-
-
-        // 5. Multicollinearity (Scatter X1 vs X2)
-        const mulGoodData = Array.from({ length: 20 }, () => ({ x: Math.random() * 10, y: Math.random() * 10 }));
-        const mulBadData = Array.from({ length: 20 }, (_, i) => ({ x: i + Math.random(), y: i + Math.random() }));
-
-        createChart('chart-mul-good', 'scatter', {
-            datasets: [{ data: mulGoodData, backgroundColor: '#00B894', pointRadius: 4 }]
-        });
-        createChart('chart-mul-bad', 'scatter', {
-            datasets: [{ data: mulBadData, backgroundColor: '#FF4B2B', pointRadius: 4 }]
-        });
+            initCharts();
+        } catch (e) {
+            console.error("Critical error in chart initialization", e);
+        }
 
     </script>
     <script>
         // --- PRACTICE SECTION LOGIC ---
 
         // 1. Practice Charts (Recreating Exam Visuals)
+        const initPracticeCharts = () => {
+            if (typeof Chart === 'undefined') return;
 
-        // Chart 1: RET vs VIX (Curved/Quadratic - Violation of Linearity)
-        const retVixData = Array.from({ length: 40 }, () => {
-            const x = Math.random() * 160 - 60; // -60 to 100
-            const y = 0.005 * x * x - 20 + (Math.random() * 10 - 5); // Parabola + Noise
-            return { x, y };
-        });
-        createChart('chart-prac-1', 'scatter', {
-            datasets: [{
-                label: 'RET vs VIX',
-                data: retVixData,
-                backgroundColor: '#FF4B2B' // Red to hint at problem
-            }],
-            options: {
-                plugins: { title: { display: true, text: 'Chart 1: RET vs VIX (Curved?)' } }
-            }
-        });
+            // Chart 1: RET vs VIX (Curved/Quadratic - Violation of Linearity)
+            const retVixData = Array.from({ length: 40 }, () => {
+                const x = Math.random() * 160 - 60; // -60 to 100
+                const y = 0.005 * x * x - 20 + (Math.random() * 10 - 5); // Parabola + Noise
+                return { x, y };
+            });
+            createChart('chart-prac-1', 'scatter', {
+                datasets: [{
+                    label: 'RET vs VIX',
+                    data: retVixData,
+                    backgroundColor: '#FF4B2B' // Red to hint at problem
+                }],
+                options: {
+                    plugins: { title: { display: true, text: 'Chart 1: RET vs VIX (Curved?)' } }
+                }
+            });
 
-        // Chart 2: RET vs MRKT (Linear - Good)
-        const retMrktData = Array.from({ length: 40 }, () => {
-            const x = Math.random() * 30 - 15;
-            const y = 1.2 * x + (Math.random() * 5 - 2.5);
-            return { x, y };
-        });
-        createChart('chart-prac-2', 'scatter', {
-            datasets: [{ data: retMrktData, backgroundColor: '#00B894' }]
-        });
+            // Chart 2: RET vs MRKT (Linear - Good)
+            const retMrktData = Array.from({ length: 40 }, () => {
+                const x = Math.random() * 30 - 15;
+                const y = 1.2 * x + (Math.random() * 5 - 2.5);
+                return { x, y };
+            });
+            createChart('chart-prac-2', 'scatter', {
+                datasets: [{ data: retMrktData, backgroundColor: '#00B894' }]
+            });
 
-        // Chart 3: MRKT vs HML (Independence Check)
-        const mrktHmlData = Array.from({ length: 40 }, () => ({
-            x: Math.random() * 30 - 15,
-            y: Math.random() * 20 - 10
-        }));
-        createChart('chart-prac-3', 'scatter', {
-            datasets: [{ data: mrktHmlData, backgroundColor: '#555' }]
-        });
+            // Chart 3: MRKT vs HML (Independence Check)
+            const mrktHmlData = Array.from({ length: 40 }, () => ({
+                x: Math.random() * 30 - 15,
+                y: Math.random() * 20 - 10
+            }));
+            createChart('chart-prac-3', 'scatter', {
+                datasets: [{ data: mrktHmlData, backgroundColor: '#555' }]
+            });
 
-        // Chart 4: Residuals vs Predicted (Homoskedasticity Check)
-        const resPredData = Array.from({ length: 40 }, () => ({
-            x: Math.random() * 60 - 30,
-            y: Math.random() * 20 - 10 // Constant variance
-        }));
-        createChart('chart-prac-4', 'scatter', {
-            datasets: [{ data: resPredData, backgroundColor: '#555' }]
-        });
+            // Chart 4: Residuals vs Predicted (Homoskedasticity Check)
+            const resPredData = Array.from({ length: 40 }, () => ({
+                x: Math.random() * 60 - 30,
+                y: Math.random() * 20 - 10 // Constant variance
+            }));
+            createChart('chart-prac-4', 'scatter', {
+                datasets: [{ data: resPredData, backgroundColor: '#555' }]
+            });
+        };
+
+        try {
+            initPracticeCharts();
+        } catch (e) {
+            console.error("Practice chart init failed", e);
+        }
 
 
         // 2. Quiz System
