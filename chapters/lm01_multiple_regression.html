@@ -1335,30 +1335,49 @@
     <div class="footer-spacer"></div>
 
     <script>
-        // Navigation Active State - REMOVED (Not needed for Tabbed Interface)
+        // Navigation Active State
         const sections = document.querySelectorAll('.section');
-
-
-        // Pill Navigation Logic
         const pills = document.querySelectorAll('.nav-pill');
 
+        const STORAGE_KEY_TAB = 'cfa_lm01_active_tab';
+
+        // 1. Function to switch tab
+        const switchTab = (targetId) => {
+            // Update UI
+            pills.forEach(p => {
+                p.classList.toggle('active', p.dataset.section === targetId);
+            });
+            sections.forEach(s => {
+                const isActive = s.id === targetId;
+                s.classList.toggle('active', isActive);
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'instant' });
+
+            // Save state
+            localStorage.setItem(STORAGE_KEY_TAB, targetId);
+        };
+
+        // 2. Event Listeners
         pills.forEach(pill => {
             pill.addEventListener('click', () => {
-                const targetId = pill.dataset.section;
-                pills.forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
-
-                // 1. Hide all sections
-                sections.forEach(s => s.classList.remove('active'));
-
-                // 2. Show target section
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.classList.add('active');
-                    // 3. Scroll to top
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                }
+                switchTab(pill.dataset.section);
             });
+        });
+
+        // 3. Restore State on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Restore Tab
+            const savedTab = localStorage.getItem(STORAGE_KEY_TAB);
+            if (savedTab) {
+                // Verify it exists to avoid errors
+                if (document.getElementById(savedTab)) {
+                    switchTab(savedTab);
+                }
+            }
+
+            // Restore Quiz (will be handled by quiz script below, but calling init here if needed)
         });
 
         // Chart.js Implementations for Assumptions
@@ -1570,7 +1589,15 @@
         ];
 
         const quizContainer = document.getElementById('quiz-container');
+        const STORAGE_KEY_QUIZ = 'cfa_lm01_quiz_state';
 
+        // Load saved state or default
+        let quizState = JSON.parse(localStorage.getItem(STORAGE_KEY_QUIZ)) || {
+            attempts: {}, // { qIdx: optIdx }
+            score: 0
+        };
+
+        // Render Questions
         questions.forEach((q, idx) => {
             const qEl = document.createElement('div');
             qEl.className = 'card';
@@ -1588,15 +1615,15 @@
             quizContainer.appendChild(qEl);
         });
 
-        let score = 0;
-        const attempts = new Set();
-
-        window.checkAnswer = (btn, qIdx, optIdx) => {
+        // Function to update UI for a answered question
+        const markAnswered = (qIdx, optIdx, isRestore = false) => {
             const q = questions[qIdx];
+            const qEl = quizContainer.children[qIdx];
+            const btn = qEl.querySelectorAll('button.nav-pill')[optIdx];
             const resEl = document.getElementById(`res-${qIdx}`);
             const parent = btn.parentElement;
 
-            // Disable all buttons in this question
+            // Disable all buttons
             Array.from(parent.children).forEach(b => b.disabled = true);
 
             if (optIdx === q.correct) {
@@ -1604,7 +1631,6 @@
                 btn.style.color = 'white';
                 resEl.className = 'note hint';
                 resEl.innerHTML = `<strong>✅ Correct!</strong> ${q.expl}`;
-                if (!attempts.has(qIdx)) score++;
             } else {
                 btn.style.background = '#FF4B2B'; // Red
                 btn.style.color = 'white';
@@ -1614,17 +1640,47 @@
                 parent.children[q.correct].style.background = '#00B894';
                 parent.children[q.correct].style.color = 'white';
             }
-            attempts.add(qIdx);
             resEl.style.display = 'block';
 
-            // Update Score
-            if (attempts.size === questions.length) {
-                const sCard = document.getElementById('score-card');
-                sCard.style.display = 'block';
-                sCard.innerHTML = `<strong>Final Score: ${score} / 5</strong>`;
-                sCard.scrollIntoView({ behavior: 'smooth' });
+            if (!isRestore) {
+                // Update State
+                quizState.attempts[qIdx] = optIdx;
+                if (optIdx === q.correct) quizState.score++;
+                localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(quizState));
+                checkScore();
             }
         };
+
+        const checkScore = () => {
+            // Check if all answered
+            if (Object.keys(quizState.attempts).length === questions.length) {
+                const sCard = document.getElementById('score-card');
+                sCard.style.display = 'block';
+                // Recalculate score from state to be safe
+                let calcScore = 0;
+                for (const [q, a] of Object.entries(quizState.attempts)) {
+                    if (questions[q].correct === a) calcScore++;
+                }
+                sCard.innerHTML = `<strong>Final Score: ${calcScore} / ${questions.length}</strong>`;
+                if (!window.restoring) sCard.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        // Main Click Handler
+        window.checkAnswer = (btn, qIdx, optIdx) => {
+            // Prevent re-answering if already in state (double check)
+            if (quizState.attempts.hasOwnProperty(qIdx)) return;
+            markAnswered(qIdx, optIdx);
+        };
+
+        // Restore Progress
+        window.restoring = true;
+        for (const [qIdx, optIdx] of Object.entries(quizState.attempts)) {
+            // Ensure indices are numbers
+            markAnswered(parseInt(qIdx), parseInt(optIdx), true);
+        }
+        checkScore();
+        window.restoring = false;
 
     </script>
 </body>
