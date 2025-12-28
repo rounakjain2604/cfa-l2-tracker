@@ -419,11 +419,12 @@
 
     <nav class="nav-pills">
         <button class="nav-pill active" data-section="overview">Overview</button>
-        <button class="nav-pill" data-section="intuition">Step 1: Intuition</button>
-        <button class="nav-pill" data-section="concepts">Step 2: Concepts</button>
-        <button class="nav-pill" data-section="formulas">Step 3: Formulas</button>
-        <button class="nav-pill" data-section="exhibits">Step 4: Exhibits</button>
-        <button class="nav-pill" data-section="exam">Step 5: Exam</button>
+        <button class="nav-pill" data-section="intuition">Intuition</button>
+        <button class="nav-pill" data-section="concepts">Concepts</button>
+        <button class="nav-pill" data-section="formulas">Formulas</button>
+        <button class="nav-pill" data-section="exhibits">Exhibits</button>
+        <button class="nav-pill" data-section="jointftest">Joint F-Test</button>
+        <button class="nav-pill" data-section="exam">Exam Tips</button>
         <button class="nav-pill" data-section="practice">Practice</button>
     </nav>
 
@@ -1109,7 +1110,8 @@
                 <div class="note-title">Interpretation</div>
                 <p>Despite R² being marginally higher for Model 2, <strong>all three penalty-adjusted metrics</strong>
                     (Adjusted R², AIC, BIC) favor Model 1. Model 2 is penalized for adding an insignificant variable.
-                    <strong>Model 1 is the better model</strong> for both prediction and parsimony.</p>
+                    <strong>Model 1 is the better model</strong> for both prediction and parsimony.
+                </p>
             </div>
         </section>
 
@@ -1279,9 +1281,257 @@
             </div>
         </section>
 
+        <!-- JOINT F-TEST (LOS 2.03) -->
+        <section class="section" id="jointftest">
+            <h2>🔗 LOS 2.03: Joint Hypothesis Testing</h2>
+
+            <div class="note info">
+                <div class="note-title">🎯 Learning Outcome</div>
+                <p><em>"Formulate hypotheses on the significance of two or more coefficients in a multiple regression
+                        model and interpret the results of the joint hypothesis tests."</em></p>
+            </div>
+
+            <h3>Why Not Just Use Individual t-Tests?</h3>
+
+            <p>In multiple regression with correlated variables, there is often <span class="hl">sharing of explanatory
+                    power</span> between variables. Individual t-tests don't account for this correlation.</p>
+
+            <div class="note">
+                <div class="note-title">🏏 Cricket Analogy</div>
+                <p>Think of Rohit and Dhawan as openers. Individually, neither might seem like the "best" opener
+                    statistically. But <strong>together</strong> as a pair, they've been devastating. You need a way to
+                    evaluate them as a <span class="hl">joint unit</span>, not just individually.</p>
+            </div>
+
+            <blockquote>
+                <strong>CFAI:</strong> "Often in multiple regression involving financial variables, there is some degree
+                of correlation between the variables, so there may be some sharing of explanatory power that is not
+                considered with the tests of individual slopes."
+            </blockquote>
+
+            <hr>
+
+            <h3>Unrestricted vs. Restricted Models</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model Type</th>
+                            <th>Definition</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Unrestricted</strong></td>
+                            <td>Full model with all variables</td>
+                            <td>Y = b₀ + b₁X₁ + b₂X₂ + b₃X₃ + b₄X₄ + b₅X₅ + ε</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Restricted</strong></td>
+                            <td>Model with some slopes = 0</td>
+                            <td>Y = b₀ + b₁X₁ + b₂X₂ + b₃X₃ + ε (b₄ = b₅ = 0)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nested</strong></td>
+                            <td>Restricted is "nested" within unrestricted</td>
+                            <td>One model is special case of other</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h3>The Joint F-Test Formula</h3>
+
+            <div class="formula-box">
+                <div class="label">Joint F-Test for Nested Models</div>
+                <div class="formula">$$F = \frac{(SSE_{restricted} - SSE_{unrestricted}) / q}{SSE_{unrestricted} / (n -
+                    k - 1)}$$</div>
+                <div class="desc">q = number of restrictions | df₁ = q | df₂ = n − k − 1</div>
+            </div>
+
+            <div class="card">
+                <h4>Hypothesis Structure:</h4>
+                <p><strong>H₀:</strong> b₄ = b₅ = ... = 0 (all restricted slopes = 0)</p>
+                <p><strong>Hₐ:</strong> At least one of the restricted slopes ≠ 0</p>
+                <h4>Decision Rule:</h4>
+                <p>Reject H₀ if <span class="hl">F-calculated > F-critical</span></p>
+                <p>F-test is always <strong>one-tailed (right side)</strong></p>
+            </div>
+
+            <div class="key-point">
+                <strong>Logic Behind the Test:</strong>
+                <ul>
+                    <li>SSE measures unexplained variation</li>
+                    <li>If restricted model has <strong>much higher</strong> SSE, omitted variables were important</li>
+                    <li>If SSE barely increases when variables are dropped, those variables weren't contributing</li>
+                </ul>
+            </div>
+
+            <hr>
+
+            <h3>Exhibit 5: 3-Factor vs 5-Factor Model (CFAI)</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Factors</th>
+                            <th>df</th>
+                            <th>SSE</th>
+                            <th>MSE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Restricted</td>
+                            <td>1, 2, 3</td>
+                            <td>46</td>
+                            <td>64.5176</td>
+                            <td>1.4026</td>
+                        </tr>
+                        <tr>
+                            <td>Unrestricted</td>
+                            <td>1, 2, 3, 4, 5</td>
+                            <td>44</td>
+                            <td>56.6182</td>
+                            <td>1.2868</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📝 Joint F-Test Calculation (1% significance)</div>
+                <p><strong>H₀:</strong> b₄ = b₅ = 0 | <strong>q = 2</strong> restrictions</p>
+                <p>$$F = \frac{(64.5176 - 56.6182)/2}{56.6182/44} = \frac{7.8994/2}{1.2868} = \frac{3.9497}{1.2868} =
+                    3.07$$</p>
+                <p>Critical F(2, 44) at 1% = <span class="hl">5.120</span></p>
+                <hr>
+                <p><strong>Decision:</strong> 3.07 < 5.120 → <span class="hl-green">Fail to reject H₀</span></p>
+                <p><strong>Conclusion:</strong> Factors 4 and 5 do NOT jointly add significant explanatory power. Use
+                    the simpler 3-factor model.</p>
+            </div>
+
+            <hr>
+
+            <h3>Overall F-Test (Goodness of Fit)</h3>
+
+            <p>Special case: test whether ALL slope coefficients = 0</p>
+
+            <div class="formula-box">
+                <div class="label">Overall F-Statistic</div>
+                <div class="formula">$$F = \frac{MSR}{MSE} = \frac{SSR/k}{SSE/(n-k-1)}$$</div>
+                <div class="desc">df₁ = k | df₂ = n − k − 1</div>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>H₀: All Slopes = 0</h4>
+                    <p>b₁ = b₂ = ... = bₖ = 0</p>
+                    <p><em>Model has no explanatory power</em></p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Hₐ: At Least One ≠ 0</h4>
+                    <p>At least one bⱼ ≠ 0</p>
+                    <p><em>Model explains some variation</em></p>
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📝 Exhibit 6: Overall F-Test (5% significance)</div>
+                <p>From ANOVA: MSR = 18.1247, MSE = 1.2868</p>
+                <p>$$F = \frac{18.1247}{1.2868} = 14.09$$</p>
+                <p>Critical F(5, 44) at 5% = 2.427</p>
+                <hr>
+                <p><strong>Decision:</strong> 14.09 >> 2.427 → <span class="hl-pink">Reject H₀</span></p>
+                <p><strong>Conclusion:</strong> At least one factor significantly explains portfolio returns.</p>
+            </div>
+
+            <div class="trap">
+                <strong>F-Test vs t-Test:</strong> A significant overall F-test means the model as a whole is
+                significant, but it does <strong>NOT</strong> mean all individual coefficients are significant. You
+                still need t-tests for individual variables!
+            </div>
+
+            <hr>
+
+            <h3>Model Fit Statistics Summary (Exhibit 7)</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Statistic</th>
+                            <th>Criterion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Adjusted R²</td>
+                            <td>The <span class="hl-green">higher</span> the better</td>
+                        </tr>
+                        <tr>
+                            <td>AIC</td>
+                            <td>The <span class="hl-pink">lower</span> the better</td>
+                        </tr>
+                        <tr>
+                            <td>BIC</td>
+                            <td>The <span class="hl-pink">lower</span> the better</td>
+                        </tr>
+                        <tr>
+                            <td>t-Statistic</td>
+                            <td>Outside bounds of critical t-value</td>
+                        </tr>
+                        <tr>
+                            <td>F-test (joint)</td>
+                            <td>Exceeds critical F-value</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <h3>Key Exam Points</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mistake</th>
+                            <th>Correct Understanding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Significant F = all betas significant</td>
+                            <td>F-test = model overall; t-tests = individual</td>
+                        </tr>
+                        <tr>
+                            <td>Wrong df for F-test</td>
+                            <td>Numerator = q; Denominator = n − k − 1</td>
+                        </tr>
+                        <tr>
+                            <td>Multiple t-tests for groups</td>
+                            <td>Use joint F-test (accounts for correlation)</td>
+                        </tr>
+                        <tr>
+                            <td>Mixing up SSE_R and SSE_U</td>
+                            <td>Restricted model ALWAYS has higher/equal SSE</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- PRACTICE -->
         <section class="section" id="practice">
             <h2>✏️ Practice Questions</h2>
+
 
             <div class="example">
                 <div class="example-title">Q1: Calculate & Interpret</div>
@@ -1294,7 +1544,8 @@
                     <p><strong>Step 1:</strong> SST = SSR + SSE = 450 + 300 = 750</p>
                     <p><strong>Step 2:</strong> R² = SSR/SST = 450/750 = <span class="hl">0.60</span></p>
                     <p><strong>Step 3:</strong> Adj R² = 1 − [(59/55) × (1 − 0.60)] = 1 − [1.0727 × 0.40] = 1 − 0.4291 =
-                        <span class="hl">0.5709</span></p>
+                        <span class="hl">0.5709</span>
+                    </p>
                     <p><strong>Interpretation:</strong> After adjusting for the four independent variables,
                         approximately 57.1% of the variation in the dependent variable is explained by the model. The
                         adjusted R² of 0.5709 is lower than R² of 0.60, reflecting the penalty for including 4
