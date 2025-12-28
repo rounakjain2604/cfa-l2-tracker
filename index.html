@@ -631,6 +631,62 @@
             font-size: 0.8rem;
             color: var(--text-main);
             font-weight: 500;
+            flex: 1;
+        }
+
+        .week-lm-check {
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+            color: var(--text-label);
+        }
+
+        .week-lm-item.completed .week-lm-check {
+            color: var(--success);
+        }
+
+        .week-lm-item.completed .week-lm-name {
+            color: var(--text-label);
+            text-decoration: line-through;
+        }
+
+        /* Week Progress Bar */
+        .week-progress-bar {
+            height: 4px;
+            background: var(--bg-accent);
+            border-radius: 2px;
+            margin-top: 0.4rem;
+            overflow: hidden;
+        }
+
+        .week-progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .week-meta {
+            text-align: right;
+            min-width: 50px;
+        }
+
+        .week-completion {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--sunset-coral);
+        }
+
+        .week-card.complete .week-completion {
+            color: var(--success);
+        }
+
+        .week-card.complete {
+            border: 1px solid var(--success);
+        }
+
+        .week-card.complete .week-number {
+            background: #E8F9ED;
+            color: var(--success);
         }
 
         .trip-badge {
@@ -1830,31 +1886,66 @@
 
             container.innerHTML = STUDY_PLAN.map(week => {
                 const isCurrent = week.week === currentWeekNum;
+                const isPast = week.week < currentWeekNum;
                 const isTrip = week.trip;
                 const lmsInfo = week.lms.map(id => getLMInfo(id)).filter(Boolean);
                 const lmsPreview = lmsInfo.length > 0
                     ? lmsInfo.map(l => l.num).join(', ')
                     : (week.note || 'No modules');
 
+                // Calculate completion for this week
+                const completedInWeek = week.lms.filter(id => state.completedLMs.includes(id)).length;
+                const totalInWeek = week.lms.length;
+                const weekPercent = totalInWeek > 0 ? Math.round((completedInWeek / totalInWeek) * 100) : 0;
+                const isWeekComplete = totalInWeek > 0 && completedInWeek === totalInWeek;
+
+                // Status indicator
+                let statusIcon = '';
+                let statusClass = '';
+                if (isTrip) {
+                    statusIcon = '🏝️';
+                    statusClass = 'trip';
+                } else if (isWeekComplete) {
+                    statusIcon = '✅';
+                    statusClass = 'complete';
+                } else if (isPast && !isWeekComplete && totalInWeek > 0) {
+                    statusIcon = '⚠️';
+                    statusClass = 'behind';
+                } else if (isCurrent) {
+                    statusIcon = '📍';
+                    statusClass = 'current';
+                }
+
                 return `
-                    <div class="week-card ${isCurrent ? 'current' : ''} ${isTrip ? 'trip' : ''}" id="week-${week.week}">
+                    <div class="week-card ${isCurrent ? 'current' : ''} ${isTrip ? 'trip' : ''} ${isWeekComplete ? 'complete' : ''}" id="week-${week.week}">
                         <div class="week-header" onclick="toggleWeek(${week.week})">
-                            <span class="week-number">W${week.week}</span>
+                            <span class="week-number">${statusIcon || 'W' + week.week}</span>
                             <div class="week-info">
                                 <div class="week-dates">${week.start} – ${week.end}${isTrip ? '<span class="trip-badge">🏝️ Trip</span>' : ''}</div>
                                 <div class="week-lms-preview">${lmsPreview}</div>
+                                ${totalInWeek > 0 && !isTrip ? `
+                                    <div class="week-progress-bar">
+                                        <div class="week-progress-fill" style="width: ${weekPercent}%"></div>
+                                    </div>
+                                ` : ''}
                             </div>
-                            <div class="week-hours">${week.hours}h</div>
+                            <div class="week-meta">
+                                ${totalInWeek > 0 && !isTrip ? `<div class="week-completion">${completedInWeek}/${totalInWeek}</div>` : ''}
+                                <div class="week-hours">${week.hours}h</div>
+                            </div>
                             ${!isTrip ? `<span class="week-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg></span>` : ''}
                         </div>
                         ${!isTrip && lmsInfo.length > 0 ? `
                             <div class="week-details">
-                                ${lmsInfo.map(lm => `
-                                    <div class="week-lm-item">
+                                ${lmsInfo.map(lm => {
+                    const isLmComplete = state.completedLMs.includes(lm.id);
+                    return `
+                                    <div class="week-lm-item ${isLmComplete ? 'completed' : ''}">
+                                        <span class="week-lm-check">${isLmComplete ? '✓' : '○'}</span>
                                         <span class="week-lm-num">${lm.num}</span>
                                         <span class="week-lm-name">${lm.name}</span>
                                     </div>
-                                `).join('')}
+                                `}).join('')}
                             </div>
                         ` : ''}
                     </div>
