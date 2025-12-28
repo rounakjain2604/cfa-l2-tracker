@@ -281,6 +281,43 @@
             color: var(--sunset-orange);
         }
 
+        /* Focus Button */
+        .focus-btn {
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .focus-btn:hover {
+            box-shadow: 0 4px 16px rgba(255, 75, 43, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .focus-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Focus Card Header Styles */
+        .focus-greeting {
+            font-size: 0.7rem;
+            color: var(--text-label);
+            font-weight: 600;
+        }
+
+        .focus-date {
+            font-size: 0.7rem;
+            color: var(--text-label);
+            font-weight: 600;
+        }
+
         .progress-card {
             background: var(--bg-surface);
             border-radius: var(--radius-xl);
