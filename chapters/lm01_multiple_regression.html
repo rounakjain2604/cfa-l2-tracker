@@ -9,7 +9,7 @@
         href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 
-    <!-- KaTeX for math rendering -->
+    <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
@@ -47,13 +47,11 @@
             background: var(--bg);
             color: var(--ink);
             font-size: 15px;
-            line-height: 1.6;
-            padding: 0;
+            line-height: 1.65;
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* Header */
         .header {
             background: var(--paper);
             padding: 16px 20px;
@@ -76,7 +74,6 @@
             color: var(--ink-light);
         }
 
-        /* Navigation Pills */
         .nav-pills {
             display: flex;
             gap: 8px;
@@ -112,7 +109,6 @@
             color: white;
         }
 
-        /* Content */
         .content {
             padding: 20px;
             max-width: 100%;
@@ -120,7 +116,6 @@
             min-height: calc(100vh - 120px);
         }
 
-        /* Sections */
         .section {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -142,7 +137,6 @@
             }
         }
 
-        /* Typography */
         h2 {
             font-size: 1.15rem;
             font-weight: 700;
@@ -180,7 +174,6 @@
             margin-bottom: 6px;
         }
 
-        /* Highlights */
         .hl {
             background: var(--hl-yellow);
             padding: 1px 4px;
@@ -205,7 +198,6 @@
             border-radius: 3px;
         }
 
-        /* Formula Box */
         .formula-box {
             background: linear-gradient(135deg, #F5F3FF 0%, #E8E5FF 100%);
             border: 2px solid var(--accent);
@@ -238,7 +230,6 @@
             margin-top: 8px;
         }
 
-        /* Note Boxes */
         .note {
             background: #FFFBF0;
             border-left: 3px solid #F0C36D;
@@ -276,7 +267,6 @@
             font-size: 0.9rem;
         }
 
-        /* Tables */
         .table-wrap {
             width: 100%;
             overflow-x: auto;
@@ -301,7 +291,6 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            white-space: nowrap;
         }
 
         td {
@@ -315,7 +304,6 @@
             background: #FAFAFA;
         }
 
-        /* Cards */
         .card {
             background: white;
             border: 1px solid var(--border);
@@ -325,17 +313,6 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
         }
 
-        .card-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Example Box */
         .example {
             background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E8 100%);
             border: 1px solid #F0D9B5;
@@ -351,7 +328,6 @@
             margin-bottom: 10px;
         }
 
-        /* Key Point */
         .key-point {
             background: linear-gradient(135deg, #FFF5F0 0%, #FFECE8 100%);
             border-left: 3px solid var(--coral);
@@ -370,7 +346,6 @@
             margin-bottom: 6px;
         }
 
-        /* Exam Tip */
         .exam-tip {
             background: #F0FFF8;
             border-left: 3px solid var(--teal);
@@ -389,7 +364,24 @@
             margin-bottom: 6px;
         }
 
-        /* Code */
+        .trap {
+            background: #FFF5F3;
+            border-left: 3px solid var(--coral);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+
+        .trap::before {
+            content: "⚠️ EXAM TRAP";
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-bottom: 6px;
+        }
+
         code {
             background: #F5F3FF;
             padding: 2px 6px;
@@ -399,26 +391,49 @@
             color: var(--accent);
         }
 
-        /* Comparison Grid */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .flow-diagram {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 14px 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
             gap: 10px;
-            margin: 12px 0;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
         }
 
-        @media (max-width: 400px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
+        .flow-step:last-child {
+            border-bottom: none;
         }
 
-        /* Footer spacer */
+        .flow-num {
+            background: var(--accent);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .flow-text {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
         .footer-spacer {
             height: 80px;
         }
 
-        /* Subscript/Superscript */
         sub,
         sup {
             font-size: 0.7em;
@@ -429,164 +444,363 @@
 <body>
 
     <header class="header">
-        <h1>📐 LM 1: Multiple Regression</h1>
+        <h1>📐 LM 1: Multiple Regression Basics</h1>
         <p>Quantitative Methods • CFA Level II</p>
     </header>
 
     <nav class="nav-pills">
         <button class="nav-pill active" data-section="overview">Overview</button>
-        <button class="nav-pill" data-section="model">Model</button>
+        <button class="nav-pill" data-section="equation">Equation</button>
+        <button class="nav-pill" data-section="interpret">Interpret</button>
         <button class="nav-pill" data-section="assumptions">Assumptions</button>
-        <button class="nav-pill" data-section="anova">ANOVA</button>
-        <button class="nav-pill" data-section="hypothesis">Testing</button>
-        <button class="nav-pill" data-section="formulas">Formulas</button>
+        <button class="nav-pill" data-section="diagnostics">Diagnostics</button>
+        <button class="nav-pill" data-section="output">Output</button>
+        <button class="nav-pill" data-section="traps">Traps</button>
     </nav>
 
     <main class="content">
 
-        <!-- OVERVIEW SECTION -->
+        <!-- OVERVIEW -->
         <section class="section active" id="overview">
-            <h2>📌 Overview</h2>
+            <h2>📌 What is Multiple Regression?</h2>
 
-            <p><span class="hl">Multiple Linear Regression</span> extends simple regression by using <strong>two or
-                    more</strong> independent variables to explain a dependent variable.</p>
+            <p><span class="hl">Multiple Linear Regression</span> uses <strong>two or more independent
+                    variables</strong> to explain/predict a dependent variable — unlike simple regression which uses
+                just one.</p>
 
             <h3>Why Use It?</h3>
             <ul>
-                <li><strong>Identify relationships</strong> between variables</li>
-                <li><strong>Test theories</strong> about factor relationships</li>
-                <li><strong>Forecast</strong> returns, earnings, prices</li>
-                <li><strong>Control for confounding factors</strong></li>
+                <li><strong>Factor Models:</strong> Explain stock returns using market, size, value factors
+                    (Fama-French)</li>
+                <li><strong>Forecasting:</strong> Predict earnings, bond yields, house prices</li>
+                <li><strong>Test Theories:</strong> Does ESG score affect country equity returns?</li>
+                <li><strong>Risk Analysis:</strong> Predict financial distress using leverage, profitability, growth
+                </li>
             </ul>
 
             <div class="key-point">
-                Multiple regression isolates each variable's effect while holding others constant — the key advantage
-                over simple regression.
+                The power of multiple regression: It <strong>isolates</strong> each variable's effect while
+                <strong>holding others constant</strong>.
             </div>
 
-            <h3>Types of Investment Problems</h3>
-            <div class="card">
-                <ul>
-                    <li>Stock return prediction (factor models)</li>
-                    <li>Earnings forecasting</li>
-                    <li>Bond yield analysis</li>
-                    <li>Economic factor analysis</li>
-                </ul>
+            <h3>The Regression Process</h3>
+            <div class="flow-diagram">
+                <div class="flow-step"><span class="flow-num">1</span><span class="flow-text">Is $Y$ continuous? → If
+                        no, use <strong>Logistic Regression</strong></span></div>
+                <div class="flow-step"><span class="flow-num">2</span><span class="flow-text">Specify the model (choose
+                        $Y$ and $X$s)</span></div>
+                <div class="flow-step"><span class="flow-num">3</span><span class="flow-text">Estimate using software
+                        (Excel, Python, R)</span></div>
+                <div class="flow-step"><span class="flow-num">4</span><span class="flow-text">Check assumptions
+                        (residual plots)</span></div>
+                <div class="flow-step"><span class="flow-num">5</span><span class="flow-text">Evaluate fit (Is $F$-stat
+                        significant?)</span></div>
+                <div class="flow-step"><span class="flow-num">6</span><span class="flow-text">If OK → Use for
+                        prediction/analysis</span></div>
+            </div>
+
+            <div class="trap">
+                If the dependent variable is <strong>binary</strong> (0/1, Yes/No, Bankrupt/Not), you CANNOT use linear
+                regression. Use <strong>Logistic Regression</strong> instead.
             </div>
         </section>
 
-        <!-- MODEL SECTION -->
-        <section class="section" id="model">
-            <h2>📐 The Regression Model</h2>
+        <!-- EQUATION -->
+        <section class="section" id="equation">
+            <h2>📐 The Multiple Regression Equation</h2>
 
             <div class="formula-box">
                 <div class="label">General Form</div>
-                <div class="formula">$$Y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_k X_k +
+                <div class="formula">$$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \cdots + \beta_k X_{ki} +
                     \varepsilon_i$$</div>
+                <div class="desc">$i = 1, 2, \ldots, n$ observations</div>
             </div>
 
             <div class="table-wrap">
                 <table>
                     <tr>
                         <th>Term</th>
+                        <th>Name</th>
                         <th>Meaning</th>
                     </tr>
                     <tr>
                         <td>$Y_i$</td>
-                        <td>Dependent variable</td>
+                        <td>Dependent Variable</td>
+                        <td>What you're predicting (returns, price, earnings)</td>
                     </tr>
                     <tr>
                         <td>$\beta_0$</td>
-                        <td>Intercept (Y when all X = 0)</td>
+                        <td>Intercept</td>
+                        <td>Value of $Y$ when ALL $X$s = 0</td>
                     </tr>
                     <tr>
-                        <td>$\beta_k$</td>
-                        <td>Partial slope for $X_k$</td>
+                        <td>$\beta_j$</td>
+                        <td>Partial Slope Coefficient</td>
+                        <td>Change in $Y$ for 1-unit change in $X_j$, <em>holding all other $X$ constant</em></td>
                     </tr>
                     <tr>
                         <td>$\varepsilon_i$</td>
-                        <td>Error term (residual)</td>
+                        <td>Error Term</td>
+                        <td>Random noise the model can't explain</td>
                     </tr>
                     <tr>
                         <td>$k$</td>
-                        <td>Number of independent variables</td>
+                        <td># of Independent Variables</td>
+                        <td>How many $X$s in the model</td>
+                    </tr>
+                    <tr>
+                        <td>$n$</td>
+                        <td># of Observations</td>
+                        <td>Sample size (must be > $k$)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>Deterministic vs. Stochastic</h3>
+            <div class="card">
+                <ul>
+                    <li><strong>Deterministic part:</strong> $\beta_0 + \beta_1 X_1 + \cdots + \beta_k X_k$ — the
+                        explained portion</li>
+                    <li><strong>Stochastic part:</strong> $\varepsilon_i$ — random, unexplained variation</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- INTERPRET -->
+        <section class="section" id="interpret">
+            <h2>🔍 Interpreting Coefficients</h2>
+
+            <h3>The Intercept ($\beta_0$)</h3>
+            <div class="card">
+                <p><strong>Definition:</strong> The expected value of $Y$ when ALL independent variables are zero.</p>
+                <p>⚠️ Sometimes purely theoretical (a house with 0 sqft doesn't exist), but it's the mathematical
+                    anchor.</p>
+            </div>
+
+            <h3>Slope Coefficients ($\beta_1, \beta_2, \ldots$)</h3>
+
+            <div class="key-point">
+                <strong>THE GOLDEN RULE:</strong> Always add the phrase <span class="hl">"holding all other independent
+                    variables constant"</span> when interpreting slopes.
+            </div>
+
+            <div class="example">
+                <div class="example-title">📊 Bond Index Returns</div>
+                <p>$$\text{RET} = 0.0023 - 5.0585 \cdot \text{BY} - 2.1901 \cdot \text{CS}$$</p>
+                <ul>
+                    <li><strong>Intercept (0.0023):</strong> ~0.028% annual return if bond yields and credit spreads
+                        don't change</li>
+                    <li><strong>BY coef (−5.0585):</strong> 1% ↑ in govt bond yield → 5.06% ↓ in returns, <em>holding CS
+                            constant</em></li>
+                    <li><strong>CS coef (−2.1901):</strong> 1% ↑ in credit spreads → 2.19% ↓ in returns, <em>holding BY
+                            constant</em></li>
+                </ul>
+            </div>
+
+            <h3>Making Predictions</h3>
+            <div class="formula-box">
+                <div class="label">Predicted Value</div>
+                <div class="formula">$$\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1 X_1 + \hat{\beta}_2 X_2 + \cdots$$</div>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📊 Calculate Portfolio Return</div>
+                <p>Model: $\text{RETRF} = 1.53 + 0.59 \cdot \text{MKTRF} - 0.87 \cdot \text{SMB} - 0.06 \cdot
+                    \text{HML}$</p>
+                <p>Given: MKTRF = 1, SMB = 4, HML = −2</p>
+                <p>$$\hat{Y} = 1.53 + 0.59(1) - 0.87(4) - 0.06(-2) = \boxed{-1.25\%}$$</p>
+            </div>
+        </section>
+
+        <!-- ASSUMPTIONS -->
+        <section class="section" id="assumptions">
+            <h2>⚠️ The 5 Assumptions</h2>
+
+            <p>For valid statistical inference, these must hold:</p>
+
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Assumption</th>
+                        <th>Plain English</th>
+                        <th>Violation = Problem</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><span class="hl">Linearity</span></td>
+                        <td>$Y$ and each $X$ have a straight-line relationship</td>
+                        <td>Curved patterns in scatterplots</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><span class="hl">Homoskedasticity</span></td>
+                        <td>Residual variance is constant across all observations</td>
+                        <td>Funnel/fan shape in residual plot</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><span class="hl">Independence of Errors</span></td>
+                        <td>Today's error doesn't predict tomorrow's (no serial correlation)</td>
+                        <td>Wave pattern in residuals over time</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><span class="hl">Normality</span></td>
+                        <td>Residuals follow a bell curve</td>
+                        <td>Fat tails in Q-Q plot</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><span class="hl">No Multicollinearity</span></td>
+                        <td>No exact linear relationship among $X$s</td>
+                        <td>$X_1$ and $X_2$ are nearly identical</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="note warn">
+                <div class="note-title">⚠️ Important</div>
+                <p>Violations don't make the model useless — they affect the <strong>reliability of tests and
+                        inferences</strong>. You'll learn how to fix them in LM3.</p>
+            </div>
+
+            <h3>Vocabulary Alert</h3>
+            <div class="card">
+                <ul>
+                    <li><span class="hl-green">Homoskedasticity</span> = GOOD (constant variance)</li>
+                    <li><span class="hl-pink">Heteroskedasticity</span> = BAD (changing variance)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DIAGNOSTICS -->
+        <section class="section" id="diagnostics">
+            <h2>📊 Diagnostic Charts</h2>
+
+            <p>The exam shows you charts and asks: "Is the model okay?" Here's how to read them:</p>
+
+            <h3>1. Scatterplot Matrix (Pairwise Plots)</h3>
+            <div class="card">
+                <p><strong>Shows:</strong> Relationship between every pair of variables</p>
+                <p><strong>Check $Y$ vs $X$:</strong> Should be linear (straight cloud). Curved = violation of
+                    Linearity.</p>
+                <p><strong>Check $X$ vs $X$:</strong> Should be random blob. Perfect line = Multicollinearity.</p>
+            </div>
+
+            <h3>2. Residuals vs. Predicted Values</h3>
+            <div class="card">
+                <p><strong>The most important chart!</strong></p>
+                <table>
+                    <tr>
+                        <th>Shape</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>✅ Random cloud around 0</td>
+                        <td>Good! Assumptions OK</td>
+                    </tr>
+                    <tr>
+                        <td>❌ Funnel/megaphone</td>
+                        <td>Heteroskedasticity (unequal variance)</td>
+                    </tr>
+                    <tr>
+                        <td>❌ U-shape or smile</td>
+                        <td>Non-linearity (need curved model)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>3. Residuals vs. Independent Variable</h3>
+            <div class="card">
+                <p><strong>Shows:</strong> Errors plotted against one specific $X$</p>
+                <p><strong>Look for:</strong> Patterns or curves → that specific $X$ may need transformation (e.g.,
+                    $X^2$)</p>
+            </div>
+
+            <h3>4. Normal Q-Q Plot</h3>
+            <div class="card">
+                <p><strong>Shows:</strong> How residuals compare to a perfect normal distribution</p>
+                <table>
+                    <tr>
+                        <th>Shape</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>✅ Dots hug diagonal line</td>
+                        <td>Residuals are normal</td>
+                    </tr>
+                    <tr>
+                        <td>❌ Dots peel off at ends</td>
+                        <td>Fat Tails (extreme outliers more common)</td>
                     </tr>
                 </table>
             </div>
 
             <div class="exam-tip">
-                <strong>Partial slope interpretation:</strong> $\beta_1$ = expected change in Y for a 1-unit change
-                in $X_1$, <em>holding all other X constant</em>.
+                <strong>Chart Summary:</strong><br>
+                • Scatterplot → Check Linearity & Multicollinearity<br>
+                • Residuals vs Predicted → Check Homoskedasticity<br>
+                • Q-Q Plot → Check Normality
             </div>
+        </section>
 
-            <h3>Example</h3>
-            <div class="example">
-                <div class="example-title">📊 Stock Return Model</div>
-                <p><code>Return = 0.02 + 0.8(Market) + 0.3(Size) + 0.1(Value)</code></p>
+        <!-- OUTPUT -->
+        <section class="section" id="output">
+            <h2>📋 Reading Regression Output</h2>
+
+            <p>When you run regression in Excel/Python, you get a table. Here's what matters:</p>
+
+            <h3>1. R-Squared ($R^2$) — The Accuracy Score</h3>
+            <div class="formula-box">
+                <div class="label">R-Squared</div>
+                <div class="formula">$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$</div>
+                <div class="desc">% of $Y$'s variation explained by the model</div>
+            </div>
+            <div class="card">
                 <ul>
-                    <li><strong>0.02:</strong> Expected return when all factors = 0</li>
-                    <li><strong>0.8:</strong> 1% ↑ market → 0.8% ↑ return</li>
-                    <li><strong>0.3:</strong> Size factor effect</li>
+                    <li>$R^2 = 1.0$ → Model explains everything (suspiciously perfect)</li>
+                    <li>$R^2 = 0.0$ → Model explains nothing (useless)</li>
+                    <li><strong>Adjusted $R^2$:</strong> Use when comparing models with different # of $X$s (penalizes
+                        adding useless variables)</li>
                 </ul>
             </div>
-        </section>
 
-        <!-- ASSUMPTIONS SECTION -->
-        <section class="section" id="assumptions">
-            <h2>⚠️ Assumptions</h2>
-
-            <p>For valid inference, the model must satisfy:</p>
-
-            <div class="card">
-                <ol>
-                    <li><span class="hl">Linearity:</span> Linear relationship between Y and each X</li>
-                    <li><span class="hl">Homoskedasticity:</span> Constant variance of residuals</li>
-                    <li><span class="hl">No Serial Correlation:</span> Errors are independent</li>
-                    <li><span class="hl">Normality:</span> Residuals are normally distributed</li>
-                    <li><span class="hl">No Multicollinearity:</span> No exact linear relationship among X's</li>
-                    <li><span class="hl">No Endogeneity:</span> Errors uncorrelated with X's</li>
-                </ol>
-            </div>
-
-            <div class="note warn">
-                <div class="note-title">⚠️ Important</div>
-                <p>Violations don't invalidate the model — they affect <strong>reliability of tests and
-                        inferences</strong>.</p>
-            </div>
-
-            <h3>Detecting Violations</h3>
-            <div class="table-wrap">
-                <table>
-                    <tr>
-                        <th>Problem</th>
-                        <th>Detection</th>
-                    </tr>
-                    <tr>
-                        <td>Heteroskedasticity</td>
-                        <td>Breusch-Pagan test</td>
-                    </tr>
-                    <tr>
-                        <td>Serial correlation</td>
-                        <td>Durbin-Watson stat</td>
-                    </tr>
-                    <tr>
-                        <td>Multicollinearity</td>
-                        <td>VIF > 10</td>
-                    </tr>
-                </table>
-            </div>
-        </section>
-
-        <!-- ANOVA SECTION -->
-        <section class="section" id="anova">
-            <h2>📊 ANOVA & Fit</h2>
-
+            <h3>2. F-Statistic — The Pass/Fail Check</h3>
             <div class="formula-box">
-                <div class="label">Sum of Squares</div>
-                <div class="formula">$$SST = SSR + SSE$$</div>
-                <div class="desc">Total = Explained + Unexplained</div>
+                <div class="label">F-Statistic</div>
+                <div class="formula">$$F = \frac{MSR}{MSE} = \frac{SSR/k}{SSE/(n-k-1)}$$</div>
+            </div>
+            <div class="card">
+                <p><strong>Question it answers:</strong> "Is this whole group of $X$s useful?"</p>
+                <ul>
+                    <li>$p$-value < 0.05 → Model works</li>
+                    <li>$p$-value > 0.05 → Model is garbage, start over</li>
+                </ul>
             </div>
 
+            <h3>3. t-Statistic & p-value — Individual Coefficient Test</h3>
+            <div class="formula-box">
+                <div class="label">t-Statistic</div>
+                <div class="formula">$$t = \frac{\hat{\beta}_j - \beta_{j,0}}{SE(\hat{\beta}_j)}$$</div>
+                <div class="desc">df = $n - k - 1$</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Quick Rules:</strong><br>
+                • $|t| > 2$ → Coefficient is significant<br>
+                • $p$-value < 0.05 → Coefficient is significant<br>
+                    (These always agree with each other)
+            </div>
+
+            <h3>4. Standard Error of Estimate (SEE)</h3>
+            <div class="formula-box">
+                <div class="label">SEE</div>
+                <div class="formula">$$SEE = \sqrt{\frac{SSE}{n-k-1}}$$</div>
+                <div class="desc">Average prediction error (lower = better)</div>
+            </div>
+
+            <h3>ANOVA Table Components</h3>
             <div class="table-wrap">
                 <table>
                     <tr>
@@ -595,148 +809,99 @@
                         <th>Meaning</th>
                     </tr>
                     <tr>
-                        <td><strong>SST</strong></td>
+                        <td>SST</td>
                         <td>$\sum(Y_i - \bar{Y})^2$</td>
-                        <td>Total variation</td>
+                        <td>Total variation in $Y$</td>
                     </tr>
                     <tr>
-                        <td><strong>SSR</strong></td>
+                        <td>SSR</td>
                         <td>$\sum(\hat{Y}_i - \bar{Y})^2$</td>
-                        <td>Explained</td>
+                        <td>Explained by regression</td>
                     </tr>
                     <tr>
-                        <td><strong>SSE</strong></td>
+                        <td>SSE</td>
                         <td>$\sum(Y_i - \hat{Y}_i)^2$</td>
-                        <td>Residuals</td>
+                        <td>Unexplained (residuals)</td>
                     </tr>
                 </table>
             </div>
 
-            <h3>R² and Adjusted R²</h3>
-
             <div class="formula-box">
-                <div class="label">R-Squared</div>
-                <div class="formula">$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$</div>
-                <div class="desc">% of variance explained by model</div>
-            </div>
-
-            <div class="formula-box">
-                <div class="label">Adjusted R²</div>
-                <div class="formula">$$R^2_{adj} = 1 - \left[\frac{n-1}{n-k-1}\right](1 - R^2)$$</div>
-                <div class="desc">Penalizes adding weak variables</div>
-            </div>
-
-            <div class="key-point">
-                Use <strong>Adjusted R²</strong> when comparing models with different numbers of variables.
+                <div class="label">Key Identity</div>
+                <div class="formula">$$SST = SSR + SSE$$</div>
+                <div class="desc">Total = Explained + Unexplained</div>
             </div>
         </section>
 
-        <!-- HYPOTHESIS SECTION -->
-        <section class="section" id="hypothesis">
-            <h2>🧪 Hypothesis Testing</h2>
+        <!-- TRAPS -->
+        <section class="section" id="traps">
+            <h2>⚠️ Exam Traps</h2>
 
-            <h3>Individual Coefficients (t-test)</h3>
-
-            <div class="formula-box">
-                <div class="label">t-Statistic</div>
-                <div class="formula">$$t = \frac{\hat{\beta}_j - \beta_{j,0}}{SE(\hat{\beta}_j)}$$</div>
-                <div class="desc">df = n - k - 1</div>
+            <div class="trap">
+                <strong>Trap 1: Missing "Holding Constant"</strong><br>
+                If a question asks to interpret $\beta_1$, scan answers for "holding all other variables constant."
+                Answers without this phrase are usually WRONG.
             </div>
 
+            <div class="trap">
+                <strong>Trap 2: Correlation ≠ Causation</strong><br>
+                Just because $X$ is significant doesn't mean $X$ <em>causes</em> $Y$. They just move together.
+            </div>
+
+            <div class="trap">
+                <strong>Trap 3: Binary Dependent Variable</strong><br>
+                If $Y$ is Yes/No, 0/1, Bankrupt/Not → Use <strong>Logistic Regression</strong>, NOT Linear.
+            </div>
+
+            <div class="trap">
+                <strong>Trap 4: Chart Misinterpretation</strong><br>
+                • Funnel shape = Heteroskedasticity (variance problem)<br>
+                • U-shape = Non-linearity (model misspecification)<br>
+                • Q-Q tail deviation = Fat tails (non-normal residuals)
+            </div>
+
+            <div class="trap">
+                <strong>Trap 5: Outliers</strong><br>
+                Look for "lonely dots" far from the pack in any chart. Outliers can tilt the regression line and distort
+                results.
+            </div>
+
+            <h3>Quick Decision Guide</h3>
             <div class="table-wrap">
                 <table>
                     <tr>
-                        <th>Test</th>
-                        <th>H₀</th>
-                        <th>Decision</th>
+                        <th>If you see...</th>
+                        <th>It means...</th>
                     </tr>
                     <tr>
-                        <td>Two-tailed</td>
-                        <td>β = 0</td>
-                        <td>Reject if |t| > t<sub>crit</sub></td>
+                        <td>$X_1$ vs $X_2$ is a straight line</td>
+                        <td>Multicollinearity</td>
                     </tr>
                     <tr>
-                        <td>One-tailed</td>
-                        <td>β ≤ 0</td>
-                        <td>Reject if t > t<sub>crit</sub></td>
-                    </tr>
-                </table>
-            </div>
-
-            <h3>Overall Model (F-test)</h3>
-
-            <div class="formula-box">
-                <div class="label">F-Statistic</div>
-                <div class="formula">$$F = \frac{MSR}{MSE} = \frac{SSR/k}{SSE/(n-k-1)}$$</div>
-            </div>
-
-            <div class="exam-tip">
-                F-test answers: "Are <em>any</em> of the X variables useful?" If F > F<sub>crit</sub>, at least one β ≠
-                0.
-            </div>
-
-            <h3>Prediction</h3>
-
-            <div class="example">
-                <div class="example-title">📊 Example</div>
-                <p>Model: <code>EPS = 0.50 + 0.03(Rev) + 0.02(Assets)</code></p>
-                <p>If Rev = 100, Assets = 50:</p>
-                <p><code>EPS = 0.50 + 3 + 1 = <span class="hl-green">4.50</span></code></p>
-            </div>
-        </section>
-
-        <!-- FORMULAS SECTION -->
-        <section class="section" id="formulas">
-            <h2>📋 Formula Sheet</h2>
-
-            <div class="table-wrap">
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Formula</th>
+                        <td>Residuals vs Predicted is funnel-shaped</td>
+                        <td>Heteroskedasticity</td>
                     </tr>
                     <tr>
-                        <td>Regression</td>
-                        <td>$Y = \beta_0 + \beta_1 X_1 + \cdots + \varepsilon$</td>
+                        <td>Residuals vs Predicted is U-shaped</td>
+                        <td>Non-Linearity</td>
                     </tr>
                     <tr>
-                        <td>t-stat</td>
-                        <td>$t = \frac{\hat{\beta} - \beta_0}{SE(\hat{\beta})}$</td>
+                        <td>Q-Q plot peels off at ends</td>
+                        <td>Fat Tails (Non-Normal)</td>
                     </tr>
                     <tr>
-                        <td>F-stat</td>
-                        <td>$F = \frac{MSR}{MSE}$</td>
-                    </tr>
-                    <tr>
-                        <td>$R^2$</td>
-                        <td>$R^2 = \frac{SSR}{SST}$</td>
-                    </tr>
-                    <tr>
-                        <td>Adj $R^2$</td>
-                        <td>$1 - \frac{n-1}{n-k-1}(1-R^2)$</td>
-                    </tr>
-                    <tr>
-                        <td>SEE</td>
-                        <td>$\sqrt{\frac{SSE}{n-k-1}}$</td>
-                    </tr>
-                    <tr>
-                        <td>df</td>
-                        <td>$n - k - 1$</td>
+                        <td>Residuals over time show waves</td>
+                        <td>Serial Correlation</td>
                     </tr>
                 </table>
             </div>
 
             <div class="exam-tip">
-                <strong>Memory Trick:</strong><br>
-                • n = observations<br>
-                • k = independent variables<br>
-                • k+1 = total parameters<br>
-                • n-k-1 = error df
-            </div>
-
-            <div class="note tip">
-                <div class="note-title">✓ Quick Check</div>
-                <p>If p-value < α (usually 0.05), coefficient is <strong>statistically significant</strong>.</p>
+                <strong>Memory Trick for df:</strong><br>
+                • $n$ = observations<br>
+                • $k$ = independent variables<br>
+                • $k + 1$ = total parameters (including intercept)<br>
+                • $n - k - 1$ = degrees of freedom for error
             </div>
         </section>
 
@@ -745,23 +910,16 @@
     <div class="footer-spacer"></div>
 
     <script>
-        // Tab Navigation
         const pills = document.querySelectorAll('.nav-pill');
         const sections = document.querySelectorAll('.section');
 
         pills.forEach(pill => {
             pill.addEventListener('click', () => {
                 const targetId = pill.dataset.section;
-
-                // Update pills
                 pills.forEach(p => p.classList.remove('active'));
                 pill.classList.add('active');
-
-                // Update sections
                 sections.forEach(s => s.classList.remove('active'));
                 document.getElementById(targetId).classList.add('active');
-
-                // Scroll to top of content
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
