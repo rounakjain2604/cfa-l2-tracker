@@ -425,6 +425,7 @@
         <button class="nav-pill" data-section="formulas">Formulas</button>
         <button class="nav-pill" data-section="exhibits">Exhibits</button>
         <button class="nav-pill" data-section="jointftest">Joint F-Test</button>
+        <button class="nav-pill" data-section="forecasting">Forecasting</button>
         <button class="nav-pill" data-section="exam">Exam Tips</button>
         <button class="nav-pill" data-section="practice">Practice</button>
     </nav>
@@ -1783,9 +1784,185 @@
             </div>
         </section>
 
+        <!-- FORECASTING (LOS 2.04) -->
+        <section class="section" id="forecasting">
+            <h2>📈 LOS 2.04: Forecasting with Regression</h2>
+
+            <div class="note info">
+                <div class="note-title">🎯 Learning Outcome</div>
+                <p><em>"Calculate and interpret a predicted value for the dependent variable, given the estimated
+                        regression model and assumed values for the independent variable."</em></p>
+            </div>
+
+            <h3>The Prediction Formula</h3>
+
+            <div class="formula-box">
+                <div class="label">Multiple Regression Prediction</div>
+                <div class="formula">$$\hat{Y}_f = \hat{b}_0 + \hat{b}_1 X_{1f} + \hat{b}_2 X_{2f} + ... + \hat{b}_k
+                    X_{kf}$$</div>
+                <div class="desc">Multiply each coefficient by its assumed value, then sum all products</div>
+            </div>
+
+            <hr>
+
+            <h3>Critical Cautions</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Caution</th>
+                            <th>Why It Matters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Include ALL variables</strong></td>
+                            <td>Even insignificant ones — correlations were used in estimation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Include the intercept</strong></td>
+                            <td>Intercept × 1 must always be added</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Check variable scale</strong></td>
+                            <td>Decimal (0.05) vs percentage (5)?</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h3>Exhibit 9: Portfolio Return Prediction (CFAI)</h3>
+
+            <p><strong>Model:</strong></p>
+            <p>$$\hat{Y}_f = -2.1876 + 1.5992 × F_1 + 0.1923 × F_2 - 0.7126 × F_3 + 3.3376 × F_4 - 2.6832 × F_5$$</p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Assumed Value</th>
+                            <th>Coefficient</th>
+                            <th>Product</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Intercept</td>
+                            <td>1.000</td>
+                            <td>−2.1876</td>
+                            <td>−2.1876</td>
+                        </tr>
+                        <tr>
+                            <td>Factor 1</td>
+                            <td>0.110</td>
+                            <td>1.5992</td>
+                            <td>0.1759</td>
+                        </tr>
+                        <tr>
+                            <td>Factor 2</td>
+                            <td>0.040</td>
+                            <td>0.1923</td>
+                            <td>0.0077</td>
+                        </tr>
+                        <tr>
+                            <td>Factor 3</td>
+                            <td>0.080</td>
+                            <td>−0.7126</td>
+                            <td>−0.0570</td>
+                        </tr>
+                        <tr>
+                            <td>Factor 4</td>
+                            <td>−0.010</td>
+                            <td>3.3376</td>
+                            <td>−0.0334</td>
+                        </tr>
+                        <tr>
+                            <td>Factor 5</td>
+                            <td>0.001</td>
+                            <td>−2.6832</td>
+                            <td>−0.0027</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>Total</strong></td>
+                            <td><span class="hl">−2.0971%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h3>Standard Error of Forecast</h3>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>Model Error</h4>
+                    <p>Regression residual (ε)</p>
+                    <p><em>Inherent model uncertainty</em></p>
+                </div>
+                <div class="comparison-card">
+                    <h4>Sampling Error</h4>
+                    <p>Error from forecasting X values</p>
+                    <p><em>Out-of-sample uncertainty</em></p>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Key Insight:</strong> SE<sub>forecast</sub> > SEE (standard error of regression)
+                <p>Because sampling error adds to model error, the prediction interval is <span class="hl">wider</span>
+                    than within-sample error.</p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📊 95% Prediction Interval</div>
+                <p>Point estimate: −2.0971%</p>
+                <p>SE of forecast: 1.1466</p>
+                <p>95% bounds: <span class="hl-pink">[−4.4098, 0.2119]</span></p>
+                <p><em>We are 95% confident the true return lies within this range.</em></p>
+            </div>
+
+            <hr>
+
+            <h3>Common Mistakes</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mistake</th>
+                            <th>Correct</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Omitting insignificant variables</td>
+                            <td>ALWAYS include ALL variables</td>
+                        </tr>
+                        <tr>
+                            <td>Forgetting the intercept</td>
+                            <td>Intercept × 1 must be included</td>
+                        </tr>
+                        <tr>
+                            <td>Confusing SEE with SE<sub>forecast</sub></td>
+                            <td>SE<sub>forecast</sub> > SEE</td>
+                        </tr>
+                        <tr>
+                            <td>Wrong scale (0.05 vs 5)</td>
+                            <td>Match original variable units</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- PRACTICE -->
         <section class="section" id="practice">
             <h2>✏️ Practice Questions</h2>
+
 
 
             <div class="example">
