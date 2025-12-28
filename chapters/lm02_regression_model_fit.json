@@ -1,0 +1,489 @@
+{
+    "$schema": "LM Notes Schema for CFA L2 Study Dashboard - FCF Style",
+    "module": {
+        "id": "lm02",
+        "title": "Evaluating Regression Model Fit and Interpreting Model Results",
+        "topic": "Quantitative Methods",
+        "icon": "📊"
+    },
+    "navigation": [
+        {
+            "id": "overview",
+            "label": "Overview",
+            "icon": "📋",
+            "shortcut": "1"
+        },
+        {
+            "id": "goodness-of-fit",
+            "label": "Goodness of Fit",
+            "icon": "📈",
+            "shortcut": "2"
+        },
+        {
+            "id": "aic-bic",
+            "label": "AIC & BIC",
+            "icon": "⚖️",
+            "shortcut": "3"
+        },
+        {
+            "id": "examples",
+            "label": "Examples",
+            "icon": "🧮",
+            "shortcut": "4"
+        },
+        {
+            "id": "exam-summary",
+            "label": "Exam Summary",
+            "icon": "🎯",
+            "shortcut": "5"
+        }
+    ],
+    "sections": {
+        "overview": {
+            "title": "Module Overview",
+            "los": [
+                {
+                    "verb": "Evaluate",
+                    "description": "how well a multiple regression model explains the dependent variable by analyzing ANOVA table results and measures of goodness of fit"
+                }
+            ],
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "This module covers how to <hl>evaluate model quality</hl> in multiple regression. Unlike simple regression where R² is sufficient, multiple regression requires <hl-green>penalty-adjusted metrics</hl-green> to avoid overfitting."
+                },
+                {
+                    "type": "note",
+                    "variant": "info",
+                    "title": "Core Problem",
+                    "items": [
+                        "In multiple regression, R² NEVER decreases when adding variables",
+                        "This creates overfitting risk—adding useless variables inflates R²",
+                        "We need metrics that penalize model complexity"
+                    ]
+                },
+                {
+                    "type": "comparison-grid",
+                    "columns": 2,
+                    "cards": [
+                        {
+                            "title": "Simple Regression",
+                            "icon": "📉",
+                            "points": [
+                                "R² is an adequate fit measure",
+                                "Only one independent variable",
+                                "No overfitting concern"
+                            ]
+                        },
+                        {
+                            "title": "Multiple Regression",
+                            "icon": "📊",
+                            "points": [
+                                "R² alone is problematic",
+                                "Need Adjusted R², AIC, BIC",
+                                "Must penalize complexity"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "goodness-of-fit": {
+            "title": "R² and Adjusted R²",
+            "los": [
+                {
+                    "verb": "Evaluate",
+                    "description": "how well a multiple regression model explains the dependent variable by analyzing ANOVA table results and measures of goodness of fit"
+                }
+            ],
+            "content": [
+                {
+                    "type": "formula-box",
+                    "title": "R-Squared (Coefficient of Determination)",
+                    "formula": "\\[ R^2 = \\frac{SSR}{SST} = 1 - \\frac{SSE}{SST} \\]",
+                    "description": "SSR = Sum of Squares Regression (explained) | SSE = Sum of Squares Error (unexplained) | SST = Total Sum of Squares = SSR + SSE"
+                },
+                {
+                    "type": "note",
+                    "variant": "warn",
+                    "title": "3 Fatal Flaws of R² in Multiple Regression",
+                    "items": [
+                        "Cannot tell if coefficients are statistically significant",
+                        "Cannot detect biased coefficients or predictions",
+                        "Cannot distinguish good vs. bad models (high R² may = overfitting)"
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "text": "<hl>Overfitting</hl>: When a model is too complex with too many independent variables relative to observations. Coefficients may not represent true relationships with the dependent variable."
+                },
+                {
+                    "type": "formula-box",
+                    "title": "Adjusted R-Squared",
+                    "formula": "\\[ \\bar{R}^2 = 1 - \\left[\\frac{n - 1}{n - k - 1}\\right] \\times (1 - R^2) \\]",
+                    "description": "n = number of observations | k = number of independent variables (excluding intercept)"
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Property",
+                        "R²",
+                        "Adjusted R²"
+                    ],
+                    "rows": [
+                        [
+                            "Minimum value",
+                            "0",
+                            "Can be negative"
+                        ],
+                        [
+                            "When variable added",
+                            "Always ≥ (never decreases)",
+                            "May increase or decrease"
+                        ],
+                        [
+                            "Threshold for increase",
+                            "Any variable",
+                            "|t-statistic| > 1.0"
+                        ],
+                        [
+                            "Penalizes complexity?",
+                            "No",
+                            "Yes (via degrees of freedom)"
+                        ]
+                    ]
+                },
+                {
+                    "type": "note",
+                    "variant": "tip",
+                    "title": "The |t| > 1 Rule (CRITICAL FOR EXAM)",
+                    "items": [
+                        "If added variable's |t-statistic| > 1.0 → Adjusted R² INCREASES",
+                        "If added variable's |t-statistic| < 1.0 → Adjusted R² DECREASES",
+                        "WARNING: |t| = 1.0 is NOT statistical significance! Significance needs |t| ≈ 2.0",
+                        "Adjusted R² 'does not set a very high bar for the statistic to increase' — CFAI"
+                    ]
+                }
+            ]
+        },
+        "aic-bic": {
+            "title": "AIC and BIC Model Selection",
+            "los": [
+                {
+                    "verb": "Evaluate",
+                    "description": "how well a multiple regression model explains the dependent variable by analyzing ANOVA table results and measures of goodness of fit"
+                }
+            ],
+            "content": [
+                {
+                    "type": "formula-box",
+                    "title": "Akaike's Information Criterion (AIC)",
+                    "formula": "\\[ AIC = n \\times \\ln\\left(\\frac{SSE}{n}\\right) + 2(k + 1) \\]",
+                    "description": "n = observations | k = independent variables | 2(k+1) = complexity penalty | LOWER = BETTER"
+                },
+                {
+                    "type": "formula-box",
+                    "title": "Schwarz's Bayesian Information Criterion (BIC)",
+                    "formula": "\\[ BIC = n \\times \\ln\\left(\\frac{SSE}{n}\\right) + \\ln(n) \\times (k + 1) \\]",
+                    "description": "n = observations | k = independent variables | ln(n)(k+1) = HEAVIER penalty | LOWER = BETTER"
+                },
+                {
+                    "type": "comparison-grid",
+                    "columns": 2,
+                    "cards": [
+                        {
+                            "title": "AIC",
+                            "icon": "🎯",
+                            "points": [
+                                "Lighter penalty: 2(k+1)",
+                                "Preferred for PREDICTION",
+                                "Tends to select larger models",
+                                "Lower AIC = Better model"
+                            ]
+                        },
+                        {
+                            "title": "BIC",
+                            "icon": "⚖️",
+                            "points": [
+                                "Heavier penalty: ln(n)(k+1)",
+                                "Preferred for GOODNESS OF FIT",
+                                "Tends to select smaller models",
+                                "Lower BIC = Better model"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "note",
+                    "variant": "warn",
+                    "title": "Critical Exam Points",
+                    "items": [
+                        "AIC and BIC values ALONE are meaningless—only RELATIVE values matter",
+                        "Can ONLY compare models with the SAME dependent variable",
+                        "BIC penalty > AIC penalty always (since ln(n) > 2 when n > 7)",
+                        "Memory trick: AIC for Prediction (A-P), BIC for Best fit (B-B)"
+                    ]
+                }
+            ]
+        },
+        "examples": {
+            "title": "Worked Examples",
+            "los": [
+                {
+                    "verb": "Calculate",
+                    "description": "and interpret R², Adjusted R², AIC, and BIC from regression output"
+                }
+            ],
+            "content": [
+                {
+                    "type": "example-box",
+                    "title": "Example 1: Computing R² and Adjusted R² from ANOVA",
+                    "content": "5-factor portfolio regression with n=50 observations",
+                    "steps": [
+                        {
+                            "step": 1,
+                            "text": "Extract from ANOVA: SSR = 90.6234, SSE = 56.6182, SST = 147.2416",
+                            "calculation": ""
+                        },
+                        {
+                            "step": 2,
+                            "text": "Calculate R²",
+                            "calculation": "R² = SSR/SST = 90.6234/147.2416 = 0.6155"
+                        },
+                        {
+                            "step": 3,
+                            "text": "Calculate Adjusted R² (n=50, k=5)",
+                            "calculation": "Adj R² = 1 - [(49/44) × (1 - 0.6155)] = 1 - [1.1136 × 0.3845] = 0.5718"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Factor Added",
+                        "|t-stat|",
+                        "|t| > 1?",
+                        "Adj R² Effect"
+                    ],
+                    "rows": [
+                        [
+                            "Factor 1 (base)",
+                            "7.38",
+                            "Yes",
+                            "—"
+                        ],
+                        [
+                            "+ Factor 2",
+                            "0.26",
+                            "NO",
+                            "DECREASES ↓"
+                        ],
+                        [
+                            "+ Factor 3",
+                            "1.22",
+                            "Yes",
+                            "Increases ↑"
+                        ],
+                        [
+                            "+ Factor 4",
+                            "2.47",
+                            "Yes",
+                            "Increases ↑"
+                        ],
+                        [
+                            "+ Factor 5",
+                            "0.32",
+                            "NO",
+                            "DECREASES ↓"
+                        ]
+                    ]
+                },
+                {
+                    "type": "example-box",
+                    "title": "Example 2: Model Selection with AIC & BIC",
+                    "content": "Choose best model among 5 alternatives",
+                    "steps": [
+                        {
+                            "step": 1,
+                            "text": "Compare AIC values across models",
+                            "calculation": "Factor 1 only: 19.079 | Factors 1-4: 16.331 (LOWEST)"
+                        },
+                        {
+                            "step": 2,
+                            "text": "Compare BIC values across models",
+                            "calculation": "Factor 1 only: 22.903 (LOWEST) | All 5 factors: 29.687"
+                        },
+                        {
+                            "step": 3,
+                            "text": "Decision",
+                            "calculation": "For PREDICTION: Use 4-factor model (lowest AIC) | For PARSIMONY: Use 1-factor model (lowest BIC)"
+                        }
+                    ]
+                },
+                {
+                    "type": "example-box",
+                    "title": "Example 3: CAPEX Model Comparison (CFAI Knowledge Check)",
+                    "content": "Model 1: ROA ~ CAPEX | Model 2: ROA ~ CAPEX + ADV",
+                    "steps": [
+                        {
+                            "step": 1,
+                            "text": "Observe R² change",
+                            "calculation": "R² increased: 0.8799 → 0.8805 (expected, R² never decreases)"
+                        },
+                        {
+                            "step": 2,
+                            "text": "Observe Adjusted R² change",
+                            "calculation": "Adj R² DECREASED: 0.8749 → 0.8701"
+                        },
+                        {
+                            "step": 3,
+                            "text": "Check t-statistic of added variable (ADV)",
+                            "calculation": "|t-stat| = 0.332 < 1.0 → Variable hurts model"
+                        },
+                        {
+                            "step": 4,
+                            "text": "Verify with AIC/BIC",
+                            "calculation": "Model 1 AIC: 23.899 < Model 2 AIC: 25.804 → Model 1 wins"
+                        }
+                    ]
+                }
+            ]
+        },
+        "exam-summary": {
+            "title": "Exam Summary",
+            "los": [],
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "Quick reference for exam day"
+                }
+            ]
+        }
+    },
+    "examSummary": {
+        "quickFormulas": [
+            {
+                "name": "R-Squared",
+                "formula": "\\[ R^2 = \\frac{SSR}{SST} = 1 - \\frac{SSE}{SST} \\]",
+                "when": "Basic model fit measure (but problematic in multiple regression)"
+            },
+            {
+                "name": "Adjusted R-Squared",
+                "formula": "\\[ \\bar{R}^2 = 1 - \\left[\\frac{n-1}{n-k-1}\\right](1-R^2) \\]",
+                "when": "Penalized fit measure; use to evaluate if adding variables helps"
+            },
+            {
+                "name": "AIC",
+                "formula": "\\[ AIC = n \\ln(SSE/n) + 2(k+1) \\]",
+                "when": "Model selection for PREDICTION; lower = better"
+            },
+            {
+                "name": "BIC",
+                "formula": "\\[ BIC = n \\ln(SSE/n) + \\ln(n)(k+1) \\]",
+                "when": "Model selection for PARSIMONY; lower = better"
+            }
+        ],
+        "examTraps": [
+            "High R² does NOT mean good model — could be overfitting",
+            "|t-stat| > 1 increases Adj R², but 1.0 is NOT significance threshold (need ~2.0)",
+            "R² ALWAYS increases when adding variables; Adj R² may decrease",
+            "AIC/BIC values alone are meaningless — only RELATIVE values matter",
+            "Can ONLY compare AIC/BIC for models with SAME dependent variable",
+            "Adj R² can be negative; R² has minimum of zero",
+            "AIC tends to select LARGER models; BIC tends to select SMALLER models"
+        ],
+        "decisionTree": [
+            {
+                "condition": "Adding a variable with |t-stat| > 1.0",
+                "action": "Adjusted R² will INCREASE"
+            },
+            {
+                "condition": "Adding a variable with |t-stat| < 1.0",
+                "action": "Adjusted R² will DECREASE"
+            },
+            {
+                "condition": "Goal is PREDICTION",
+                "action": "Use AIC to select model (lower = better)"
+            },
+            {
+                "condition": "Goal is PARSIMONY / GOODNESS OF FIT",
+                "action": "Use BIC to select model (lower = better)"
+            },
+            {
+                "condition": "R² increased but Adj R² decreased",
+                "action": "Added variable is HURTING the model — remove it"
+            },
+            {
+                "condition": "Comparing two models",
+                "action": "Check Adj R², AIC, BIC — all three should agree on better model"
+            }
+        ]
+    },
+    "practiceQuestions": [
+        {
+            "id": 1,
+            "type": "conceptual",
+            "question": "A portfolio manager adds a momentum factor to her 3-factor model. The t-statistic is 0.85. What happens to adjusted R²?",
+            "options": [
+                "Increases",
+                "Decreases",
+                "Stays the same",
+                "Cannot determine"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Since |t-stat| = 0.85 < 1.0, the variable does not add sufficient explanatory power to offset the degrees of freedom penalty. Adjusted R² DECREASES."
+        },
+        {
+            "id": 2,
+            "type": "conceptual",
+            "question": "Which criterion should be used if the primary goal is prediction?",
+            "options": [
+                "R²",
+                "Adjusted R²",
+                "AIC",
+                "BIC"
+            ],
+            "correctAnswer": 2,
+            "explanation": "AIC is preferred when the goal is PREDICTION. BIC is preferred for parsimony/goodness of fit."
+        },
+        {
+            "id": 3,
+            "type": "calculation",
+            "question": "Given SSR = 450, SSE = 300, n = 60, k = 4. Calculate Adjusted R².",
+            "options": [
+                "0.60",
+                "0.57",
+                "0.55",
+                "0.52"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SST = 750, R² = 450/750 = 0.60. Adj R² = 1 - [(59/55) × 0.40] = 1 - 0.4291 = 0.5709 ≈ 0.57"
+        },
+        {
+            "id": 4,
+            "type": "conceptual",
+            "question": "Which statement about R² in multiple regression is CORRECT?",
+            "options": [
+                "R² can be negative",
+                "R² decreases when useless variables are added",
+                "R² cannot tell if coefficients are statistically significant",
+                "R² is always less than Adjusted R²"
+            ],
+            "correctAnswer": 2,
+            "explanation": "CFAI explicitly states that R² cannot provide information on whether coefficients are statistically significant. R² cannot be negative, never decreases with added variables, and is always ≥ Adjusted R²."
+        },
+        {
+            "id": 5,
+            "type": "conceptual",
+            "question": "BIC penalizes model complexity more heavily than AIC because:",
+            "options": [
+                "BIC uses SSR instead of SSE",
+                "ln(n) > 2 for sample sizes greater than 7",
+                "BIC does not account for degrees of freedom",
+                "AIC uses a logarithmic penalty"
+            ],
+            "correctAnswer": 1,
+            "explanation": "BIC penalty is ln(n)(k+1) while AIC penalty is 2(k+1). Since ln(n) > 2 when n > 7 (which is almost always true), BIC assesses a heavier penalty for additional variables."
+        }
+    ]
+}

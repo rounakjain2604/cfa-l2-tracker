@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LM2: Regression Model Fit | CFA L2</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg: #F8F6F3;
+            --paper: #FFFEF9;
+            --sidebar: #1A1A1A;
+            --sidebar-hover: #2A2A2A;
+            --ink: #0D0D0D;
+            --ink-light: #333333;
+            --accent: #6C5CE7;
+            --teal: #00B894;
+            --blue: #74B9FF;
+            --coral: #FF6B6B;
+            --hl-yellow: rgba(253, 203, 110, 0.55);
+            --hl-pink: rgba(253, 167, 167, 0.5);
+            --hl-green: rgba(129, 236, 168, 0.5);
+            --hl-purple: rgba(162, 155, 254, 0.5);
+            --border: #E8E4E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Mali', cursive;
+            background-color: var(--bg);
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--ink);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Mobile Hamburger Menu */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 1001;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 12px;
+            cursor: pointer;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 200px;
+            background: var(--sidebar);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h1 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+        }
+
+        .nav-section {
+            padding: 15px 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 8px 18px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            color: rgba(255, 255, 255, 0.75);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 0.85rem;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: 'Mali', cursive;
+        }
+
+        .nav-item:hover {
+            background: var(--sidebar-hover);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .nav-item .icon {
+            font-size: 1rem;
+        }
+
+        .nav-item .shortcut {
+            margin-left: auto;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .sidebar-footer {
+            padding: 10px 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 14%;
+            background: var(--teal);
+            border-radius: 2px;
+        }
+
+        .progress-text {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 6px;
+        }
+
+        /* Main Content Area */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px;
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topbar-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--ink-light);
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover {
+            background: var(--bg);
+            border-color: var(--ink-light);
+        }
+
+        .btn.primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Content Scroll Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px 28px;
+            background-color: var(--paper);
+            background-image:
+                linear-gradient(rgba(108, 92, 231, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(108, 92, 231, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .content-inner {
+            max-width: 100%;
+            margin: 0;
+        }
+
+        /* Page Sections */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 16px 0 8px;
+        }
+
+        h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin: 12px 0 6px;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* Highlights */
+        .hl {
+            background: var(--hl-yellow);
+            padding: 1px 5px;
+            border-radius: 2px;
+        }
+
+        .hl-pink {
+            background: var(--hl-pink);
+            padding: 1px 5px;
+            border-radius: 2px;
+        }
+
+        .hl-green {
+            background: var(--hl-green);
+            padding: 1px 5px;
+            border-radius: 2px;
+        }
+
+        .hl-purple {
+            background: var(--hl-purple);
+            padding: 1px 5px;
+            border-radius: 2px;
+        }
+
+        .hl-blue {
+            background: rgba(116, 185, 255, 0.4);
+            padding: 1px 5px;
+            border-radius: 2px;
+        }
+
+        /* Note Boxes */
+        .note {
+            background: #FFFBF0;
+            border-left: 3px solid #F0C36D;
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .note.tip {
+            border-left-color: var(--teal);
+            background: #F0FFF8;
+        }
+
+        .note.warn {
+            border-left-color: #E17055;
+            background: #FFF5F3;
+        }
+
+        .note.info {
+            border-left-color: var(--accent);
+            background: #F5F3FF;
+        }
+
+        .note-title {
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .note p {
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Tables */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.88rem;
+        }
+
+        .table th {
+            background: #5D4E9E;
+            color: white;
+            padding: 8px 12px;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #EEE;
+        }
+
+        .table tr:nth-child(even) {
+            background: #FAFAFA;
+        }
+
+        .table tr:hover {
+            background: #F5F3FF;
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .checklist li {
+            padding: 5px 0 5px 28px;
+            position: relative;
+            font-size: 0.9rem;
+            border-bottom: 1px dotted #E5E5E5;
+        }
+
+        .checklist li::before {
+            content: '○';
+            position: absolute;
+            left: 0;
+            color: #BBB;
+            font-size: 1.1rem;
+        }
+
+        .checklist li.done::before {
+            content: '●';
+            color: var(--teal);
+        }
+
+        /* Formula */
+        .formula-box {
+            background: linear-gradient(135deg, #F5F3FF 0%, #E8E5FF 100%);
+            border: 2px solid var(--accent);
+            padding: 16px 20px;
+            margin: 14px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .formula-box .formula-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .formula-box .formula-content {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .formula-box .formula-desc {
+            font-size: 0.85rem;
+            color: var(--ink-light);
+            margin-top: 8px;
+        }
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 14px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border: 1px solid #E8E4E0;
+            border-radius: 8px;
+            padding: 14px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-card h4 {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .comparison-card p {
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E8 100%);
+            border: 1px solid #F0D9B5;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 14px 0;
+        }
+
+        .example-box .example-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #C0792A;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Exam Trap */
+        .trap {
+            background: #FFF5F3;
+            border-left: 3px solid var(--coral);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+
+        .trap::before {
+            content: "⚠️ EXAM TRAP";
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--coral);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 14px 0;
+        }
+
+        .chart-container h4 {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 280px;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 14px 0;
+        }
+
+        .quiz-question {
+            margin-bottom: 16px;
+        }
+
+        .quiz-question p {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .quiz-option {
+            display: block;
+            padding: 10px 14px;
+            margin: 6px 0;
+            background: #F8F8F8;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-option:hover {
+            background: #F0F0FF;
+            border-color: var(--accent);
+        }
+
+        .quiz-option.selected {
+            background: #E8E5FF;
+            border-color: var(--accent);
+        }
+
+        .quiz-option.correct {
+            background: #E8FFF0;
+            border-color: var(--teal);
+        }
+
+        .quiz-option.incorrect {
+            background: #FFE8E8;
+            border-color: var(--coral);
+        }
+
+        .quiz-explanation {
+            display: none;
+            padding: 12px;
+            background: #F5F3FF;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .quiz-explanation.show {
+            display: block;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --bg: #121212;
+            --paper: #1E1E1E;
+            --ink: #E8E8E8;
+            --ink-light: #B0B0B0;
+            --border: #333333;
+        }
+
+        body.dark-mode .sidebar {
+            background: #0D0D0D;
+        }
+
+        body.dark-mode .topbar {
+            background: #1E1E1E;
+            border-bottom-color: #333;
+        }
+
+        body.dark-mode .content {
+            background: #1E1E1E;
+        }
+
+        body.dark-mode h2 {
+            color: #F0F0F0;
+        }
+
+        body.dark-mode .note {
+            background: #2A2A20;
+        }
+
+        body.dark-mode .note.tip {
+            background: #1A2A20;
+        }
+
+        body.dark-mode .note.warn {
+            background: #2A1A1A;
+        }
+
+        body.dark-mode .note.info {
+            background: #1A1A2A;
+        }
+
+        body.dark-mode .table th {
+            background: #333;
+        }
+
+        body.dark-mode .table td {
+            border-bottom-color: #333;
+        }
+
+        body.dark-mode .table tr:nth-child(even) {
+            background: #252525;
+        }
+
+        body.dark-mode .formula-box {
+            background: linear-gradient(135deg, #2A2A35 0%, #1E1E28 100%);
+            border-color: #6C5CE7;
+        }
+
+        body.dark-mode .btn {
+            background: #2A2A2A;
+            border-color: #444;
+            color: #CCC;
+        }
+
+        body.dark-mode .example-box {
+            background: linear-gradient(135deg, #2A2520 0%, #252018 100%);
+            border-color: #5A4A30;
+        }
+
+        body.dark-mode .comparison-card {
+            background: #252525;
+            border-color: #444;
+        }
+
+        body.dark-mode .chart-container {
+            background: #252525;
+            border-color: #444;
+        }
+
+        body.dark-mode .quiz-container {
+            background: #252525;
+            border-color: #444;
+        }
+
+        body.dark-mode .quiz-option {
+            background: #333;
+            border-color: #444;
+            color: #E0E0E0;
+        }
+
+        body.dark-mode .trap {
+            background: #2A1A1A;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 1000;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+
+            .topbar {
+                padding-left: 60px;
+            }
+
+            .topbar-title {
+                font-size: 0.8rem;
+            }
+
+            .content {
+                padding: 14px 16px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-wrapper {
+                height: 220px;
+            }
+
+            /* Mobile Table */
+            .table-responsive {
+                overflow-x: auto;
+            }
+
+            .table {
+                min-width: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hamburger Button (Mobile) -->
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>📊 Regression Fit</h1>
+            <p>CFA Level II • Quant</p>
+        </div>
+
+        <nav class="nav-section">
+            <button class="nav-item active" data-tab="introduction">
+                <span class="icon">📋</span>
+                <span>R² & Fit</span>
+                <span class="shortcut">1</span>
+            </button>
+            <button class="nav-item" data-tab="anova">
+                <span class="icon">📐</span>
+                <span>ANOVA & F-Test</span>
+                <span class="shortcut">2</span>
+            </button>
+            <button class="nav-item" data-tab="coefficients">
+                <span class="icon">🧮</span>
+                <span>Coefficients</span>
+                <span class="shortcut">3</span>
+            </button>
+            <button class="nav-item" data-tab="intervals">
+                <span class="icon">📏</span>
+                <span>Intervals</span>
+                <span class="shortcut">4</span>
+            </button>
+            <button class="nav-item" data-tab="diagnostics">
+                <span class="icon">🔍</span>
+                <span>Diagnostics</span>
+                <span class="shortcut">5</span>
+            </button>
+            <button class="nav-item" data-tab="summary">
+                <span class="icon">🎯</span>
+                <span>Exam Summary</span>
+                <span class="shortcut">6</span>
+            </button>
+            <button class="nav-item" data-tab="practice">
+                <span class="icon">✏️</span>
+                <span>Practice</span>
+                <span class="shortcut">7</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p class="progress-text">1 of 7 sections</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <header class="topbar">
+            <span class="topbar-title">📋 R² & Model Fit</span>
+            <div class="topbar-actions">
+                <button class="btn" onclick="document.body.classList.toggle('dark-mode')">Dark Mode</button>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="content-inner">
+                <!-- Section 1: Introduction & R² -->
+                <section class="page active" id="introduction">
+                    <h2>📋 Evaluating Regression Model Fit</h2>
+
+                    <div class="note tip">
+                        <div class="note-title">💡 LOS: Learning Objectives</div>
+                        <p>• <strong>Calculate</strong> and interpret R² and adjusted R²</p>
+                        <p>• <strong>Evaluate</strong> ANOVA table results and measures of goodness of fit</p>
+                    </div>
+
+                    <h3>Coefficient of Determination (R²)</h3>
+                    <p>R² measures the <span class="hl">proportion of total variation</span> in the dependent variable
+                        that is explained by the independent variable(s) in the regression model.</p>
+
+                    <div class="formula-box">
+                        <div class="formula-title">R-Squared Formula</div>
+                        <div class="formula-content">\[ R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST} \]</div>
+                        <div class="formula-desc">
+                            SSR = Sum of Squares Regression | SSE = Sum of Squares Error | SST = Total Sum of Squares
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4>📊 R² Interpretation</h4>
+                            <p>• R² = 0.70 → 70% of Y's variation explained by X</p>
+                            <p>• <span class="hl-green">Higher R² = Better fit</span></p>
+                            <p>• Range: 0 to 1 (or 0% to 100%)</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>⚠️ R² Limitation</h4>
+                            <p>• <span class="hl-pink">Always increases</span> when adding variables</p>
+                            <p>• Even if new variable is irrelevant!</p>
+                            <p>• Can lead to overfitting</p>
+                        </div>
+                    </div>
+
+                    <h3>Adjusted R²</h3>
+                    <p>Adjusted R² <span class="hl-purple">penalizes</span> adding variables that don't improve the
+                        model. It only increases if the new variable improves fit more than expected by chance.</p>
+
+                    <div class="formula-box">
+                        <div class="formula-title">Adjusted R-Squared</div>
+                        <div class="formula-content">\[ \bar{R}^2 = 1 - \left(\frac{n-1}{n-k-1}\right)(1 - R^2) \]</div>
+                        <div class="formula-desc">
+                            n = sample size | k = number of independent variables
+                        </div>
+                    </div>
+
+                    <div class="trap">
+                        <p><strong>R² vs Adjusted R²:</strong> When comparing models with <em>different numbers of
+                                variables</em>, always use <span class="hl">Adjusted R²</span>. R² will always increase
+                            (or stay same) when adding variables, even useless ones!</p>
+                    </div>
+
+                    <h3>Visual: R² Interpretation</h3>
+                    <div class="chart-container">
+                        <h4>Variance Decomposition</h4>
+                        <div class="chart-wrapper">
+                            <canvas id="r2Chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="note info">
+                        <div class="note-title">📌 Key Insight: |t| > 1 Rule</div>
+                        <p>If added variable's <span class="hl">|t-statistic| > 1.0</span> → Adjusted R²
+                            <strong>increases</strong>
+                        </p>
+                        <p>If added variable's |t-statistic| < 1.0 → Adjusted R² <strong>decreases</strong></p>
+                        <p><em>Warning: |t| = 1.0 is NOT significance! Significance needs |t| ≈ 2.0</em></p>
+                    </div>
+
+                    <h3>AIC & BIC: Model Selection Criteria</h3>
+                    <p>When adjusted R² is not enough, use <span class="hl-purple">information criteria</span> to select
+                        the best model from a set of candidates.</p>
+
+                    <div class="formula-box">
+                        <div class="formula-title">Akaike's Information Criterion (AIC)</div>
+                        <div class="formula-content">\[ AIC = n \times \ln\left(\frac{SSE}{n}\right) + 2(k + 1) \]</div>
+                        <div class="formula-desc">
+                            n = observations | k = independent variables | 2(k+1) = complexity penalty | <strong>LOWER =
+                                BETTER</strong>
+                        </div>
+                    </div>
+
+                    <div class="formula-box">
+                        <div class="formula-title">Bayesian Information Criterion (BIC)</div>
+                        <div class="formula-content">\[ BIC = n \times \ln\left(\frac{SSE}{n}\right) + \ln(n) \times (k
+                            + 1) \]</div>
+                        <div class="formula-desc">
+                            Heavier penalty: ln(n)(k+1) since ln(n) > 2 for n > 7 | <strong>LOWER = BETTER</strong>
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4>🎯 AIC</h4>
+                            <p>• Lighter penalty: 2(k+1)</p>
+                            <p>• Preferred for <span class="hl-green">PREDICTION</span></p>
+                            <p>• Tends to select larger models</p>
+                            <p>• Memory: <strong>A</strong>IC for <strong>A</strong>ccurate <strong>P</strong>rediction
+                            </p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>⚖️ BIC</h4>
+                            <p>• Heavier penalty: ln(n)(k+1)</p>
+                            <p>• Preferred for <span class="hl-blue">GOODNESS OF FIT</span></p>
+                            <p>• Tends to select smaller models</p>
+                            <p>• Memory: <strong>B</strong>IC for <strong>B</strong>est fit / <strong>B</strong>asic
+                                model</p>
+                        </div>
+                    </div>
+
+                    <div class="trap">
+                        <p><strong>AIC/BIC Values Are Meaningless Alone!</strong> Only <span class="hl">relative
+                                values</span> among models matter. You can ONLY compare models with the <strong>same
+                                dependent variable</strong>.</p>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">📝 Model Selection Example</div>
+                        <p>Given 5 candidate models for portfolio returns:</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>R²</th>
+                                    <th>Adj R²</th>
+                                    <th>AIC</th>
+                                    <th>BIC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Factor 1 only</td>
+                                    <td>0.541</td>
+                                    <td>0.531</td>
+                                    <td>19.08</td>
+                                    <td><span class="hl-green">22.90</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Factors 1-2</td>
+                                    <td>0.541</td>
+                                    <td>0.521</td>
+                                    <td>21.08</td>
+                                    <td>26.81</td>
+                                </tr>
+                                <tr>
+                                    <td>Factors 1-4</td>
+                                    <td>0.615</td>
+                                    <td>0.580</td>
+                                    <td><span class="hl-green">16.33</span></td>
+                                    <td>25.89</td>
+                                </tr>
+                                <tr>
+                                    <td>All 5 Factors</td>
+                                    <td>0.615</td>
+                                    <td>0.572</td>
+                                    <td>18.22</td>
+                                    <td>29.69</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>• <strong>For Prediction:</strong> Choose 4-factor model (lowest AIC = 16.33)</p>
+                        <p>• <strong>For Parsimony:</strong> Choose 1-factor model (lowest BIC = 22.90)</p>
+                    </div>
+
+                </section>
+
+                <!-- Section 2: ANOVA & F-Test -->
+                <section class="page" id="anova">
+                    <h2>📐 ANOVA Table & F-Test</h2>
+
+                    <div class="note tip">
+                        <div class="note-title">💡 LOS: Learning Objectives</div>
+                        <p>• <strong>Formulate</strong> and interpret the F-test for overall regression significance</p>
+                        <p>• <strong>Evaluate</strong> ANOVA table results</p>
+                    </div>
+
+                    <h3>ANOVA Table Structure</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>SS</th>
+                                    <th>df</th>
+                                    <th>MS</th>
+                                    <th>F</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Regression (SSR)</strong></td>
+                                    <td>Σ(Ŷᵢ - Ȳ)²</td>
+                                    <td>k</td>
+                                    <td>MSR = SSR/k</td>
+                                    <td rowspan="2">F = MSR/MSE</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Error (SSE)</strong></td>
+                                    <td>Σ(Yᵢ - Ŷᵢ)²</td>
+                                    <td>n - k - 1</td>
+                                    <td>MSE = SSE/(n-k-1)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total (SST)</strong></td>
+                                    <td>Σ(Yᵢ - Ȳ)²</td>
+                                    <td>n - 1</td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>F-Test for Overall Significance</h3>
+                    <div class="formula-box">
+                        <div class="formula-title">F-Statistic</div>
+                        <div class="formula-content">\[ F = \frac{MSR}{MSE} = \frac{SSR/k}{SSE/(n-k-1)} \]</div>
+                        <div class="formula-desc">
+                            Degrees of freedom: df₁ = k, df₂ = n - k - 1
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4>H₀: Null Hypothesis</h4>
+                            <p>All slope coefficients = 0</p>
+                            <p>\( b_1 = b_2 = ... = b_k = 0 \)</p>
+                            <p><em>Model has no explanatory power</em></p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>H₁: Alternative Hypothesis</h4>
+                            <p>At least one slope ≠ 0</p>
+                            <p><em>Model explains some variation</em></p>
+                            <p><span class="hl-green">Reject H₀ if F > F-critical</span></p>
+                        </div>
+                    </div>
+
+                    <div class="trap">
+                        <p><strong>F-Test vs t-Test:</strong> A significant F-test means the model as a whole is
+                            significant, but it does NOT mean all individual coefficients are significant. You still
+                            need t-tests for individual variables!</p>
+                    </div>
+
+                    <h3>Visual: F-Distribution</h3>
+                    <div class="chart-container">
+                        <h4>F-Test Critical Region</h4>
+                        <div class="chart-wrapper">
+                            <canvas id="fTestChart"></canvas>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Section 3: Coefficient Interpretation -->
+                <section class="page" id="coefficients">
+                    <h2>🧮 Interpreting Coefficients</h2>
+
+                    <div class="note tip">
+                        <div class="note-title">💡 LOS: Learning Objective</div>
+                        <p>• <strong>Analyze</strong> regression results, including interpreting coefficients</p>
+                    </div>
+
+                    <h3>Slope Coefficient Interpretation</h3>
+                    <p>For a regression: \( Y = b_0 + b_1X_1 + b_2X_2 + ... + b_kX_k \)</p>
+
+                    <div class="formula-box">
+                        <div class="formula-title">Coefficient Meaning</div>
+                        <div class="formula-content">\[ b_i = \frac{\Delta Y}{\Delta X_i} \text{ (holding all other X's
+                            constant)} \]</div>
+                        <div class="formula-desc">
+                            A one-unit increase in Xᵢ → bᵢ unit change in Y, ceteris paribus
+                        </div>
+                    </div>
+
+                    <h3>t-Test for Individual Coefficients</h3>
+                    <div class="formula-box">
+                        <div class="formula-title">t-Statistic</div>
+                        <div class="formula-content">\[ t = \frac{b_i - 0}{s_{b_i}} = \frac{b_i}{s_{b_i}} \]</div>
+                        <div class="formula-desc">
+                            H₀: bᵢ = 0 (variable has no effect) | df = n - k - 1
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">📝 Example: Interpreting Output</div>
+                        <p>Regression output shows: <strong>Sales = 50 + 2.5(Advertising) + 0.8(Price)</strong></p>
+                        <p>• <span class="hl">b₁ = 2.5</span>: Each $1 increase in Advertising → $2.50 increase in Sales
+                            (holding Price constant)</p>
+                        <p>• <span class="hl-green">b₂ = 0.8</span>: Each $1 increase in Price → $0.80 increase in Sales
+                            (holding Advertising constant)</p>
+                    </div>
+
+                    <h3>Standard Error of Estimate (SEE)</h3>
+                    <div class="formula-box">
+                        <div class="formula-title">Standard Error of Estimate</div>
+                        <div class="formula-content">\[ SEE = \sqrt{MSE} = \sqrt{\frac{SSE}{n-k-1}} \]</div>
+                        <div class="formula-desc">
+                            Measures the standard deviation of residuals (prediction errors)
+                        </div>
+                    </div>
+
+                    <div class="note warn">
+                        <div class="note-title">⚠️ Interpretation</div>
+                        <p>• <strong>Lower SEE</strong> = Better model fit (smaller prediction errors)</p>
+                        <p>• SEE is in the <span class="hl-pink">same units</span> as Y</p>
+                        <p>• Useful for comparing models with same dependent variable</p>
+                    </div>
+
+                </section>
+
+                <!-- Section 4: Prediction & Confidence Intervals -->
+                <section class="page" id="intervals">
+                    <h2>📏 Prediction vs Confidence Intervals</h2>
+
+                    <div class="note tip">
+                        <div class="note-title">💡 LOS: Learning Objective</div>
+                        <p>• <strong>Compare and contrast</strong> prediction intervals and confidence intervals</p>
+                    </div>
+
+                    <h3>Two Types of Intervals</h3>
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4>🎯 Confidence Interval</h4>
+                            <p>For the <span class="hl-blue">mean value</span> of Y</p>
+                            <p>Given X = x₀, what is μᵧ?</p>
+                            <p><strong>Narrower interval</strong></p>
+                            <p><em>Less uncertainty about the average</em></p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>📊 Prediction Interval</h4>
+                            <p>For an <span class="hl-pink">individual value</span> of Y</p>
+                            <p>Given X = x₀, what will Y be?</p>
+                            <p><strong>Wider interval</strong></p>
+                            <p><em>More uncertainty about any single observation</em></p>
+                        </div>
+                    </div>
+
+                    <div class="formula-box">
+                        <div class="formula-title">Key Relationship</div>
+                        <div class="formula-content">Prediction Interval > Confidence Interval</div>
+                        <div class="formula-desc">
+                            Prediction intervals include <em>extra variance</em> from individual observation uncertainty
+                        </div>
+                    </div>
+
+                    <div class="trap">
+                        <p><strong>Common Exam Question:</strong> "Which interval is wider?" — <span
+                                class="hl">Prediction interval</span> is ALWAYS wider because it accounts for both the
+                            uncertainty in the mean AND the variability of individual observations around that mean.</p>
+                    </div>
+
+                    <h3>Visual: Confidence vs Prediction Bands</h3>
+                    <div class="chart-container">
+                        <h4>Interval Comparison</h4>
+                        <div class="chart-wrapper">
+                            <canvas id="intervalChart"></canvas>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Section 5: Diagnostics -->
+                <section class="page" id="diagnostics">
+                    <h2>🔍 Regression Diagnostics</h2>
+
+                    <div class="note tip">
+                        <div class="note-title">💡 LOS: Learning Objective</div>
+                        <p>• <strong>Evaluate</strong> regression assumptions using diagnostic plots</p>
+                    </div>
+
+                    <h3>Key Assumptions to Check</h3>
+                    <ul class="checklist">
+                        <li><strong>Linearity:</strong> Relationship between X and Y is linear</li>
+                        <li><strong>Homoskedasticity:</strong> Constant variance of residuals</li>
+                        <li><strong>Independence:</strong> No autocorrelation in residuals</li>
+                        <li><strong>Normality:</strong> Residuals are normally distributed</li>
+                    </ul>
+
+                    <h3>Residual Plots</h3>
+                    <div class="chart-container">
+                        <h4>Residuals vs Fitted Values</h4>
+                        <div class="chart-wrapper">
+                            <canvas id="residualChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4>✅ Good Pattern</h4>
+                            <p>Random scatter around 0</p>
+                            <p>No visible pattern</p>
+                            <p><span class="hl-green">Assumptions likely met</span></p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>❌ Bad Patterns</h4>
+                            <p>• <strong>Funnel shape</strong> → Heteroskedasticity</p>
+                            <p>• <strong>Curve</strong> → Non-linearity</p>
+                            <p>• <strong>Pattern</strong> → Autocorrelation</p>
+                        </div>
+                    </div>
+
+                    <div class="note warn">
+                        <div class="note-title">⚠️ What to do if assumptions violated?</div>
+                        <p>• <strong>Heteroskedasticity:</strong> Use robust standard errors or transform variables</p>
+                        <p>• <strong>Autocorrelation:</strong> Use Newey-West standard errors or time-series models</p>
+                        <p>• <strong>Non-normality:</strong> For large samples, CLT may apply; otherwise transform Y</p>
+                    </div>
+
+                </section>
+
+                <!-- Section 6: Exam Summary -->
+                <section class="page" id="summary">
+                    <h2>🎯 Exam Summary</h2>
+
+                    <h3>Quick Formulas</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Measure</th>
+                                    <th>Formula</th>
+                                    <th>When to Use</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R²</td>
+                                    <td>\( 1 - \frac{SSE}{SST} \)</td>
+                                    <td>Single model evaluation</td>
+                                </tr>
+                                <tr>
+                                    <td>Adjusted R²</td>
+                                    <td>\( 1 - \frac{n-1}{n-k-1}(1-R^2) \)</td>
+                                    <td>Comparing models with different # of variables</td>
+                                </tr>
+                                <tr>
+                                    <td>F-stat</td>
+                                    <td>\( \frac{MSR}{MSE} \)</td>
+                                    <td>Overall model significance</td>
+                                </tr>
+                                <tr>
+                                    <td>t-stat</td>
+                                    <td>\( \frac{b_i}{s_{b_i}} \)</td>
+                                    <td>Individual coefficient significance</td>
+                                </tr>
+                                <tr>
+                                    <td>SEE</td>
+                                    <td>\( \sqrt{MSE} \)</td>
+                                    <td>Prediction accuracy</td>
+                                </tr>
+                                <tr>
+                                    <td>AIC</td>
+                                    <td>\( n \ln(SSE/n) + 2(k+1) \)</td>
+                                    <td>Model selection for <strong>prediction</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>BIC</td>
+                                    <td>\( n \ln(SSE/n) + \ln(n)(k+1) \)</td>
+                                    <td>Model selection for <strong>parsimony</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>⚠️ Exam Traps</h3>
+                    <div class="trap">
+                        <p><strong>1. R² Always Increases:</strong> Adding any variable (even random!) increases R². Use
+                            <span class="hl">Adjusted R²</span> for model comparison.
+                        </p>
+                    </div>
+                    <div class="trap">
+                        <p><strong>2. Significant F ≠ All Significant Coefficients:</strong> F-test is for the whole
+                            model; individual coefficients need separate t-tests.</p>
+                    </div>
+                    <div class="trap">
+                        <p><strong>3. Prediction vs Confidence:</strong> <span class="hl-pink">Prediction intervals are
+                                WIDER</span> because they include individual observation variance.</p>
+                    </div>
+                    <div class="trap">
+                        <p><strong>4. Degrees of Freedom:</strong> For F-test: df₁ = k, df₂ = <span class="hl">n - k -
+                                1</span> (not n - k or n - 1)</p>
+                    </div>
+                    <div class="trap">
+                        <p><strong>5. |t| > 1 ≠ Significance:</strong> |t-stat| > 1.0 increases Adjusted R², but
+                            significance requires |t| ≈ 2.0. Don't confuse these thresholds!</p>
+                    </div>
+                    <div class="trap">
+                        <p><strong>6. AIC/BIC Values Alone Mean Nothing:</strong> Only <span class="hl">relative
+                                values</span> matter. Can ONLY compare models with the <strong>same dependent
+                                variable</strong>.</p>
+                    </div>
+                    <div class="trap">
+                        <p><strong>7. AIC vs BIC:</strong> AIC for <span class="hl-green">Prediction</span> (larger
+                            models), BIC for <span class="hl-blue">Parsimony</span> (smaller models). BIC penalty is
+                            heavier since ln(n) > 2.</p>
+                    </div>
+
+                    <h3>Decision Tree: Which Metric?</h3>
+                    <div class="note info">
+                        <div class="note-title">📊 Model Evaluation Flow</div>
+                        <p>1️⃣ Is model significant overall? → <strong>F-test</strong></p>
+                        <p>2️⃣ Which variables matter? → <strong>t-tests</strong></p>
+                        <p>3️⃣ How much variation explained? → <strong>R²</strong></p>
+                        <p>4️⃣ Comparing models (different # of variables)? → <strong>Adjusted R²</strong></p>
+                        <p>5️⃣ Best model for prediction? → <strong>AIC</strong> (lower = better)</p>
+                        <p>6️⃣ Best parsimonious model? → <strong>BIC</strong> (lower = better)</p>
+                        <p>7️⃣ Prediction accuracy? → <strong>SEE</strong></p>
+                    </div>
+
+                </section>
+
+                <!-- Section 7: Practice -->
+                <section class="page" id="practice">
+                    <h2>✏️ Practice Questions</h2>
+
+                    <div class="quiz-container" id="quizContainer">
+                        <!-- Quiz will be loaded by JavaScript -->
+                    </div>
+
+                    <div id="quizScore" style="display: none; margin-top: 20px;">
+                        <div class="note tip">
+                            <div class="note-title">📊 Your Score</div>
+                            <p id="scoreText"></p>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+        const topbarTitle = document.querySelector('.topbar-title');
+        const progressFill = document.querySelector('.progress-fill');
+        const progressText = document.querySelector('.progress-text');
+
+        navItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+
+                const tabId = item.dataset.tab;
+                pages.forEach(page => page.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+
+                topbarTitle.textContent = item.querySelector('.icon').textContent + ' ' +
+                    item.querySelector('span:nth-child(2)').textContent;
+
+                const progress = ((index + 1) / navItems.length) * 100;
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `${index + 1} of ${navItems.length} sections`;
+
+                // Close sidebar on mobile
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '1' && e.key <= '7') {
+                const index = parseInt(e.key) - 1;
+                if (navItems[index]) {
+                    navItems[index].click();
+                }
+            }
+        });
+
+        // Mobile Sidebar Toggle
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('show');
+        }
+
+        // ============= CHARTS =============
+        // Chart 1: R² Visualization
+        const r2Ctx = document.getElementById('r2Chart');
+        if (r2Ctx) {
+            new Chart(r2Ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Explained (SSR)', 'Unexplained (SSE)'],
+                    datasets: [{
+                        data: [70, 30],
+                        backgroundColor: ['#6C5CE7', '#E8E4E0'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'R² = 0.70 (70% Explained)'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 2: F-Test Distribution
+        const fTestCtx = document.getElementById('fTestChart');
+        if (fTestCtx) {
+            const xValues = [];
+            const yValues = [];
+            for (let x = 0; x <= 8; x += 0.1) {
+                xValues.push(x.toFixed(1));
+                // Approximate F-distribution shape
+                const y = x > 0 ? Math.pow(x, 1) * Math.exp(-x * 0.7) : 0;
+                yValues.push(y);
+            }
+
+            new Chart(fTestCtx, {
+                type: 'line',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        label: 'F-Distribution',
+                        data: yValues,
+                        borderColor: '#6C5CE7',
+                        backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    xMin: 4,
+                                    xMax: 4,
+                                    borderColor: '#FF6B6B',
+                                    borderWidth: 2,
+                                    label: {
+                                        display: true,
+                                        content: 'F-critical'
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { display: false },
+                        x: {
+                            title: { display: true, text: 'F-statistic' },
+                            ticks: { maxTicksLimit: 10 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 3: Confidence vs Prediction Intervals
+        const intervalCtx = document.getElementById('intervalChart');
+        if (intervalCtx) {
+            const xData = [1, 2, 3, 4, 5, 6, 7, 8];
+            const yData = xData.map(x => 2 + 1.5 * x);
+            const ciUpper = xData.map((x, i) => yData[i] + 1.5);
+            const ciLower = xData.map((x, i) => yData[i] - 1.5);
+            const piUpper = xData.map((x, i) => yData[i] + 3);
+            const piLower = xData.map((x, i) => yData[i] - 3);
+
+            new Chart(intervalCtx, {
+                type: 'line',
+                data: {
+                    labels: xData,
+                    datasets: [
+                        {
+                            label: 'Prediction Interval (Upper)',
+                            data: piUpper,
+                            borderColor: '#FF6B6B',
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Confidence Interval (Upper)',
+                            data: ciUpper,
+                            borderColor: '#00B894',
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Fitted Line',
+                            data: yData,
+                            borderColor: '#6C5CE7',
+                            borderWidth: 3,
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Confidence Interval (Lower)',
+                            data: ciLower,
+                            borderColor: '#00B894',
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Prediction Interval (Lower)',
+                            data: piLower,
+                            borderColor: '#FF6B6B',
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12 } }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'X' } },
+                        y: { title: { display: true, text: 'Y' } }
+                    }
+                }
+            });
+        }
+
+        // Chart 4: Residual Plot
+        const residualCtx = document.getElementById('residualChart');
+        if (residualCtx) {
+            const fitted = [];
+            const residuals = [];
+            for (let i = 0; i < 30; i++) {
+                fitted.push(5 + i * 0.5);
+                residuals.push((Math.random() - 0.5) * 4);
+            }
+
+            new Chart(residualCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Residuals',
+                        data: fitted.map((f, i) => ({ x: f, y: residuals[i] })),
+                        backgroundColor: '#6C5CE7',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    yMin: 0,
+                                    yMax: 0,
+                                    borderColor: '#333',
+                                    borderWidth: 1,
+                                    borderDash: [5, 5]
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Fitted Values' } },
+                        y: { title: { display: true, text: 'Residuals' } }
+                    }
+                }
+            });
+        }
+
+        // ============= QUIZ =============
+        const quizData = [
+            {
+                question: "A regression model has R² = 0.65 and Adjusted R² = 0.58. When a new variable is added, R² = 0.66 and Adjusted R² = 0.55. What should the analyst conclude?",
+                options: {
+                    A: "Add the variable because R² increased",
+                    B: "Do not add the variable because Adjusted R² decreased",
+                    C: "Add the variable because both metrics improved"
+                },
+                correct: "B",
+                explanation: "When comparing models with different numbers of variables, always use Adjusted R². The decrease from 0.58 to 0.55 indicates the variable does not add enough explanatory power to justify the loss of degrees of freedom."
+            },
+            {
+                question: "The F-statistic for a regression is significant at the 5% level. This means:",
+                options: {
+                    A: "All individual coefficients are significantly different from zero",
+                    B: "At least one coefficient is significantly different from zero",
+                    C: "The model has no heteroskedasticity"
+                },
+                correct: "B",
+                explanation: "The F-test tests whether the model as a whole is significant (H₀: all slopes = 0). Rejecting H₀ means at least one slope ≠ 0, but you still need t-tests to determine which individual coefficients are significant."
+            },
+            {
+                question: "Which interval would be wider when predicting Y for a given X value?",
+                options: {
+                    A: "Confidence interval",
+                    B: "Prediction interval",
+                    C: "They are always equal"
+                },
+                correct: "B",
+                explanation: "Prediction intervals are always wider because they account for both the uncertainty in estimating the mean (what confidence intervals capture) AND the additional variability of individual observations around that mean."
+            },
+            {
+                question: "In an ANOVA table, what degrees of freedom would be used for the F-test with n=50 observations and k=4 independent variables?",
+                options: {
+                    A: "df₁ = 4, df₂ = 46",
+                    B: "df₁ = 4, df₂ = 45",
+                    C: "df₁ = 5, df₂ = 44"
+                },
+                correct: "B",
+                explanation: "For the F-test: df₁ = k = 4 (numerator, regression) and df₂ = n - k - 1 = 50 - 4 - 1 = 45 (denominator, error)."
+            },
+            {
+                question: "A residual plot shows a funnel shape (variance increasing with fitted values). This indicates:",
+                options: {
+                    A: "Multicollinearity",
+                    B: "Heteroskedasticity",
+                    C: "High R²"
+                },
+                correct: "B",
+                explanation: "A funnel-shaped residual plot indicates heteroskedasticity (non-constant variance). The variance of residuals increases as fitted values increase, violating the homoskedasticity assumption."
+            },
+            {
+                question: "An analyst is selecting the best model for predicting stock returns. Which criterion should she use?",
+                options: {
+                    A: "BIC (lower is better)",
+                    B: "AIC (lower is better)",
+                    C: "R² (higher is better)"
+                },
+                correct: "B",
+                explanation: "AIC is preferred when the goal is PREDICTION. BIC is preferred for selecting the most parsimonious model. R² is not suitable for model comparison because it always increases with more variables."
+            },
+            {
+                question: "Adding a variable with |t-statistic| = 0.75 to a regression model would most likely cause Adjusted R² to:",
+                options: {
+                    A: "Increase because any variable adds explanatory power",
+                    B: "Decrease because |t| < 1.0",
+                    C: "Stay the same because the t-statistic is not significant"
+                },
+                correct: "B",
+                explanation: "Adjusted R² increases only if the added variable's |t-statistic| > 1.0. Since |t| = 0.75 < 1.0, the variable does not add enough explanatory power to offset the degrees of freedom penalty, causing Adjusted R² to decrease."
+            }
+        ];
+
+        let userAnswers = {};
+        let quizSubmitted = false;
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = quizData.map((q, i) => `
+                <div class="quiz-question" id="q${i}">
+                    <p><strong>Q${i + 1}.</strong> ${q.question}</p>
+                    ${Object.entries(q.options).map(([key, value]) => `
+                        <label class="quiz-option" onclick="selectAnswer(${i}, '${key}')">
+                            <strong>${key}.</strong> ${value}
+                        </label>
+                    `).join('')}
+                    <div class="quiz-explanation" id="exp${i}">
+                        <strong>Explanation:</strong> ${q.explanation}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML += `
+                <button class="btn primary" onclick="submitQuiz()" style="margin-top: 20px;">Submit Quiz</button>
+            `;
+        }
+
+        function selectAnswer(qIndex, answer) {
+            if (quizSubmitted) return;
+            userAnswers[qIndex] = answer;
+
+            const question = document.getElementById(`q${qIndex}`);
+            question.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            const options = question.querySelectorAll('.quiz-option');
+            const answerIndex = answer.charCodeAt(0) - 65;
+            options[answerIndex].classList.add('selected');
+        }
+
+        function submitQuiz() {
+            if (quizSubmitted) return;
+            quizSubmitted = true;
+
+            let score = 0;
+            quizData.forEach((q, i) => {
+                const question = document.getElementById(`q${i}`);
+                const options = question.querySelectorAll('.quiz-option');
+                const correctIndex = q.correct.charCodeAt(0) - 65;
+
+                options[correctIndex].classList.add('correct');
+
+                if (userAnswers[i] === q.correct) {
+                    score++;
+                } else if (userAnswers[i]) {
+                    const wrongIndex = userAnswers[i].charCodeAt(0) - 65;
+                    options[wrongIndex].classList.add('incorrect');
+                }
+
+                document.getElementById(`exp${i}`).classList.add('show');
+            });
+
+            document.getElementById('quizScore').style.display = 'block';
+            document.getElementById('scoreText').textContent =
+                `You scored ${score} out of ${quizData.length} (${Math.round(score / quizData.length * 100)}%)`;
+        }
+
+        // Initialize quiz on page load
+        document.addEventListener('DOMContentLoaded', renderQuiz);
+    </script>
+</body>
+
+</html>

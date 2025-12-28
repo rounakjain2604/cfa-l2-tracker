@@ -1,0 +1,162 @@
+{
+    "$schema": "LM Notes Schema for CFA L2 Study Dashboard - FCF Style",
+    "$instructions": "Use this schema when converting PDF content to JSON for the study dashboard",
+    "module": {
+        "id": "lm02",
+        "title": "Time-Series Analysis",
+        "topic": "Quantitative Methods",
+        "icon": "📈"
+    },
+    "navigation": [
+        {
+            "id": "introduction",
+            "label": "Introduction",
+            "icon": "📋",
+            "shortcut": "1"
+        },
+        {
+            "id": "section2",
+            "label": "Section Title",
+            "icon": "📐",
+            "shortcut": "2"
+        }
+    ],
+    "sections": {
+        "introduction": {
+            "title": "Introduction Section Title",
+            "los": [
+                {
+                    "verb": "Compare",
+                    "description": "LOS text here"
+                }
+            ],
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "Regular paragraph with <hl>highlighted text</hl> and <hl-green>green highlight</hl-green>"
+                },
+                {
+                    "type": "note",
+                    "variant": "tip|warn|info",
+                    "title": "Note Title",
+                    "items": [
+                        "Point 1",
+                        "Point 2"
+                    ]
+                },
+                {
+                    "type": "formula-box",
+                    "title": "Formula Name",
+                    "formula": "LaTeX formula: \\[ y = mx + b \\]",
+                    "description": "What variables mean"
+                },
+                {
+                    "type": "comparison-grid",
+                    "columns": 2,
+                    "cards": [
+                        {
+                            "title": "Option A",
+                            "icon": "🏢",
+                            "points": [
+                                "Point 1",
+                                "Point 2"
+                            ]
+                        },
+                        {
+                            "title": "Option B",
+                            "icon": "👤",
+                            "points": [
+                                "Point 1",
+                                "Point 2"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "headers": [
+                        "Col1",
+                        "Col2",
+                        "Col3"
+                    ],
+                    "rows": [
+                        [
+                            "val1",
+                            "val2",
+                            "val3"
+                        ],
+                        [
+                            "val1",
+                            "val2",
+                            "val3"
+                        ]
+                    ]
+                },
+                {
+                    "type": "checklist",
+                    "items": [
+                        {
+                            "text": "Checklist item with <hl>highlight</hl>",
+                            "done": false
+                        }
+                    ]
+                },
+                {
+                    "type": "example-box",
+                    "title": "Example Title",
+                    "content": "Example description and walkthrough",
+                    "steps": [
+                        {
+                            "step": 1,
+                            "text": "Step description",
+                            "calculation": "LaTeX or text"
+                        }
+                    ]
+                },
+                {
+                    "type": "chart",
+                    "chartType": "line|scatter|bar",
+                    "title": "Chart Title",
+                    "data": {
+                        "labels": [
+                            "x1",
+                            "x2",
+                            "x3"
+                        ],
+                        "datasets": [
+                            {
+                                "label": "Series Name",
+                                "data": [
+                                    1,
+                                    2,
+                                    3
+                                ],
+                                "borderColor": "#6C5CE7"
+                            }
+                        ]
+                    },
+                    "interpretation": "What the chart demonstrates"
+                }
+            ]
+        }
+    },
+    "examSummary": {
+        "quickFormulas": [
+            {
+                "name": "Formula Name",
+                "formula": "LaTeX",
+                "when": "When to use it"
+            }
+        ],
+        "examTraps": [
+            "Common mistake 1",
+            "Common mistake 2"
+        ],
+        "decisionTree": [
+            {
+                "condition": "If X...",
+                "action": "Then use Y"
+            }
+        ]
+    }
+}
