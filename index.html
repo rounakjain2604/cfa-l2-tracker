@@ -1782,7 +1782,7 @@
             {
                 id: 'quant', name: 'Quantitative Methods', icon: '📐',
                 lms: [
-                    { id: 'lm1', num: 'LM 1', name: 'Basics of Multiple Regression', difficulty: 2 },
+                    { id: 'lm1', num: 'LM 1', name: 'Basics of Multiple Regression', difficulty: 2, notes: 'chapters/lm01_multiple_regression.html' },
                     { id: 'lm2', num: 'LM 2', name: 'Evaluating Regression Model Fit', difficulty: 3 },
                     { id: 'lm3', num: 'LM 3', name: 'Model Misspecification', difficulty: 4 },
                     { id: 'lm4', num: 'LM 4', name: 'Extensions of Multiple Regression', difficulty: 4 },
@@ -1801,9 +1801,9 @@
             {
                 id: 'fra', name: 'Financial Statement Analysis', icon: '📊',
                 lms: [
-                    { id: 'lm10', num: 'LM 10', name: 'Intercorporate Investments', difficulty: 5, notes: 'intercorporate_investments_notes.html' },
+                    { id: 'lm10', num: 'LM 10', name: 'Intercorporate Investments', difficulty: 5 },
                     { id: 'lm11', num: 'LM 11', name: 'Employee Compensation', difficulty: 4 },
-                    { id: 'lm12', num: 'LM 12', name: 'Multinational Operations', difficulty: 5, notes: 'multinational_operations_notes.html' },
+                    { id: 'lm12', num: 'LM 12', name: 'Multinational Operations', difficulty: 5 },
                     { id: 'lm13', num: 'LM 13', name: 'Analysis of Financial Institutions', difficulty: 4 },
                     { id: 'lm14', num: 'LM 14', name: 'Evaluating Quality of Financial Reports', difficulty: 3 },
                     { id: 'lm15', num: 'LM 15', name: 'Integration of FSA Techniques', difficulty: 3 }
@@ -1822,8 +1822,8 @@
                 id: 'equity', name: 'Equity Valuation', icon: '📈',
                 lms: [
                     { id: 'lm20', num: 'LM 20', name: 'Equity Valuation: Applications', difficulty: 3 },
-                    { id: 'lm21', num: 'LM 21', name: 'Discounted Dividend Valuation', difficulty: 4, notes: 'ddm_valuation_dashboard.html' },
-                    { id: 'lm22', num: 'LM 22', name: 'Free Cash Flow Valuation', difficulty: 4, notes: 'fcf_valuation_dashboard.html' },
+                    { id: 'lm21', num: 'LM 21', name: 'Discounted Dividend Valuation', difficulty: 4 },
+                    { id: 'lm22', num: 'LM 22', name: 'Free Cash Flow Valuation', difficulty: 4 },
                     { id: 'lm23', num: 'LM 23', name: 'Market-Based Valuation', difficulty: 3 },
                     { id: 'lm24', num: 'LM 24', name: 'Residual Income Valuation', difficulty: 4 },
                     { id: 'lm25', num: 'LM 25', name: 'Private Company Valuation', difficulty: 4 }
@@ -1842,7 +1842,7 @@
             {
                 id: 'deriv', name: 'Derivatives', icon: '🔀',
                 lms: [
-                    { id: 'lm31', num: 'LM 31', name: 'Pricing Forward Commitments', difficulty: 5, notes: 'forward_commitments_notes.html' },
+                    { id: 'lm31', num: 'LM 31', name: 'Pricing Forward Commitments', difficulty: 5 },
                     { id: 'lm32', num: 'LM 32', name: 'Valuation of Contingent Claims', difficulty: 5 }
                 ]
             },
@@ -2154,7 +2154,7 @@
                             <div class="study-card-title">${lm.num}: ${lm.name}</div>
                             <div class="study-card-meta">${lm.topicName}</div>
                         </div>
-                        <a href="../${lm.notes}" target="_blank" class="study-card-link">Open</a>
+                        <a href="${lm.notes}" target="_blank" class="study-card-link">Open</a>
                     </div>
                 </div>
             `).join('');

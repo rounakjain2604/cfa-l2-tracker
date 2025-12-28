@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LM1: Basics of Multiple Regression | CFA L2 Study Notes</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Mali:wght@600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-code: #0f0f1a;
+            --text: #eaeaea;
+            --text-sub: #a0a0b0;
+            --accent: #FF4B2B;
+            --accent-light: #FF6B4A;
+            --success: #34C759;
+            --warning: #FFD700;
+            --formula-bg: #1e2a4a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Mali', cursive;
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .formula-box {
+            background: var(--formula-bg);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 75, 43, 0.3);
+            overflow-x: auto;
+        }
+
+        .formula-box .label {
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, rgba(255, 75, 43, 0.1), rgba(255, 107, 74, 0.05));
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 3px solid var(--warning);
+        }
+
+        .key-point::before {
+            content: "💡 KEY POINT";
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+        }
+
+        .exam-tip {
+            background: rgba(52, 199, 89, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 3px solid var(--success);
+        }
+
+        .exam-tip::before {
+            content: "📝 EXAM TIP";
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+
+        ul,
+        ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: var(--bg-code);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        code {
+            background: var(--bg-code);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent-light);
+        }
+
+        .toc {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        .toc a {
+            color: var(--text-sub);
+            text-decoration: none;
+            display: block;
+            padding: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        .example {
+            background: var(--bg-code);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .example-title {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.15rem;
+            }
+
+            .formula-box {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📐 LM 1: Basics of Multiple Regression</h1>
+    <p class="subtitle">CFA Level II • Quantitative Methods</p>
+
+    <div class="toc">
+        <h3>📋 Contents</h3>
+        <a href="#overview">1. Overview & Purpose</a>
+        <a href="#model">2. The Multiple Regression Model</a>
+        <a href="#assumptions">3. Assumptions</a>
+        <a href="#interpretation">4. Interpreting Coefficients</a>
+        <a href="#anova">5. ANOVA & Goodness of Fit</a>
+        <a href="#hypothesis">6. Hypothesis Testing</a>
+        <a href="#prediction">7. Prediction</a>
+        <a href="#formulas">8. Formula Sheet</a>
+    </div>
+
+    <h2 id="overview">📌 1. Overview & Purpose</h2>
+
+    <div class="card">
+        <p><strong>Multiple Linear Regression</strong> extends simple regression by using <em>two or more</em>
+            independent variables to explain a dependent variable.</p>
+    </div>
+
+    <h3>Why Use Multiple Regression?</h3>
+    <ul>
+        <li><strong>Identify relationships</strong> between variables</li>
+        <li><strong>Test existing theories</strong> about factor relationships</li>
+        <li><strong>Forecast</strong> stock returns, earnings, bond prices, etc.</li>
+        <li><strong>Control for confounding factors</strong> by including them as independent variables</li>
+    </ul>
+
+    <div class="key-point">
+        Multiple regression isolates the effect of each independent variable while holding others constant — this is the
+        key advantage over simple regression.
+    </div>
+
+    <h2 id="model">📐 2. The Multiple Regression Model</h2>
+
+    <div class="formula-box">
+        <span class="label">General Form</span>
+        Y<sub>i</sub> = β<sub>0</sub> + β<sub>1</sub>X<sub>1,i</sub> + β<sub>2</sub>X<sub>2,i</sub> + ... +
+        β<sub>k</sub>X<sub>k,i</sub> + ε<sub>i</sub>
+    </div>
+
+    <table>
+        <tr>
+            <th>Term</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><code>Y<sub>i</sub></code></td>
+            <td>Dependent variable (what we're predicting)</td>
+        </tr>
+        <tr>
+            <td><code>β<sub>0</sub></code></td>
+            <td>Intercept (Y when all X = 0)</td>
+        </tr>
+        <tr>
+            <td><code>β<sub>k</sub></code></td>
+            <td>Partial slope coefficient for X<sub>k</sub></td>
+        </tr>
+        <tr>
+            <td><code>ε<sub>i</sub></code></td>
+            <td>Error term (residual)</td>
+        </tr>
+        <tr>
+            <td><code>k</code></td>
+            <td>Number of independent variables</td>
+        </tr>
+    </table>
+
+    <div class="exam-tip">
+        <strong>Partial slope coefficient interpretation:</strong> β<sub>1</sub> is the expected change in Y for a
+        1-unit change in X<sub>1</sub>, <em>holding all other X variables constant</em>.
+    </div>
+
+    <h2 id="assumptions">⚠️ 3. Assumptions of Multiple Regression</h2>
+
+    <p>For valid inference, the model must satisfy these assumptions:</p>
+
+    <div class="card">
+        <ol>
+            <li><strong>Linearity:</strong> Linear relationship between Y and each X</li>
+            <li><strong>Homoskedasticity:</strong> Constant variance of residuals across all observations</li>
+            <li><strong>No Serial Correlation:</strong> Errors are independent of each other (no autocorrelation)</li>
+            <li><strong>Normality:</strong> Residuals are normally distributed</li>
+            <li><strong>No Multicollinearity:</strong> No exact linear relationship among independent variables</li>
+            <li><strong>No Endogeneity:</strong> Errors are uncorrelated with independent variables</li>
+        </ol>
+    </div>
+
+    <div class="key-point">
+        Violations of assumptions don't invalidate the model — they affect the reliability of statistical tests and
+        inferences.
+    </div>
+
+    <h2 id="interpretation">🔍 4. Interpreting Coefficients</h2>
+
+    <div class="example">
+        <div class="example-title">📊 Example: Stock Return Model</div>
+        <p>Model: <code>Return = 0.02 + 0.8(Market) + 0.3(Size) + 0.1(Value)</code></p>
+        <ul>
+            <li><strong>Intercept (0.02):</strong> Expected return when all factors = 0</li>
+            <li><strong>Market β (0.8):</strong> 1% increase in market → 0.8% increase in return (holding size and value
+                constant)</li>
+            <li><strong>Size β (0.3):</strong> Effect of firm size factor</li>
+            <li><strong>Value β (0.1):</strong> Effect of value factor</li>
+        </ul>
+    </div>
+
+    <h2 id="anova">📊 5. ANOVA & Goodness of Fit</h2>
+
+    <h3>ANOVA Table Components</h3>
+
+    <div class="formula-box">
+        <span class="label">Sum of Squares Decomposition</span>
+        SST = SSR + SSE
+        <br><br>
+        Total Variation = Explained + Unexplained
+    </div>
+
+    <table>
+        <tr>
+            <th>Measure</th>
+            <th>Formula</th>
+            <th>Interpretation</th>
+        </tr>
+        <tr>
+            <td><strong>SST</strong></td>
+            <td>Σ(Y<sub>i</sub> - Ȳ)²</td>
+            <td>Total variation in Y</td>
+        </tr>
+        <tr>
+            <td><strong>SSR</strong></td>
+            <td>Σ(Ŷ<sub>i</sub> - Ȳ)²</td>
+            <td>Explained by regression</td>
+        </tr>
+        <tr>
+            <td><strong>SSE</strong></td>
+            <td>Σ(Y<sub>i</sub> - Ŷ<sub>i</sub>)²</td>
+            <td>Unexplained (residuals)</td>
+        </tr>
+    </table>
+
+    <h3>R² and Adjusted R²</h3>
+
+    <div class="formula-box">
+        <span class="label">R-Squared</span>
+        R² = SSR / SST = 1 - (SSE / SST)
+    </div>
+
+    <div class="formula-box">
+        <span class="label">Adjusted R-Squared</span>
+        R²<sub>adj</sub> = 1 - [(n-1)/(n-k-1)] × (1 - R²)
+    </div>
+
+    <div class="key-point">
+        <strong>Use Adjusted R²</strong> when comparing models with different numbers of independent variables. It
+        penalizes for adding variables that don't improve explanatory power.
+    </div>
+
+    <h2 id="hypothesis">🧪 6. Hypothesis Testing</h2>
+
+    <h3>Testing Individual Coefficients (t-test)</h3>
+
+    <div class="formula-box">
+        <span class="label">t-Statistic</span>
+        t = (b<sub>j</sub> - β<sub>j,hypothesized</sub>) / SE(b<sub>j</sub>)
+        <br><br>
+        Degrees of freedom = n - k - 1
+    </div>
+
+    <table>
+        <tr>
+            <th>Test</th>
+            <th>H₀</th>
+            <th>H₁</th>
+            <th>Decision</th>
+        </tr>
+        <tr>
+            <td>Two-tailed</td>
+            <td>β<sub>j</sub> = 0</td>
+            <td>β<sub>j</sub> ≠ 0</td>
+            <td>Reject if |t| > t<sub>critical</sub></td>
+        </tr>
+        <tr>
+            <td>One-tailed</td>
+            <td>β<sub>j</sub> ≤ 0</td>
+            <td>β<sub>j</sub> > 0</td>
+            <td>Reject if t > t<sub>critical</sub></td>
+        </tr>
+    </table>
+
+    <h3>Testing Overall Significance (F-test)</h3>
+
+    <div class="formula-box">
+        <span class="label">F-Statistic</span>
+        F = (SSR / k) / (SSE / (n-k-1)) = MSR / MSE
+    </div>
+
+    <div class="exam-tip">
+        The F-test answers: "Are <em>any</em> of the independent variables useful in explaining Y?" If F >
+        F<sub>critical</sub>, at least one β ≠ 0.
+    </div>
+
+    <h2 id="prediction">🎯 7. Prediction</h2>
+
+    <div class="formula-box">
+        <span class="label">Predicted Value</span>
+        Ŷ = b<sub>0</sub> + b<sub>1</sub>X<sub>1</sub> + b<sub>2</sub>X<sub>2</sub> + ... + b<sub>k</sub>X<sub>k</sub>
+    </div>
+
+    <div class="example">
+        <div class="example-title">📊 Example: Earnings Forecast</div>
+        <p>Model: <code>EPS = 0.50 + 0.03(Revenue) + 0.02(Assets)</code></p>
+        <p>If Revenue = 100 and Assets = 50:</p>
+        <p><code>EPS = 0.50 + 0.03(100) + 0.02(50) = 0.50 + 3 + 1 = 4.50</code></p>
+    </div>
+
+    <div class="key-point">
+        Prediction intervals are wider than confidence intervals because they account for both estimation error AND
+        inherent variability in Y.
+    </div>
+
+    <h2 id="formulas">📋 8. Formula Sheet</h2>
+
+    <table>
+        <tr>
+            <th>Formula</th>
+            <th>Expression</th>
+        </tr>
+        <tr>
+            <td>Multiple Regression</td>
+            <td><code>Y = β₀ + β₁X₁ + β₂X₂ + ... + βₖXₖ + ε</code></td>
+        </tr>
+        <tr>
+            <td>t-statistic</td>
+            <td><code>t = (b - β₀) / SE(b)</code></td>
+        </tr>
+        <tr>
+            <td>F-statistic</td>
+            <td><code>F = MSR / MSE</code></td>
+        </tr>
+        <tr>
+            <td>R²</td>
+            <td><code>R² = SSR / SST = 1 - (SSE/SST)</code></td>
+        </tr>
+        <tr>
+            <td>Adjusted R²</td>
+            <td><code>R²ₐ = 1 - [(n-1)/(n-k-1)](1-R²)</code></td>
+        </tr>
+        <tr>
+            <td>SEE</td>
+            <td><code>SEE = √(SSE / (n-k-1))</code></td>
+        </tr>
+        <tr>
+            <td>Degrees of Freedom</td>
+            <td><code>df = n - k - 1</code></td>
+        </tr>
+    </table>
+
+    <div class="exam-tip">
+        <strong>Quick Memory Trick:</strong><br>
+        • <strong>n</strong> = number of observations<br>
+        • <strong>k</strong> = number of independent variables<br>
+        • <strong>k+1</strong> = total parameters (including intercept)<br>
+        • <strong>n-k-1</strong> = degrees of freedom for error
+    </div>
+
+</body>
+
+</html>
