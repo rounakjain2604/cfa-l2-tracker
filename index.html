@@ -879,6 +879,361 @@
             opacity: 0.6;
         }
 
+        /* ========== CALENDAR HEAT MAP ========== */
+        .heatmap-container {
+            background: var(--bg-surface);
+            border-radius: var(--radius-xl);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-float);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .heatmap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .heatmap-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .heatmap-streak {
+            font-size: 0.75rem;
+            color: var(--sunset-coral);
+            font-weight: 600;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+
+        .heatmap-day-label {
+            font-size: 0.55rem;
+            color: var(--text-label);
+            text-align: center;
+            padding-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 3px;
+            background: var(--bg-accent);
+            position: relative;
+        }
+
+        .heatmap-cell.studied {
+            background: rgba(52, 199, 89, 0.3);
+        }
+
+        .heatmap-cell.studied-intense {
+            background: rgba(52, 199, 89, 0.6);
+        }
+
+        .heatmap-cell.today {
+            border: 2px solid var(--sunset-coral);
+        }
+
+        .heatmap-cell.future {
+            opacity: 0.4;
+        }
+
+        .heatmap-legend {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+            font-size: 0.55rem;
+            color: var(--text-label);
+        }
+
+        .heatmap-legend-box {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        /* ========== SPACED REPETITION / REVIEW DUE ========== */
+        .review-section {
+            background: var(--bg-surface);
+            border-radius: var(--radius-xl);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-float);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .review-count {
+            background: var(--sunset-coral);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 100px;
+            font-weight: 700;
+        }
+
+        .review-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-badge {
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .review-badge.day1 {
+            background: #FFE5E5;
+            color: #D04545;
+        }
+
+        .review-badge.day7 {
+            background: #FFF3E0;
+            color: #E67E22;
+        }
+
+        .review-badge.day30 {
+            background: #E8F5E9;
+            color: #27AE60;
+        }
+
+        .review-lm-name {
+            flex: 1;
+            font-size: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .review-action {
+            font-size: 0.7rem;
+            color: var(--sunset-coral);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Syllabus LM Review Badge */
+        .lm-review-badge {
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            background: #FFE5E5;
+            color: #D04545;
+            margin-left: 0.3rem;
+        }
+
+        /* ========== QUICK NOTES MODAL ========== */
+        .notes-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .notes-modal.active {
+            display: flex;
+        }
+
+        .notes-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            width: 100%;
+            max-width: 480px;
+            max-height: 70vh;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .notes-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notes-title {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .notes-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-label);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .notes-body {
+            padding: 1rem;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 150px;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            font-family: inherit;
+            resize: vertical;
+            background: var(--bg-surface);
+            color: var(--text-main);
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: var(--sunset-coral);
+        }
+
+        .notes-save {
+            width: 100%;
+            margin-top: 0.75rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .lm-notes-icon {
+            font-size: 0.75rem;
+            margin-left: 0.3rem;
+            opacity: 0.5;
+        }
+
+        .lm-notes-icon.has-notes {
+            opacity: 1;
+            color: var(--sunset-coral);
+        }
+
+        /* ========== MILESTONE CELEBRATION ========== */
+        .milestone-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            padding: 1rem;
+        }
+
+        .milestone-modal.active {
+            display: flex;
+        }
+
+        .milestone-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 340px;
+            padding: 2rem;
+            text-align: center;
+            animation: bounceIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes bounceIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .milestone-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .milestone-days {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Mali', cursive;
+            color: var(--sunset-coral);
+            margin-bottom: 0.25rem;
+        }
+
+        .milestone-label {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-bottom: 1rem;
+        }
+
+        .milestone-message {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .milestone-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
 
         /* ========== SYLLABUS SCREEN ========== */
 
@@ -1810,6 +2165,33 @@
                 <div id="homeScheduleList"></div>
             </div>
 
+            <!-- Calendar Heat Map -->
+            <div class="heatmap-container" id="heatmapContainer">
+                <div class="heatmap-header">
+                    <div class="heatmap-title">📅 Study Activity</div>
+                    <div class="heatmap-streak" id="heatmapStreak">0 day streak</div>
+                </div>
+                <div class="heatmap-grid" id="heatmapGrid"></div>
+                <div class="heatmap-legend">
+                    <span>Less</span>
+                    <div class="heatmap-legend-box" style="background: var(--bg-accent);"></div>
+                    <div class="heatmap-legend-box" style="background: rgba(52, 199, 89, 0.3);"></div>
+                    <div class="heatmap-legend-box" style="background: rgba(52, 199, 89, 0.6);"></div>
+                    <span>More</span>
+                </div>
+            </div>
+
+            <!-- Review Due Section -->
+            <div class="review-section" id="reviewSection" style="display: none;">
+                <div class="review-header">
+                    <div class="review-title">
+                        🔄 Due for Review
+                        <span class="review-count" id="reviewCount">0</span>
+                    </div>
+                </div>
+                <div id="reviewList"></div>
+            </div>
+
             <div class="progress-card">
                 <div class="progress-header">
                     <div class="progress-title">Overall Progress</div>
@@ -1966,6 +2348,33 @@
     <!-- Confetti Container -->
     <div class="confetti-container" id="confettiContainer"></div>
 
+    <!-- Notes Modal -->
+    <div class="notes-modal" id="notesModal">
+        <div class="notes-content">
+            <div class="notes-header">
+                <div class="notes-title" id="notesTitle">Quick Notes</div>
+                <button class="notes-close" onclick="closeNotes()">×</button>
+            </div>
+            <div class="notes-body">
+                <textarea class="notes-textarea" id="notesTextarea"
+                    placeholder="Jot down key formulas, gotchas, or exam tips..."></textarea>
+                <button class="notes-save" onclick="saveNotes()">💾 Save Notes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestone Modal -->
+    <div class="milestone-modal" id="milestoneModal">
+        <div class="milestone-content">
+            <div class="milestone-emoji" id="milestoneEmoji">🎯</div>
+            <div class="milestone-days" id="milestoneDays">100</div>
+            <div class="milestone-label">days until exam</div>
+            <div class="milestone-message" id="milestoneMessage">You're making great progress! Keep up the momentum.
+            </div>
+            <button class="milestone-btn" onclick="closeMilestone()">Let's Go! 💪</button>
+        </div>
+    </div>
+
     <script>
         // CFA Level 2 Full Syllabus with Difficulty Ratings (1=Easy, 5=Hard)
         const SYLLABUS = [
@@ -2091,11 +2500,14 @@
 
         const EXAM_DATE = new Date('2026-05-23');
         const PLAN_START = new Date('2025-12-28');
-        const STORAGE_KEY = 'cfa_l2_tracker_v6';
+        const STORAGE_KEY = 'cfa_l2_tracker_v7';
 
         let state = {
             completedLMs: [],
             completedDays: [], // Array of date strings 'YYYY-MM-DD'
+            lmCompletionDates: {}, // { lmId: 'YYYY-MM-DD' } for spaced repetition
+            lmNotes: {}, // { lmId: 'note text' } for quick notes
+            shownMilestones: [], // Track which milestone alerts have been shown
             streaks: {
                 current: 0,
                 longest: 0,
@@ -2110,6 +2522,7 @@
 
         function init() {
             loadState();
+            checkMilestones();
             updateGreeting();
             updateTodaysFocus();
             updateCountdown();
@@ -2120,8 +2533,10 @@
             renderTopicsSummary();
             renderPlan();
             renderDailySchedule();
+            renderCalendarHeatmap();
             renderStudy();
             updateStats();
+            renderReviewDue();
         }
 
         function loadState() {
@@ -2130,14 +2545,19 @@
                 const parsed = JSON.parse(saved);
                 state.completedLMs = parsed.completedLMs || [];
                 state.completedDays = parsed.completedDays || [];
+                state.lmCompletionDates = parsed.lmCompletionDates || {};
+                state.lmNotes = parsed.lmNotes || {};
+                state.shownMilestones = parsed.shownMilestones || [];
                 state.streaks = parsed.streaks || { current: 0, longest: 0, lastActiveDate: null };
             }
             // Migrate from old storage key
-            const oldSaved = localStorage.getItem('cfa_l2_tracker_v5');
+            const oldSaved = localStorage.getItem('cfa_l2_tracker_v6');
             if (oldSaved && !saved) {
                 const oldData = JSON.parse(oldSaved);
                 state.completedLMs = oldData.completedLMs || [];
                 state.completedDays = oldData.completedDays || [];
+                state.lmCompletionDates = oldData.lmCompletionDates || {};
+                state.lmNotes = oldData.lmNotes || {};
                 saveState();
             }
         }
@@ -2473,6 +2893,7 @@
                         <div class="topic-lms">
                             ${topic.lms.map(lm => {
                     const isChecked = state.completedLMs.includes(lm.id);
+                    const hasNotes = state.lmNotes[lm.id];
                     const diff = lm.difficulty || 3;
                     const diffDots = Array(5).fill(0).map((_, i) =>
                         `<span class="dot ${i < diff ? 'filled' : ''} ${diff >= 4 ? 'hard' : ''}"></span>`
@@ -2482,8 +2903,8 @@
                                         <div class="lm-check ${isChecked ? 'checked' : ''}" onclick="toggleLM('${lm.id}')">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                         </div>
-                                        <div class="lm-content">
-                                            <div class="lm-number">${lm.num}<span class="difficulty-badge">${diffDots}</span></div>
+                                        <div class="lm-content" onclick="openNotes('${lm.id}')" style="cursor: pointer;">
+                                            <div class="lm-number">${lm.num}<span class="difficulty-badge">${diffDots}</span><span class="lm-notes-icon ${hasNotes ? 'has-notes' : ''}">📝</span></div>
                                             <div class="lm-name">${lm.name}</div>
                                         </div>
                                     </div>
@@ -2534,6 +2955,7 @@
             const idx = state.completedLMs.indexOf(lmId);
             if (idx === -1) {
                 state.completedLMs.push(lmId);
+                trackLMCompletion(lmId, true); // Track for spaced repetition
                 showToast('Module completed! 🎉');
                 haptic('success');
             } else {
@@ -2545,6 +2967,8 @@
             renderTopicsSummary();
             updateStats();
             updateCountdown();
+            renderCalendarHeatmap();
+            renderReviewDue();
         }
 
         function updateStats() {
@@ -2905,6 +3329,188 @@
                 document.documentElement.setAttribute('data-theme', 'dark');
             }
         })();
+
+        // ========== CALENDAR HEAT MAP ==========
+        function renderCalendarHeatmap() {
+            const grid = document.getElementById('heatmapGrid');
+            const today = new Date();
+            const todayStr = formatDateKey(today);
+
+            // Show 6 weeks (42 days) - current week + 5 previous weeks
+            const startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 35); // Go back 5 weeks
+
+            // Align to start of week (Saturday based on current week start)
+            const dayOfWeek = startDate.getDay();
+            startDate.setDate(startDate.getDate() - dayOfWeek);
+
+            // Day labels
+            const dayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+            let html = dayLabels.map(d => `<div class="heatmap-day-label">${d}</div>`).join('');
+
+            // Generate 6 weeks of cells (42 cells)
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+                const dateKey = formatDateKey(date);
+
+                const isStudied = state.completedDays.includes(dateKey);
+                const isToday = dateKey === todayStr;
+                const isFuture = date > today;
+
+                // Check intensity (multiple LMs completed that day)
+                const lmsCompletedOnDay = Object.entries(state.lmCompletionDates)
+                    .filter(([_, d]) => d === dateKey).length;
+                const isIntense = lmsCompletedOnDay >= 2;
+
+                let classes = 'heatmap-cell';
+                if (isStudied || lmsCompletedOnDay > 0) classes += isIntense ? ' studied-intense' : ' studied';
+                if (isToday) classes += ' today';
+                if (isFuture) classes += ' future';
+
+                html += `<div class="${classes}" title="${dateKey}"></div>`;
+            }
+
+            grid.innerHTML = html;
+
+            // Update streak display
+            document.getElementById('heatmapStreak').textContent =
+                `${state.streaks.current} day streak 🔥`;
+        }
+
+        // ========== SPACED REPETITION ==========
+        function renderReviewDue() {
+            const section = document.getElementById('reviewSection');
+            const list = document.getElementById('reviewList');
+            const countEl = document.getElementById('reviewCount');
+
+            const today = new Date();
+            const reviewItems = [];
+
+            // Check each completed LM for review schedule
+            Object.entries(state.lmCompletionDates).forEach(([lmId, completionDate]) => {
+                const completed = new Date(completionDate);
+                const daysSince = Math.floor((today - completed) / (1000 * 60 * 60 * 24));
+
+                const lmInfo = getLMInfo(lmId);
+                if (!lmInfo) return;
+
+                // Check if due for review at Day 1, 7, or 30
+                if (daysSince >= 1 && daysSince < 2) {
+                    reviewItems.push({ lm: lmInfo, type: 'day1', label: 'Day 1', priority: 1 });
+                } else if (daysSince >= 7 && daysSince < 8) {
+                    reviewItems.push({ lm: lmInfo, type: 'day7', label: 'Day 7', priority: 2 });
+                } else if (daysSince >= 30 && daysSince < 31) {
+                    reviewItems.push({ lm: lmInfo, type: 'day30', label: 'Day 30', priority: 3 });
+                }
+            });
+
+            // Sort by priority
+            reviewItems.sort((a, b) => a.priority - b.priority);
+
+            if (reviewItems.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            countEl.textContent = reviewItems.length;
+
+            list.innerHTML = reviewItems.map(item => `
+                <div class="review-item">
+                    <span class="review-badge ${item.type}">${item.label}</span>
+                    <span class="review-lm-name">${item.lm.num}: ${item.lm.name}</span>
+                    <span class="review-action" onclick="showScreen('syllabus')">Review →</span>
+                </div>
+            `).join('');
+        }
+
+        // Track completion date when LM is marked complete
+        function trackLMCompletion(lmId, isComplete) {
+            if (isComplete) {
+                state.lmCompletionDates[lmId] = formatDateKey(new Date());
+            }
+            // Don't remove the date when unchecked - keeps the spaced rep schedule
+        }
+
+        // ========== QUICK NOTES ==========
+        let currentNotesLmId = null;
+
+        function openNotes(lmId) {
+            currentNotesLmId = lmId;
+            const lmInfo = getLMInfo(lmId);
+
+            document.getElementById('notesTitle').textContent =
+                `Notes: ${lmInfo ? lmInfo.num : lmId}`;
+            document.getElementById('notesTextarea').value =
+                state.lmNotes[lmId] || '';
+            document.getElementById('notesModal').classList.add('active');
+
+            // Focus textarea
+            setTimeout(() => {
+                document.getElementById('notesTextarea').focus();
+            }, 300);
+        }
+
+        function closeNotes() {
+            document.getElementById('notesModal').classList.remove('active');
+            currentNotesLmId = null;
+        }
+
+        function saveNotes() {
+            if (!currentNotesLmId) return;
+
+            const notes = document.getElementById('notesTextarea').value.trim();
+            if (notes) {
+                state.lmNotes[currentNotesLmId] = notes;
+            } else {
+                delete state.lmNotes[currentNotesLmId];
+            }
+
+            saveState();
+            showToast('Notes saved! 📝');
+            haptic('success');
+            closeNotes();
+            renderSyllabus(); // Refresh to show notes icon
+        }
+
+        // ========== EXAM COUNTDOWN MILESTONES ==========
+        const MILESTONES = [
+            { days: 146, emoji: '🚀', message: "The journey begins! You've got 146 days to master the curriculum. Start strong!" },
+            { days: 100, emoji: '💯', message: "100 days to go! You're well into your prep. Keep the momentum going!" },
+            { days: 60, emoji: '📈', message: "60 days left! Time to intensify. Focus on practice problems." },
+            { days: 30, emoji: '🎯', message: "30 days! Final stretch. Review weak areas and do mock exams." },
+            { days: 14, emoji: '⚡', message: "2 weeks! Light review only. Trust your preparation. You're ready!" },
+            { days: 7, emoji: '🌟', message: "1 week to go! Rest well, eat healthy, stay confident. You've got this!" }
+        ];
+
+        function checkMilestones() {
+            const today = new Date();
+            const daysLeft = Math.ceil((EXAM_DATE - today) / (1000 * 60 * 60 * 24));
+
+            for (const milestone of MILESTONES) {
+                // Check if we're at this milestone (±1 day) and haven't shown it
+                if (Math.abs(daysLeft - milestone.days) <= 1 &&
+                    !state.shownMilestones.includes(milestone.days)) {
+                    showMilestone(milestone.days, milestone.emoji, milestone.message);
+                    state.shownMilestones.push(milestone.days);
+                    saveState();
+                    break; // Only show one milestone at a time
+                }
+            }
+        }
+
+        function showMilestone(days, emoji, message) {
+            document.getElementById('milestoneEmoji').textContent = emoji;
+            document.getElementById('milestoneDays').textContent = days;
+            document.getElementById('milestoneMessage').textContent = message;
+            document.getElementById('milestoneModal').classList.add('active');
+            haptic('success');
+        }
+
+        function closeMilestone() {
+            document.getElementById('milestoneModal').classList.remove('active');
+        }
     </script>
 </body>
 
