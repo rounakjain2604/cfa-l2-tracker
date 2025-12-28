@@ -9,6 +9,12 @@
         href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
     <style>
         :root {
             --bg: #F8F6F3;
@@ -475,8 +481,8 @@
 
             <div class="formula-box">
                 <div class="label">General Form</div>
-                <div class="formula">Y<sub>i</sub> = β<sub>0</sub> + β<sub>1</sub>X<sub>1</sub> +
-                    β<sub>2</sub>X<sub>2</sub> + ... + β<sub>k</sub>X<sub>k</sub> + ε<sub>i</sub></div>
+                <div class="formula">$$Y_i = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_k X_k +
+                    \varepsilon_i$$</div>
             </div>
 
             <div class="table-wrap">
@@ -486,31 +492,31 @@
                         <th>Meaning</th>
                     </tr>
                     <tr>
-                        <td><code>Y<sub>i</sub></code></td>
+                        <td>$Y_i$</td>
                         <td>Dependent variable</td>
                     </tr>
                     <tr>
-                        <td><code>β<sub>0</sub></code></td>
+                        <td>$\beta_0$</td>
                         <td>Intercept (Y when all X = 0)</td>
                     </tr>
                     <tr>
-                        <td><code>β<sub>k</sub></code></td>
-                        <td>Partial slope for X<sub>k</sub></td>
+                        <td>$\beta_k$</td>
+                        <td>Partial slope for $X_k$</td>
                     </tr>
                     <tr>
-                        <td><code>ε<sub>i</sub></code></td>
+                        <td>$\varepsilon_i$</td>
                         <td>Error term (residual)</td>
                     </tr>
                     <tr>
-                        <td><code>k</code></td>
+                        <td>$k$</td>
                         <td>Number of independent variables</td>
                     </tr>
                 </table>
             </div>
 
             <div class="exam-tip">
-                <strong>Partial slope interpretation:</strong> β<sub>1</sub> = expected change in Y for a 1-unit change
-                in X<sub>1</sub>, <em>holding all other X constant</em>.
+                <strong>Partial slope interpretation:</strong> $\beta_1$ = expected change in Y for a 1-unit change
+                in $X_1$, <em>holding all other X constant</em>.
             </div>
 
             <h3>Example</h3>
@@ -577,7 +583,7 @@
 
             <div class="formula-box">
                 <div class="label">Sum of Squares</div>
-                <div class="formula">SST = SSR + SSE</div>
+                <div class="formula">$$SST = SSR + SSE$$</div>
                 <div class="desc">Total = Explained + Unexplained</div>
             </div>
 
@@ -590,17 +596,17 @@
                     </tr>
                     <tr>
                         <td><strong>SST</strong></td>
-                        <td>Σ(Y - Ȳ)²</td>
+                        <td>$\sum(Y_i - \bar{Y})^2$</td>
                         <td>Total variation</td>
                     </tr>
                     <tr>
                         <td><strong>SSR</strong></td>
-                        <td>Σ(Ŷ - Ȳ)²</td>
+                        <td>$\sum(\hat{Y}_i - \bar{Y})^2$</td>
                         <td>Explained</td>
                     </tr>
                     <tr>
                         <td><strong>SSE</strong></td>
-                        <td>Σ(Y - Ŷ)²</td>
+                        <td>$\sum(Y_i - \hat{Y}_i)^2$</td>
                         <td>Residuals</td>
                     </tr>
                 </table>
@@ -610,13 +616,13 @@
 
             <div class="formula-box">
                 <div class="label">R-Squared</div>
-                <div class="formula">R² = SSR / SST = 1 - (SSE / SST)</div>
+                <div class="formula">$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$</div>
                 <div class="desc">% of variance explained by model</div>
             </div>
 
             <div class="formula-box">
                 <div class="label">Adjusted R²</div>
-                <div class="formula">R²<sub>adj</sub> = 1 - [(n-1)/(n-k-1)] × (1 - R²)</div>
+                <div class="formula">$$R^2_{adj} = 1 - \left[\frac{n-1}{n-k-1}\right](1 - R^2)$$</div>
                 <div class="desc">Penalizes adding weak variables</div>
             </div>
 
@@ -633,7 +639,7 @@
 
             <div class="formula-box">
                 <div class="label">t-Statistic</div>
-                <div class="formula">t = (b<sub>j</sub> - β<sub>0</sub>) / SE(b<sub>j</sub>)</div>
+                <div class="formula">$$t = \frac{\hat{\beta}_j - \beta_{j,0}}{SE(\hat{\beta}_j)}$$</div>
                 <div class="desc">df = n - k - 1</div>
             </div>
 
@@ -661,7 +667,7 @@
 
             <div class="formula-box">
                 <div class="label">F-Statistic</div>
-                <div class="formula">F = MSR / MSE = (SSR/k) / (SSE/(n-k-1))</div>
+                <div class="formula">$$F = \frac{MSR}{MSE} = \frac{SSR/k}{SSE/(n-k-1)}$$</div>
             </div>
 
             <div class="exam-tip">
@@ -691,31 +697,31 @@
                     </tr>
                     <tr>
                         <td>Regression</td>
-                        <td>Y = β₀ + β₁X₁ + ... + ε</td>
+                        <td>$Y = \beta_0 + \beta_1 X_1 + \cdots + \varepsilon$</td>
                     </tr>
                     <tr>
                         <td>t-stat</td>
-                        <td>t = (b - β₀) / SE(b)</td>
+                        <td>$t = \frac{\hat{\beta} - \beta_0}{SE(\hat{\beta})}$</td>
                     </tr>
                     <tr>
                         <td>F-stat</td>
-                        <td>F = MSR / MSE</td>
+                        <td>$F = \frac{MSR}{MSE}$</td>
                     </tr>
                     <tr>
-                        <td>R²</td>
-                        <td>R² = SSR / SST</td>
+                        <td>$R^2$</td>
+                        <td>$R^2 = \frac{SSR}{SST}$</td>
                     </tr>
                     <tr>
-                        <td>Adj R²</td>
-                        <td>1 - [(n-1)/(n-k-1)](1-R²)</td>
+                        <td>Adj $R^2$</td>
+                        <td>$1 - \frac{n-1}{n-k-1}(1-R^2)$</td>
                     </tr>
                     <tr>
                         <td>SEE</td>
-                        <td>√(SSE / (n-k-1))</td>
+                        <td>$\sqrt{\frac{SSE}{n-k-1}}$</td>
                     </tr>
                     <tr>
                         <td>df</td>
-                        <td>n - k - 1</td>
+                        <td>$n - k - 1$</td>
                     </tr>
                 </table>
             </div>
