@@ -823,10 +823,16 @@
 
         <!-- ASSUMPTIONS -->
         <section class="section" id="assumptions">
-            <h2>⚠️ The 5 Assumptions</h2>
+            <h2>⚠️ The 5 Assumptions (The "Uber App" Analogy)</h2>
 
-            <p>We use the acronym <strong>Linearity, Homoskedasticity, Independence, Normality,
-                    Multicollinearity</strong>. Let's understand them with the <strong>Used Car Analogy</strong>.</p>
+            <div class="note info">
+                <div class="note-title">🚕 The Unified Analogy</div>
+                <p><strong>Stop thinking about math.</strong> Imagine you are building the pricing algorithm for Uber.
+                </p>
+                <p>Your goal is to predict the <strong>Fare ($Y$)</strong> based on <strong>Distance ($X$)</strong>.</p>
+                <p>The "Assumptions" are just the 5 rules required for your app to work fairly. If you break them, the
+                    app crashes or rips people off.</p>
+            </div>
 
             <div class="svg-container">
                 <div class="svg-card">
@@ -855,7 +861,7 @@
             </div>
 
             <div class="card">
-                <h4>1. Linearity</h4>
+                <h4>1. Linearity: "The Fair Meter Rule"</h4>
                 <div class="svg-container">
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -876,14 +882,15 @@
                         <div class="svg-label bad">Curved (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Assumption:</strong> The relationship is a straight line, not a curve.</p>
-                <p><strong>Analogy:</strong> As a car gets older, its price drops. If it drops by a consistent $1,000
-                    per year, that's linear. But if it drops hugely in Year 1 and then barely at all in Year 20, that's
-                    a curve (Non-linear). Linear regression would fail to capture that "U" shape.</p>
+                <p><strong>The Rule:</strong> Driving further should cost more.</p>
+                <p><strong>Uber Context:</strong> If 5 miles costs $10, and 10 miles costs $20, that's a straight line.
+                    That's good.</p>
+                <p><strong>The Trap:</strong> If 100 miles suddenly costs $5 because of a glitch, the relationship isn't
+                    a straight line anymore. Your simple calculator breaks.</p>
             </div>
 
             <div class="card">
-                <h4>2. Homoskedasticity ("Same Scatter")</h4>
+                <h4>2. Homoskedasticity ("Same Scatter"): "The Economy vs. Luxury Rule"</h4>
                 <div class="svg-container">
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -892,7 +899,7 @@
                             <circle cx="50" cy="25" r="2" fill="#00B894" />
                             <circle cx="80" cy="35" r="2" fill="#00B894" />
                         </svg>
-                        <div class="svg-label good">Consistent Errors (Good)</div>
+                        <div class="svg-label good">Consistent Accuracy (Good)</div>
                     </div>
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -901,23 +908,22 @@
                             <circle cx="80" cy="15" r="3" fill="#FF4B2B" />
                             <circle cx="80" cy="45" r="3" fill="#FF4B2B" />
                         </svg>
-                        <div class="svg-label bad">Growing Errors (Bad)</div>
+                        <div class="svg-label bad">Wild Guessing (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Assumption:</strong> Our ability to predict is equally good for small values and large
-                    values.</p>
-                <p><strong>Analogy:</strong> Predict the price of a Toyota Corolla vs. a Vintage Ferrari.</p>
+                <p><strong>The Rule:</strong> The app should be equally accurate for short rides and long rides.</p>
+                <p><strong>Uber Context:</strong></p>
                 <ul>
-                    <li><strong>Corolla (Cheap):</strong> You might be off by $\pm \$500$.</li>
-                    <li><strong>Ferrari (Expensive):</strong> You might be off by $\pm \$50,000$.</li>
+                    <li><strong>Good:</strong> It misses by $\pm \$1$ for a $10 ride, and misses by $\pm \$1$ for a $100
+                        ride.</li>
+                    <li><strong>Bad (Heteroskedastic):</strong> It misses by $\$1$ for short rides, but for a Long
+                        Airport Trip ($100), it might guess $50 or $150. The error "fans out." You can't trust it for
+                        big trips.</li>
                 </ul>
-                <p>If your error range <em>grows</em> as the price grows (Funnel Shape), that's <span
-                        class="hl-pink">Heteroskedasticity</span>. It means your model is unstable for high-value items.
-                </p>
             </div>
 
             <div class="card">
-                <h4>3. Independence of Errors</h4>
+                <h4>3. Independence: "The Fresh Start Rule"</h4>
                 <div class="svg-container">
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -926,7 +932,7 @@
                             <circle cx="30" cy="15" r="2" fill="#555" />
                             <circle cx="40" cy="35" r="2" fill="#555" />
                         </svg>
-                        <div class="svg-label good">Random Noise (Good)</div>
+                        <div class="svg-label good">Random (Good)</div>
                     </div>
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -936,17 +942,16 @@
                             <circle cx="20" cy="20" r="2" fill="#FF4B2B" />
                             <circle cx="30" cy="15" r="2" fill="#FF4B2B" />
                         </svg>
-                        <div class="svg-label bad">Pattern/Wave (Bad)</div>
+                        <div class="svg-label bad">Pattern (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Assumption:</strong> Today's mistake has nothing to do with yesterday's mistake.</p>
-                <p><strong>Analogy:</strong> If you under-predict stock returns in January, and that makes you likely to
-                    under-predict in February too, your errors are "correlated" (Serial Correlation). This usually
-                    happens during economic cycles (e.g., a recession makes you wrong for 6 months in a row).</p>
+                <p><strong>The Rule:</strong> Overcharging one customer shouldn't make you overcharge the next one.</p>
+                <p><strong>Uber Context:</strong> If the app accidentally charges Rider A too much, it shouldn't "learn"
+                    from that and charge Rider B too much as well. Each mistake must be a one-off accident.</p>
             </div>
 
             <div class="card">
-                <h4>4. Normality of Errors</h4>
+                <h4>4. Normality: "The No-Disasters Rule"</h4>
                 <div class="svg-container">
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -961,18 +966,17 @@
                             <circle cx="5" cy="50" r="3" fill="#FF4B2B" />
                             <circle cx="95" cy="50" r="3" fill="#FF4B2B" />
                         </svg>
-                        <div class="svg-label bad">Fat Tails/Outliers (Bad)</div>
+                        <div class="svg-label bad">Disasters (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Assumption:</strong> Our mistakes follow a Bell Curve. Most are small; huge misses are
-                    rare.</p>
-                <p><strong>Analogy:</strong> If your model usually works, but once a year it fails CATASTROPHICALLY
-                    (predicts a stock will go up 10% but it drops 90%), you have "Fat Tails." The model is more
-                    dangerous than it looks.</p>
+                <p><strong>The Rule:</strong> Most mistakes should be tiny. Huge mistakes should be basically
+                    impossible.</p>
+                <p><strong>Uber Context:</strong> It's okay if the app is off by few cents often. But if once a week it
+                    charges someone <strong>$10,000</strong> for a $10 ride, your model is broken ("Fat Tails").</p>
             </div>
 
             <div class="card">
-                <h4>5. No Multicollinearity</h4>
+                <h4>5. No Multicollinearity: "The Double-Counting Rule"</h4>
                 <div class="svg-container">
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -980,7 +984,7 @@
                             <circle cx="70" cy="30" r="20" fill="#6C5CE7" opacity="0.6" /><text x="50" y="55"
                                 font-size="8" text-anchor="middle">Tiny Overlap</text>
                         </svg>
-                        <div class="svg-label good">Distinct Inputs (Good)</div>
+                        <div class="svg-label good">Distinct (Good)</div>
                     </div>
                     <div class="svg-card">
                         <svg viewBox="0 0 100 60">
@@ -988,17 +992,14 @@
                             <circle cx="55" cy="30" r="20" fill="#FF4B2B" opacity="0.6" /><text x="50" y="55"
                                 font-size="8" text-anchor="middle">Huge Overlap</text>
                         </svg>
-                        <div class="svg-label bad">Double Counting (Bad)</div>
+                        <div class="svg-label bad">Redundant (Bad)</div>
                     </div>
                 </div>
-                <p><strong>The Assumption:</strong> None of the inputs explain the exact same thing.</p>
-                <p><strong>Analogy:</strong> Imagine predicting someone's weight using "Height in Inches" and "Height in
-                    Centimeters."</p>
-                <p>They tell you the <em>exact same thing</em>. The math gets confused distinguishing between them and
-                    "blows up" the standard errors. You must remove one.</p>
-            </div>
-            <p>They tell you the <em>exact same thing</em>. The math gets confused distinguishing between them and
-                "blows up" the standard errors. You must remove one.</p>
+                <p><strong>The Rule:</strong> Don't use the same input twice with different names.</p>
+                <p><strong>Uber Context:</strong> You calculate price using <strong>Distance in Miles</strong>. You
+                    cannot ALSO add <strong>Distance in Kilometers</strong> as a second input.</p>
+                <p>Why? Because if distance doubles, the computer won't know if it should credit the "Miles" input or
+                    the "Km" input. It gets confused and the math blows up.</p>
             </div>
             <div class="note warn">
                 <div class="note-title">⚠️ Important</div>
