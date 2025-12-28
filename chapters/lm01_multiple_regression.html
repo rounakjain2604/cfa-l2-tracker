@@ -569,25 +569,29 @@
         <section class="section active" id="overview">
             <h2>📌 What is Multiple Regression?</h2>
 
-            <p><span class="hl">Multiple Linear Regression</span> uses <strong>two or more independent
-                    variables</strong> to explain/predict a dependent variable — unlike simple regression which uses
-                just one.</p>
-
-            <h3>Why Use It?</h3>
-            <ul>
-                <li><strong>Factor Models:</strong> Explain stock returns using market, size, value factors
-                    (Fama-French)</li>
-                <li><strong>Forecasting:</strong> Predict earnings, bond yields, house prices</li>
-                <li><strong>Test Theories:</strong> Does ESG score affect country equity returns?</li>
-                <li><strong>Risk Analysis:</strong> Predict financial distress using leverage, profitability, growth
-                </li>
-            </ul>
-
-            <div class="key-point">
-                The power of multiple regression: It <strong>isolates</strong> each variable's effect while
-                <strong>holding others constant</strong>.
+            <div class="note info">
+                <div class="note-title">🧠 The Intuition: The "House Price" Analogy</div>
+                <p>Imagine you are a real estate agent trying to price a house. You wouldn't just look at one factor,
+                    right?</p>
+                <p>If you only looked at <strong>Square Footage</strong> ($X_1$), you might overprice a huge rundown
+                    lovely barn or underprice a tiny luxury penthouse. You need more clues.</p>
+                <p><strong>Multiple Regression</strong> is simply the mathematical way of saying: "The price of this
+                    house ($Y$) is a Base Value ($\beta_0$) plus a premium for Size ($X_1$), minus a penalty for Age
+                    ($X_2$), plus a bonus for having a Pool ($X_3$)."</p>
+                <p>It allows you to weigh multiple evidence streams simultaneously to get a single, precise prediction.
+                </p>
             </div>
 
+            <p>In finance, we do the exact same thing. Instead of House Prices, we predict <strong>Stock
+                    Returns</strong>. Instead of Square Footage, we use <strong>P/E Ratio</strong>. Instead of Age, we
+                use <strong>Interest Rates</strong>.</p>
+
+            <h3>Why "Multiple" Matters?</h3>
+            <p>Simple regression (one variable) is often too blunt. It assumes a single cause for complex events.
+                Multiple regression allows for <strong>ceteris paribus</strong> analysis — "all else equal."</p>
+            <p>It lets us answer specific questions like: <em>"If inflation goes up by 1%, but GDP stays flat, what
+                    happens to my portfolio?"</em> A simple model couldn't tell you that because it can't separate
+                Inflation from GDP.</p>
             <h3>The Regression Process</h3>
             <div class="flow-diagram">
                 <div class="flow-step"><span class="flow-num">1</span><span class="flow-text">Is $Y$ continuous? → If
@@ -672,20 +676,41 @@
         <section class="section" id="interpret">
             <h2>🔍 Interpreting Coefficients</h2>
 
-            <h3>The Intercept ($\beta_0$)</h3>
+            <p>This is the most critical skill for the exam. You must be able to translate the math into a plain-English
+                story.</p>
+
+            <h3>The Intercept ($\beta_0$): The "Anchor"</h3>
             <div class="card">
-                <p><strong>Definition:</strong> The expected value of $Y$ when ALL independent variables are zero.</p>
-                <p>⚠️ Sometimes purely theoretical (a house with 0 sqft doesn't exist), but it's the mathematical
-                    anchor.</p>
+                <p><strong>Definition:</strong> The expected value of $Y$ when ALL independent variables are equal to
+                    zero.</p>
+                <p><strong>Think of it as:</strong> The "Startup Cost" or "Base Rate."</p>
+                <p>If you were modeling a cab fare, $\beta_0$ is the flag-drop fee you pay just for sitting in the car,
+                    before you've driven a single mile ($X_1=0$). In finance, it might be the return a stock generates
+                    purely from "Alpha" if the Market Return was flat (0%).</p>
+                <p class="hl-pink" style="display:inline-block; padding:2px 6px; border-radius:4px; font-size:0.8rem;">
+                    ⚠️ Theory vs. Reality: Sometimes intercepts are purely mathematical and impossible in reality (e.g.,
+                    a human with Height=0 and Weight=0). Don't overthink it; it's just where the line crosses the axis.
+                </p>
             </div>
 
-            <h3>Slope Coefficients ($\beta_1, \beta_2, \ldots$)</h3>
+            <h3>Slope Coefficients ($\beta_1, \beta_2, \ldots$): The "Sensitivity"</h3>
+
+            <div class="note tip">
+                <div class="note-title">🧪 The "Control Group" Analogy</div>
+                <p>Imagine you have two identical twins. They eat the exact same diet, sleep the exact same hours, and
+                    have the exact same genetics.</p>
+                <p>But... you give Twin A a caffeine pill ($X_1$) and Twin B a placebo.</p>
+                <p>If Twin A runs 5mph faster, you know that <strong>holding everything else constant</strong> (diet,
+                    sleep, genes), caffeine adds 5mph.</p>
+                <p>That is what $\beta_1$ is. It isolates the effect of <em>just one variable</em> by mathematically
+                    freezing the others.</p>
+            </div>
 
             <div class="key-point">
-                <strong>THE GOLDEN RULE:</strong> Always add the phrase <span class="hl">"holding all other independent
-                    variables constant"</span> when interpreting slopes.
+                <strong>THE GOLDEN RULE:</strong> You must always include the phrase <span class="hl">"holding all other
+                    independent variables constant"</span>. Without this, your interpretation is wrong because in the
+                real world, variables often move together.
             </div>
-
             <div class="example">
                 <div class="example-title">📊 Bond Index Returns</div>
                 <p>$$\text{RET} = 0.0023 - 5.0585 \cdot \text{BY} - 2.1901 \cdot \text{CS}$$</p>
@@ -718,6 +743,9 @@
         <section class="section" id="assumptions">
             <h2>⚠️ The 5 Assumptions</h2>
 
+            <p>We use the acronym <strong>Linearity, Homoskedasticity, Independence, Normality,
+                    Multicollinearity</strong>. Let's understand them with the <strong>Used Car Analogy</strong>.</p>
+
             <div class="svg-container">
                 <div class="svg-card">
                     <svg viewBox="0 0 100 80">
@@ -744,43 +772,52 @@
                 </div>
             </div>
 
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Assumption</th>
-                            <th>Violation = Problem</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Assumption"><span class="hl">Linearity</span></td>
-                            <td data-label="Problem">Curved patterns</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">2</td>
-                            <td data-label="Assumption"><span class="hl">Homoskedasticity</span></td>
-                            <td data-label="Problem">Funnel shape</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">3</td>
-                            <td data-label="Assumption"><span class="hl">Indep. of Errors</span></td>
-                            <td data-label="Problem">Wave pattern</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">4</td>
-                            <td data-label="Assumption"><span class="hl">Normality</span></td>
-                            <td data-label="Problem">Fat tails</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">5</td>
-                            <td data-label="Assumption"><span class="hl">No Multicollinearity</span></td>
-                            <td data-label="Problem">Redundant variables</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card">
+                <h4>1. Linearity</h4>
+                <p><strong>The Assumption:</strong> The relationship is a straight line, not a curve.</p>
+                <p><strong>Analogy:</strong> As a car gets older, its price drops. If it drops by a consistent $1,000
+                    per year, that's linear. But if it drops hugely in Year 1 and then barely at all in Year 20, that's
+                    a curve (Non-linear). Linear regression would fail to capture that "U" shape.</p>
+            </div>
+
+            <div class="card">
+                <h4>2. Homoskedasticity ("Same Scatter")</h4>
+                <p><strong>The Assumption:</strong> Our ability to predict is equally good for small values and large
+                    values.</p>
+                <p><strong>Analogy:</strong> Predict the price of a Toyota Corolla vs. a Vintage Ferrari.</p>
+                <ul>
+                    <li><strong>Corolla (Cheap):</strong> You might be off by $\pm \$500$.</li>
+                    <li><strong>Ferrari (Expensive):</strong> You might be off by $\pm \$50,000$.</li>
+                </ul>
+                <p>If your error range <em>grows</em> as the price grows (Funnel Shape), that's <span
+                        class="hl-pink">Heteroskedasticity</span>. It means your model is unstable for high-value items.
+                </p>
+            </div>
+
+            <div class="card">
+                <h4>3. Independence of Errors</h4>
+                <p><strong>The Assumption:</strong> Today's mistake has nothing to do with yesterday's mistake.</p>
+                <p><strong>Analogy:</strong> If you under-predict stock returns in January, and that makes you likely to
+                    under-predict in February too, your errors are "correlated" (Serial Correlation). This usually
+                    happens during economic cycles (e.g., a recession makes you wrong for 6 months in a row).</p>
+            </div>
+
+            <div class="card">
+                <h4>4. Normality of Errors</h4>
+                <p><strong>The Assumption:</strong> Our mistakes follow a Bell Curve. Most are small; huge misses are
+                    rare.</p>
+                <p><strong>Analogy:</strong> If your model usually works, but once a year it fails CATASTROPHICALLY
+                    (predicts a stock will go up 10% but it drops 90%), you have "Fat Tails." The model is more
+                    dangerous than it looks.</p>
+            </div>
+
+            <div class="card">
+                <h4>5. No Multicollinearity</h4>
+                <p><strong>The Assumption:</strong> None of the inputs explain the exact same thing.</p>
+                <p><strong>Analogy:</strong> Imagine predicting someone's weight using "Height in Inches" and "Height in
+                    Centimeters."</p>
+                <p>They tell you the <em>exact same thing</em>. The math gets confused distinguishing between them and
+                    "blows up" the standard errors. You must remove one.</p>
             </div>
             <div class="note warn">
                 <div class="note-title">⚠️ Important</div>
@@ -812,6 +849,17 @@
             </div>
 
             <h3>2. Residuals vs. Predicted Values</h3>
+            <div class="note tip">
+                <div class="note-title">🎯 The "Target Practice" Analogy</div>
+                <p>Think of your model as an archer. The "Predicted Value" is how far the target is.</p>
+                <ul>
+                    <li><strong>Homoskedastic (Good):</strong> Whether the target is close (10m) or far (100m), your
+                        accuracy is the same. Your arrows cluster tightly around the bullseye.</li>
+                    <li><strong>Heteroskedastic (Bad):</strong> As the target gets further away, your aim gets shaky.
+                        The arrows spread out wildly. This "fanning out" means you can't trust long-range predictions.
+                    </li>
+                </ul>
+            </div>
             <div class="svg-container">
                 <div class="svg-card">
                     <svg viewBox="0 0 100 80">
@@ -872,6 +920,17 @@
             </div>
 
             <h3>4. Normal Q-Q Plot</h3>
+            <div class="note tip">
+                <div class="note-title">📏 The "Perfect Lineup" Analogy</div>
+                <p>Imagine lining up everyone in strict height order. Then you compare them to a "theoretical average
+                    human lineup."</p>
+                <ul>
+                    <li>If they match perfectly, they stand on the the diagonal line.</li>
+                    <li>If you have <strong>Fat Tails</strong>, it means your shortest people are WAY shorter than
+                        expected, and your tallest are WAY taller. They "peel off" the line at the ends. This signals
+                        extreme risk.</li>
+                </ul>
+            </div>
             <div class="svg-container">
                 <div class="svg-card">
                     <svg viewBox="0 0 100 80">
@@ -922,50 +981,56 @@
         <section class="section" id="output">
             <h2>📋 Reading Regression Output</h2>
 
-            <p>When you run regression in Excel/Python, you get a table. Here's what matters:</p>
+            <p>Regression software (Excel, Python) spits out a "Scorecard" for your model. Here is how to grade it,
+                step-by-step.</p>
 
-            <h3>1. R-Squared ($R^2$) — The Accuracy Score</h3>
+            <h3>1. The "Accuracy" Score: R-Squared ($R^2$)</h3>
             <div class="formula-box">
                 <div class="label">R-Squared</div>
                 <div class="formula">$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$</div>
                 <div class="desc">% of $Y$'s variation explained by the model</div>
             </div>
+
+            <div class="note info">
+                <div class="note-title">Analogy</div>
+                <p>Think of $R^2$ as a test score grade from 0 to 100%.</p>
+                <p>If $R^2 = 0.10$, your model explains only 10% of the movement in stock prices (it's basically
+                    guessing).</p>
+                <p>If $R^2 = 0.85$, your model is capturing 85% of the story. That's an "A" grade.</p>
+                <p><strong>BUT BEWARE:</strong> You can cheat to get a higher score by adding useless variables.
+                    <strong>Adjusted $R^2$</strong> is the teacher correcting your grade to penalize cheating.
+                </p>
+            </div>
+
+            <h3>2. The "Pass/Fail" Test: F-Statistic</h3>
             <div class="card">
+                <p><strong>The Question:</strong> "Is this entire model garbage?"</p>
+                <p>Sometimes, a model has 5 variables, and individually none of them look great. The F-test checks if
+                    they work <em>together</em> as a team to explain something.</p>
+                <p><strong>Rule:</strong> Look at the <strong>Significance F</strong> (p-value).</p>
                 <ul>
-                    <li>$R^2 = 1.0$ → Model explains everything (suspiciously perfect)</li>
-                    <li>$R^2 = 0.0$ → Model explains nothing (useless)</li>
-                    <li><strong>Adjusted $R^2$:</strong> Use when comparing models with different # of $X$s (penalizes
-                        adding useless variables)</li>
+                    <li>Is it < 0.05? <strong>PASS</strong>. The model works.</li>
+                    <li>Is it > 0.05? <strong>FAIL</strong>. The whole model is useless.</li>
                 </ul>
             </div>
 
-            <h3>2. F-Statistic — The Pass/Fail Check</h3>
-            <div class="formula-box">
-                <div class="label">F-Statistic</div>
-                <div class="formula">$$F = \frac{MSR}{MSE} = \frac{SSR/k}{SSE/(n-k-1)}$$</div>
-            </div>
+            <h3>3. The "Trust" Test: t-Statistic</h3>
             <div class="card">
-                <p><strong>Question it answers:</strong> "Is this whole group of $X$s useful?"</p>
-                <ul>
-                    <li>$p$-value < 0.05 → Model works</li>
-                    <li>$p$-value > 0.05 → Model is garbage, start over</li>
-                </ul>
+                <p><strong>The Question:</strong> "Can I trust <em>this specific variable</em>, or is it just lucky
+                    noise?"</p>
+                <p>You check this for each individual coefficient (Slope).</p>
+                <div class="flow-diagram" style="margin: 10px 0;">
+                    <div class="flow-step"><span class="flow-num">?</span><span class="flow-text">Check Absolute t-stat
+                            ($|t|$)</span></div>
+                    <div class="flow-step"><span class="flow-num">>2</span><span
+                            class="flow-text"><strong>Significant.</strong> The variable matters.</span></div>
+                    <div class="flow-step"><span class="flow-num">
+                            <2< /span><span class="flow-text"><strong>Not Significant.</strong> It's just noise. Ignore
+                                    it.</span></div>
+                </div>
+                <p><em>Example:</em> If "GDP Growth" has a t-stat of 0.5, it means GDP Growth doesn't actually predict
+                    stock returns in your model. It's statistically zero.</p>
             </div>
-
-            <h3>3. t-Statistic & p-value — Individual Coefficient Test</h3>
-            <div class="formula-box">
-                <div class="label">t-Statistic</div>
-                <div class="formula">$$t = \frac{\hat{\beta}_j - \beta_{j,0}}{SE(\hat{\beta}_j)}$$</div>
-                <div class="desc">df = $n - k - 1$</div>
-            </div>
-
-            <div class="key-point">
-                <strong>Quick Rules:</strong><br>
-                • $|t| > 2$ → Coefficient is significant<br>
-                • $p$-value < 0.05 → Coefficient is significant<br>
-                    (These always agree with each other)
-            </div>
-
             <h3>4. Standard Error of Estimate (SEE)</h3>
             <div class="formula-box">
                 <div class="label">SEE</div>
