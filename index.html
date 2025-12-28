@@ -2476,18 +2476,18 @@
         ];
 
         // Study Plan: Mon-Sat 3h, Sun 6h = 24h/week, unavailable Jan 27 - Feb 2
-        // ORDER: Economics → FSA → Corporate → Equity → FI → Derivatives → Alts → PM → Ethics → QUANTS (LAST)
+        // ORDER: FIXED INCOME (FIRST) → Economics → Corporate → Equity → FSA → Derivatives → Alts → PM → Ethics → QUANTS (LAST)
         const STUDY_PLAN = [
-            { week: 1, start: 'Dec 28', end: 'Jan 3', hours: 24, lms: ['lm8', 'lm9', 'lm10'], trip: false, focus: 'Economics + FSA Start' },
-            { week: 2, start: 'Jan 4', end: 'Jan 10', hours: 24, lms: ['lm11', 'lm12', 'lm13'], trip: false, focus: 'FSA (continued)' },
-            { week: 3, start: 'Jan 11', end: 'Jan 17', hours: 24, lms: ['lm14', 'lm15', 'lm16'], trip: false, focus: 'FSA Wrap + Corporate Start' },
-            { week: 4, start: 'Jan 18', end: 'Jan 26', hours: 27, lms: ['lm17', 'lm18', 'lm19'], trip: false, focus: 'Corporate Issuers' },
+            { week: 1, start: 'Dec 28', end: 'Jan 3', hours: 24, lms: ['lm26', 'lm27'], trip: false, focus: '💵 Fixed Income: Term Structure & Arbitrage-Free' },
+            { week: 2, start: 'Jan 4', end: 'Jan 10', hours: 24, lms: ['lm28', 'lm29', 'lm30'], trip: false, focus: '💵 Fixed Income: Embedded Options & Credit' },
+            { week: 3, start: 'Jan 11', end: 'Jan 17', hours: 24, lms: ['lm8', 'lm9', 'lm10'], trip: false, focus: '🌍 Economics + FSA Start' },
+            { week: 4, start: 'Jan 18', end: 'Jan 26', hours: 27, lms: ['lm16', 'lm17', 'lm18', 'lm19'], trip: false, focus: '🏢 Corporate Issuers' },
             { week: 5, start: 'Jan 27', end: 'Feb 2', hours: 0, lms: [], note: '🏝️ Break / Unavailable', trip: true },
             { week: 6, start: 'Feb 3', end: 'Feb 9', hours: 24, lms: ['lm20', 'lm21'], trip: false, focus: 'Equity Valuation' },
             { week: 7, start: 'Feb 10', end: 'Feb 16', hours: 24, lms: ['lm22', 'lm23'], trip: false, focus: 'Equity: FCF + Multiples' },
             { week: 8, start: 'Feb 17', end: 'Feb 23', hours: 24, lms: ['lm24', 'lm25'], trip: false, focus: 'Equity: Residual Income + Private Co' },
-            { week: 9, start: 'Feb 24', end: 'Mar 2', hours: 24, lms: ['lm26', 'lm27', 'lm28'], trip: false, focus: 'Fixed Income' },
-            { week: 10, start: 'Mar 3', end: 'Mar 9', hours: 24, lms: ['lm29', 'lm30'], trip: false, focus: 'Fixed Income: Credit' },
+            { week: 9, start: 'Feb 24', end: 'Mar 2', hours: 24, lms: ['lm11', 'lm12', 'lm13'], trip: false, focus: '📊 FSA: Employee Comp & Multinational' },
+            { week: 10, start: 'Mar 3', end: 'Mar 9', hours: 24, lms: ['lm14', 'lm15'], trip: false, focus: '📊 FSA: Quality & Integration' },
             { week: 11, start: 'Mar 10', end: 'Mar 16', hours: 24, lms: ['lm31', 'lm32'], trip: false, focus: 'Derivatives' },
             { week: 12, start: 'Mar 17', end: 'Mar 23', hours: 24, lms: ['lm33', 'lm34', 'lm35', 'lm36'], trip: false, focus: 'Alternative Investments' },
             { week: 13, start: 'Mar 24', end: 'Mar 30', hours: 24, lms: ['lm37', 'lm38', 'lm39'], trip: false, focus: 'Portfolio Management' },
