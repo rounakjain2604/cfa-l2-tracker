@@ -565,6 +565,7 @@
         <button class="nav-pill" data-section="diagnostics">Diagnostics</button>
         <button class="nav-pill" data-section="output">Output</button>
         <button class="nav-pill" data-section="traps">Traps</button>
+        <button class="nav-pill" data-section="practice">Practice</button>
     </nav>
 
     <main class="content">
@@ -1387,6 +1388,153 @@
         createChart('chart-mul-bad', 'scatter', {
             datasets: [{ data: mulBadData, backgroundColor: '#FF4B2B', pointRadius: 4 }]
         });
+
+    </script>
+    <script>
+        // --- PRACTICE SECTION LOGIC ---
+
+        // 1. Practice Charts (Recreating Exam Visuals)
+
+        // Chart 1: RET vs VIX (Curved/Quadratic - Violation of Linearity)
+        const retVixData = Array.from({ length: 40 }, () => {
+            const x = Math.random() * 160 - 60; // -60 to 100
+            const y = 0.005 * x * x - 20 + (Math.random() * 10 - 5); // Parabola + Noise
+            return { x, y };
+        });
+        createChart('chart-prac-1', 'scatter', {
+            datasets: [{
+                label: 'RET vs VIX',
+                data: retVixData,
+                backgroundColor: '#FF4B2B' // Red to hint at problem
+            }],
+            options: {
+                plugins: { title: { display: true, text: 'Chart 1: RET vs VIX (Curved?)' } }
+            }
+        });
+
+        // Chart 2: RET vs MRKT (Linear - Good)
+        const retMrktData = Array.from({ length: 40 }, () => {
+            const x = Math.random() * 30 - 15;
+            const y = 1.2 * x + (Math.random() * 5 - 2.5);
+            return { x, y };
+        });
+        createChart('chart-prac-2', 'scatter', {
+            datasets: [{ data: retMrktData, backgroundColor: '#00B894' }]
+        });
+
+        // Chart 3: MRKT vs HML (Independence Check)
+        const mrktHmlData = Array.from({ length: 40 }, () => ({
+            x: Math.random() * 30 - 15,
+            y: Math.random() * 20 - 10
+        }));
+        createChart('chart-prac-3', 'scatter', {
+            datasets: [{ data: mrktHmlData, backgroundColor: '#555' }]
+        });
+
+        // Chart 4: Residuals vs Predicted (Homoskedasticity Check)
+        const resPredData = Array.from({ length: 40 }, () => ({
+            x: Math.random() * 60 - 30,
+            y: Math.random() * 20 - 10 // Constant variance
+        }));
+        createChart('chart-prac-4', 'scatter', {
+            datasets: [{ data: resPredData, backgroundColor: '#555' }]
+        });
+
+
+        // 2. Quiz System
+        const questions = [
+            {
+                q: "1. Determine the type of regression model you should use.",
+                options: ["Logistic regression", "Simple linear regression", "Multiple linear regression"],
+                correct: 2,
+                expl: "Dependent variable (Returns) is continuous, and there are 3 distinct independent variables."
+            },
+            {
+                q: "2. Interpret the VIX coefficient (0.037).",
+                options: [
+                    "1% increase in VIX -> -0.962% decrease in RET",
+                    "0.037% increase in VIX -> 1.0% increase in RET",
+                    "1% increase in VIX, holding others constant -> 0.037% increase in RET"
+                ],
+                correct: 2,
+                expl: "Always look for 'holding all other variables constant'. The coefficient 0.037 means a 1 unit increase in X leads to 0.037 increase in Y."
+            },
+            {
+                q: "3. Identify the assumption violation in Chart 1 (RET vs VIX).",
+                options: ["Independence of errors", "Independence of independent variables", "Linearity"],
+                correct: 2,
+                expl: "Chart 1 shows a U-shape (Curve). Linear regression assumes a straight line. This is a linearity violation."
+            },
+            {
+                q: "4. Which chart assesses Homoskedasticity?",
+                options: ["Chart 2", "Chart 3 (MRKT vs HML)", "Chart 4 (Residuals vs Predicted)"],
+                correct: 2,
+                expl: "Homoskedasticity is about the *Variance of Errors*. You check this with Residuals vs Predicted Values (Chart 4)."
+            },
+            {
+                q: "5. Which chart assesses Multicollinearity (Independence of X)?",
+                options: ["Chart 2", "Chart 3 (MRKT vs HML)", "Chart 4"],
+                correct: 1,
+                expl: "Multicollinearity is about X variables being related to each other. Chart 3 compares two X's (MRKT vs HML)."
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+
+        questions.forEach((q, idx) => {
+            const qEl = document.createElement('div');
+            qEl.className = 'card';
+            qEl.innerHTML = `
+                <h4>${q.q}</h4>
+                <div class="options" style="display:flex; flex-direction:column; gap:8px;">
+                    ${q.options.map((opt, i) => `
+                        <button class="nav-pill" style="text-align:left; width:100%;" onclick="checkAnswer(this, ${idx}, ${i})">
+                            ${String.fromCharCode(65 + i)}. ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="res-${idx}" class="note" style="display:none; margin-top:10px;"></div>
+            `;
+            quizContainer.appendChild(qEl);
+        });
+
+        let score = 0;
+        const attempts = new Set();
+
+        window.checkAnswer = (btn, qIdx, optIdx) => {
+            const q = questions[qIdx];
+            const resEl = document.getElementById(`res-${qIdx}`);
+            const parent = btn.parentElement;
+
+            // Disable all buttons in this question
+            Array.from(parent.children).forEach(b => b.disabled = true);
+
+            if (optIdx === q.correct) {
+                btn.style.background = '#00B894'; // Green
+                btn.style.color = 'white';
+                resEl.className = 'note hint';
+                resEl.innerHTML = `<strong>✅ Correct!</strong> ${q.expl}`;
+                if (!attempts.has(qIdx)) score++;
+            } else {
+                btn.style.background = '#FF4B2B'; // Red
+                btn.style.color = 'white';
+                resEl.className = 'note warn';
+                resEl.innerHTML = `<strong>❌ Incorrect.</strong> ${q.expl}`;
+                // Highlight correct
+                parent.children[q.correct].style.background = '#00B894';
+                parent.children[q.correct].style.color = 'white';
+            }
+            attempts.add(qIdx);
+            resEl.style.display = 'block';
+
+            // Update Score
+            if (attempts.size === questions.length) {
+                const sCard = document.getElementById('score-card');
+                sCard.style.display = 'block';
+                sCard.innerHTML = `<strong>Final Score: ${score} / 5</strong>`;
+                sCard.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
 
     </script>
 </body>
