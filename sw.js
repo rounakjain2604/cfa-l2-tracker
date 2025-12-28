@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cfa-l2-tracker-v1';
+const CACHE_NAME = 'cfa-l2-tracker-v3';
 const urlsToCache = [
     './',
     './index.html',
@@ -15,13 +15,14 @@ self.addEventListener('install', event => {
     );
 });
 
-// Activate event
+// Activate event - clean up old caches
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME) {
+                        console.log('Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
@@ -30,15 +31,29 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - Network first for HTML, cache first for assets
 self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                if (response) {
+    const url = new URL(event.request.url);
+
+    // For HTML files, always try network first
+    if (event.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    // Update cache with fresh content
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseClone);
+                    });
                     return response;
-                }
-                return fetch(event.request);
-            })
-    );
+                })
+                .catch(() => caches.match(event.request))
+        );
+    } else {
+        // For assets, use cache-first
+        event.respondWith(
+            caches.match(event.request)
+                .then(response => response || fetch(event.request))
+        );
+    }
 });
