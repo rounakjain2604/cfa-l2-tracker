@@ -700,6 +700,143 @@
             margin-left: 0.5rem;
         }
 
+        /* ========== DAILY SCHEDULE STYLES ========== */
+        .daily-schedule {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .daily-schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .daily-schedule-title {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .daily-schedule-sub {
+            font-size: 0.7rem;
+            color: var(--text-label);
+        }
+
+        .day-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-subtle);
+            transition: all 0.2s ease;
+        }
+
+        .day-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .day-card.today {
+            border: 2px solid var(--sunset-coral);
+            background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(255, 75, 43, 0.05) 100%);
+        }
+
+        .day-card.completed {
+            background: rgba(52, 199, 89, 0.08);
+            border-color: var(--success);
+        }
+
+        .day-card.completed .day-name,
+        .day-card.completed .day-focus {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .day-check {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .day-check:hover {
+            border-color: var(--sunset-coral);
+            background: rgba(255, 75, 43, 0.1);
+        }
+
+        .day-check.checked {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .day-check svg {
+            width: 14px;
+            height: 14px;
+            stroke-width: 3;
+            opacity: 0;
+        }
+
+        .day-check.checked svg {
+            opacity: 1;
+        }
+
+        .day-info {
+            flex: 1;
+        }
+
+        .day-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .day-card.today .day-name {
+            color: var(--sunset-coral);
+        }
+
+        .day-focus {
+            font-size: 0.7rem;
+            color: var(--text-sub);
+            margin-top: 0.1rem;
+        }
+
+        .day-time {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-label);
+            background: var(--bg-accent);
+            padding: 0.2rem 0.5rem;
+            border-radius: 100px;
+        }
+
+        .day-card.today .day-time {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .week-focus-label {
+            font-size: 0.75rem;
+            color: var(--sunset-coral);
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+
         /* ========== SYLLABUS SCREEN ========== */
 
         .syllabus-header {
@@ -1671,26 +1808,37 @@
         <!-- PLAN SCREEN -->
         <div id="screen-plan" class="screen">
             <div class="plan-header">
-                <div class="plan-title">Study Plan</div>
-                <div class="plan-subtitle">Dec 27, 2025 → Apr 20, 2026 (Target)</div>
+                <div class="plan-title">📅 Study Plan</div>
+                <div class="plan-subtitle">Dec 28, 2025 → Apr 30, 2026 | Quants Last</div>
             </div>
 
             <div class="plan-stats">
                 <div class="plan-stat">
-                    <div class="plan-stat-value">~360</div>
+                    <div class="plan-stat-value">~400</div>
                     <div class="plan-stat-label">Total Hours</div>
                 </div>
                 <div class="plan-stat">
-                    <div class="plan-stat-value">~8</div>
-                    <div class="plan-stat-label">Hrs / Module</div>
+                    <div class="plan-stat-value">24</div>
+                    <div class="plan-stat-label">Hrs / Week</div>
                 </div>
                 <div class="plan-stat">
-                    <div class="plan-stat-value">16</div>
+                    <div class="plan-stat-value">18</div>
                     <div class="plan-stat-label">Weeks</div>
                 </div>
             </div>
 
             <div id="planContainer"></div>
+
+            <!-- Daily Schedule for Current Week -->
+            <div class="daily-schedule" id="dailyScheduleContainer">
+                <div class="daily-schedule-header">
+                    <div>
+                        <div class="daily-schedule-title">📆 This Week's Schedule</div>
+                        <div class="daily-schedule-sub">Mon-Sat: 3h | Sunday: 6h</div>
+                    </div>
+                </div>
+                <div id="dailyScheduleList"></div>
+            </div>
         </div>
 
         <!-- SYLLABUS SCREEN -->
@@ -1876,33 +2024,36 @@
             }
         ];
 
-        // Study Plan: Mon-Sat 2h, Sun 12h, unavailable Jan 26 - Feb 2
+        // Study Plan: Mon-Sat 3h, Sun 6h = 24h/week, unavailable Jan 27 - Feb 2
+        // ORDER: Economics → FSA → Corporate → Equity → FI → Derivatives → Alts → PM → Ethics → QUANTS (LAST)
         const STUDY_PLAN = [
-            { week: 1, start: 'Dec 27', end: 'Jan 2', hours: 22, lms: ['lm1', 'lm2', 'lm3'], trip: false },
-            { week: 2, start: 'Jan 3', end: 'Jan 9', hours: 24, lms: ['lm4', 'lm5', 'lm6'], trip: false },
-            { week: 3, start: 'Jan 10', end: 'Jan 16', hours: 24, lms: ['lm7', 'lm8', 'lm9'], trip: false },
-            { week: 4, start: 'Jan 17', end: 'Jan 23', hours: 24, lms: ['lm10', 'lm11', 'lm12'], trip: false },
-            { week: 5, start: 'Jan 24', end: 'Jan 25', hours: 4, lms: [], note: 'Pre-trip buffer', trip: false },
-            { week: 6, start: 'Jan 26', end: 'Feb 2', hours: 0, lms: [], note: '🏝️ Andamans Trip', trip: true },
-            { week: 7, start: 'Feb 3', end: 'Feb 9', hours: 24, lms: ['lm13', 'lm14', 'lm15'], trip: false },
-            { week: 8, start: 'Feb 10', end: 'Feb 16', hours: 24, lms: ['lm16', 'lm17', 'lm18'], trip: false },
-            { week: 9, start: 'Feb 17', end: 'Feb 23', hours: 24, lms: ['lm19', 'lm20', 'lm21'], trip: false },
-            { week: 10, start: 'Feb 24', end: 'Mar 2', hours: 24, lms: ['lm22', 'lm23', 'lm24'], trip: false },
-            { week: 11, start: 'Mar 3', end: 'Mar 9', hours: 24, lms: ['lm25', 'lm26', 'lm27'], trip: false },
-            { week: 12, start: 'Mar 10', end: 'Mar 16', hours: 24, lms: ['lm28', 'lm29', 'lm30'], trip: false },
-            { week: 13, start: 'Mar 17', end: 'Mar 23', hours: 24, lms: ['lm31', 'lm32', 'lm33'], trip: false },
-            { week: 14, start: 'Mar 24', end: 'Mar 30', hours: 24, lms: ['lm34', 'lm35', 'lm36'], trip: false },
-            { week: 15, start: 'Mar 31', end: 'Apr 6', hours: 24, lms: ['lm37', 'lm38', 'lm39'], trip: false },
-            { week: 16, start: 'Apr 7', end: 'Apr 13', hours: 24, lms: ['lm40', 'lm41', 'lm42'], trip: false },
-            { week: 17, start: 'Apr 14', end: 'Apr 20', hours: 24, lms: ['lm43', 'lm44', 'lm45'], trip: false }
+            { week: 1, start: 'Dec 28', end: 'Jan 3', hours: 24, lms: ['lm8', 'lm9', 'lm10'], trip: false, focus: 'Economics + FSA Start' },
+            { week: 2, start: 'Jan 4', end: 'Jan 10', hours: 24, lms: ['lm11', 'lm12', 'lm13'], trip: false, focus: 'FSA (continued)' },
+            { week: 3, start: 'Jan 11', end: 'Jan 17', hours: 24, lms: ['lm14', 'lm15', 'lm16'], trip: false, focus: 'FSA Wrap + Corporate Start' },
+            { week: 4, start: 'Jan 18', end: 'Jan 26', hours: 27, lms: ['lm17', 'lm18', 'lm19'], trip: false, focus: 'Corporate Issuers' },
+            { week: 5, start: 'Jan 27', end: 'Feb 2', hours: 0, lms: [], note: '🏝️ Break / Unavailable', trip: true },
+            { week: 6, start: 'Feb 3', end: 'Feb 9', hours: 24, lms: ['lm20', 'lm21'], trip: false, focus: 'Equity Valuation' },
+            { week: 7, start: 'Feb 10', end: 'Feb 16', hours: 24, lms: ['lm22', 'lm23'], trip: false, focus: 'Equity: FCF + Multiples' },
+            { week: 8, start: 'Feb 17', end: 'Feb 23', hours: 24, lms: ['lm24', 'lm25'], trip: false, focus: 'Equity: Residual Income + Private Co' },
+            { week: 9, start: 'Feb 24', end: 'Mar 2', hours: 24, lms: ['lm26', 'lm27', 'lm28'], trip: false, focus: 'Fixed Income' },
+            { week: 10, start: 'Mar 3', end: 'Mar 9', hours: 24, lms: ['lm29', 'lm30'], trip: false, focus: 'Fixed Income: Credit' },
+            { week: 11, start: 'Mar 10', end: 'Mar 16', hours: 24, lms: ['lm31', 'lm32'], trip: false, focus: 'Derivatives' },
+            { week: 12, start: 'Mar 17', end: 'Mar 23', hours: 24, lms: ['lm33', 'lm34', 'lm35', 'lm36'], trip: false, focus: 'Alternative Investments' },
+            { week: 13, start: 'Mar 24', end: 'Mar 30', hours: 24, lms: ['lm37', 'lm38', 'lm39'], trip: false, focus: 'Portfolio Management' },
+            { week: 14, start: 'Mar 31', end: 'Apr 6', hours: 24, lms: ['lm40', 'lm41', 'lm42', 'lm43'], trip: false, focus: 'PM + Ethics Start' },
+            { week: 15, start: 'Apr 7', end: 'Apr 13', hours: 24, lms: ['lm44', 'lm45', 'lm1', 'lm2'], trip: false, focus: 'Ethics Wrap + Quants Start' },
+            { week: 16, start: 'Apr 14', end: 'Apr 20', hours: 24, lms: ['lm3', 'lm4', 'lm5', 'lm6', 'lm7'], trip: false, focus: '📐 Quantitative Methods (FINAL)' },
+            { week: 17, start: 'Apr 21', end: 'Apr 27', hours: 24, lms: [], note: '📝 Comprehensive Review + Mocks', trip: false, focus: 'Review & Mock Exams' },
+            { week: 18, start: 'Apr 28', end: 'Apr 30', hours: 9, lms: [], note: '🎯 Final Light Review', trip: false, focus: 'Final Prep' }
         ];
 
         const EXAM_DATE = new Date('2026-05-23');
-        const PLAN_START = new Date('2025-12-27');
-        const STORAGE_KEY = 'cfa_l2_tracker_v5';
+        const PLAN_START = new Date('2025-12-28');
+        const STORAGE_KEY = 'cfa_l2_tracker_v6';
 
         let state = {
             completedLMs: [],
+            completedDays: [], // Array of date strings 'YYYY-MM-DD'
             streaks: {
                 current: 0,
                 longest: 0,
@@ -1926,6 +2077,7 @@
             renderSyllabus();
             renderTopicsSummary();
             renderPlan();
+            renderDailySchedule();
             renderStudy();
             updateStats();
         }
@@ -1935,13 +2087,15 @@
             if (saved) {
                 const parsed = JSON.parse(saved);
                 state.completedLMs = parsed.completedLMs || [];
+                state.completedDays = parsed.completedDays || [];
                 state.streaks = parsed.streaks || { current: 0, longest: 0, lastActiveDate: null };
             }
             // Migrate from old storage key
-            const oldSaved = localStorage.getItem('cfa_l2_tracker_v4');
+            const oldSaved = localStorage.getItem('cfa_l2_tracker_v5');
             if (oldSaved && !saved) {
                 const oldData = JSON.parse(oldSaved);
                 state.completedLMs = oldData.completedLMs || [];
+                state.completedDays = oldData.completedDays || [];
                 saveState();
             }
         }
@@ -2038,8 +2192,9 @@
                         <div class="week-header" onclick="toggleWeek(${week.week})">
                             <span class="week-number">${statusIcon || 'W' + week.week}</span>
                             <div class="week-info">
-                                <div class="week-dates">${week.start} – ${week.end}${isTrip ? '<span class="trip-badge">🏝️ Trip</span>' : ''}</div>
+                                <div class="week-dates">${week.start} – ${week.end}${isTrip ? '<span class="trip-badge">🏝️ Break</span>' : ''}</div>
                                 <div class="week-lms-preview">${lmsPreview}</div>
+                                ${week.focus && !isTrip ? `<div class="week-focus-label">📌 ${week.focus}</div>` : ''}
                                 ${totalInWeek > 0 && !isTrip ? `
                                     <div class="week-progress-bar">
                                         <div class="week-progress-fill" style="width: ${weekPercent}%"></div>
@@ -2074,7 +2229,7 @@
             const today = new Date();
             const daysSinceStart = Math.floor((today - PLAN_START) / (1000 * 60 * 60 * 24));
             if (daysSinceStart < 0) return 1;
-            return Math.min(17, Math.floor(daysSinceStart / 7) + 1);
+            return Math.min(18, Math.floor(daysSinceStart / 7) + 1);
         }
 
         function toggleWeek(weekNum) {
@@ -2083,6 +2238,100 @@
                 card.classList.toggle('expanded');
             }
         }
+
+        // ========== DAILY SCHEDULE FUNCTIONS ==========
+        function renderDailySchedule() {
+            const container = document.getElementById('dailyScheduleList');
+            const today = new Date();
+            const todayStr = formatDateKey(today);
+            const currentWeekNum = getCurrentWeek();
+            const currentWeek = STUDY_PLAN.find(w => w.week === currentWeekNum);
+
+            if (!currentWeek || currentWeek.trip) {
+                container.innerHTML = `
+                    <div class="day-card" style="justify-content: center; padding: 2rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏝️</div>
+                            <div style="font-weight: 600;">Break Week</div>
+                            <div style="color: var(--text-sub); font-size: 0.75rem;">Enjoy your time off! Back on ${currentWeek ? currentWeek.end : 'soon'}.</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Get the week's date range
+            const weekStartDate = parseWeekDate(currentWeek.start, currentWeek.week);
+            const days = [];
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            // Generate 7 days for the week
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(weekStartDate);
+                date.setDate(weekStartDate.getDate() + i);
+                const dayOfWeek = date.getDay();
+                const isSunday = dayOfWeek === 0;
+                const hours = isSunday ? 6 : 3;
+
+                days.push({
+                    date: date,
+                    dateKey: formatDateKey(date),
+                    dayName: dayNames[dayOfWeek],
+                    dayShort: date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+                    hours: hours,
+                    isToday: formatDateKey(date) === todayStr,
+                    isPast: date < today && formatDateKey(date) !== todayStr
+                });
+            }
+
+            // Get LMs for this week to distribute as focus
+            const weekLMs = currentWeek.lms.map(id => getLMInfo(id)).filter(Boolean);
+            const focusText = currentWeek.focus || (weekLMs.length > 0 ? weekLMs.map(lm => lm.name).join(', ') : 'Review');
+
+            container.innerHTML = days.map(day => {
+                const isCompleted = state.completedDays.includes(day.dateKey);
+                return `
+                    <div class="day-card ${day.isToday ? 'today' : ''} ${isCompleted ? 'completed' : ''}">
+                        <div class="day-check ${isCompleted ? 'checked' : ''}" onclick="toggleDayComplete('${day.dateKey}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="day-info">
+                            <div class="day-name">${day.dayShort}${day.isToday ? ' (Today)' : ''}</div>
+                            <div class="day-focus">${focusText}</div>
+                        </div>
+                        <div class="day-time">${day.hours}h</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleDayComplete(dateKey) {
+            const idx = state.completedDays.indexOf(dateKey);
+            if (idx === -1) {
+                state.completedDays.push(dateKey);
+                showToast('Day marked complete! 🎉');
+                haptic('success');
+                recordActivity();
+            } else {
+                state.completedDays.splice(idx, 1);
+                haptic('light');
+            }
+            saveState();
+            renderDailySchedule();
+            updateStreak();
+        }
+
+        function formatDateKey(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function parseWeekDate(dateStr, weekNum) {
+            // Parse date strings like "Dec 28", "Jan 3" etc.
+            const year = dateStr.includes('Dec') ? 2025 : 2026;
+            const date = new Date(`${dateStr}, ${year}`);
+            return date;
+        }
+
 
         function renderSyllabus() {
             const container = document.getElementById('syllabusContainer');
