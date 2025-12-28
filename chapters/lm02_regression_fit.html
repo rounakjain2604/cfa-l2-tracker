@@ -419,6 +419,7 @@
 
     <nav class="nav-pills">
         <button class="nav-pill active" data-section="overview">Overview</button>
+        <button class="nav-pill" data-section="prereqs">Prerequisites</button>
         <button class="nav-pill" data-section="intuition">Intuition</button>
         <button class="nav-pill" data-section="concepts">Concepts</button>
         <button class="nav-pill" data-section="formulas">Formulas</button>
@@ -453,9 +454,263 @@
             </div>
         </section>
 
+        <!-- PREREQUISITES: L1 REFRESHER -->
+        <section class="section" id="prereqs">
+            <h2>📚 Prerequisites: L1 Refresher</h2>
+
+            <div class="note info">
+                <div class="note-title">Why This Section?</div>
+                <p>This module assumes you remember hypothesis testing, t-tests, and F-tests from Level I. If these
+                    concepts feel rusty, this will bring you up to speed.</p>
+            </div>
+
+            <h3>P.1 The Logic of Hypothesis Testing</h3>
+
+            <p><strong>Plain English:</strong> Hypothesis testing asks: "Is this result real, or could it have happened
+                by chance?"</p>
+
+            <div class="note">
+                <div class="note-title">⚖️ The Courtroom Analogy (CRITICAL)</div>
+                <p>• Defendant is <strong>innocent until proven guilty</strong> = H₀ is assumed true until rejected</p>
+                <p>• Prosecution must prove guilt <strong>beyond reasonable doubt</strong> = We need strong evidence to
+                    reject H₀</p>
+                <p>• "Not guilty" ≠ "innocent" = "Fail to reject H₀" ≠ "H₀ is true"</p>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hypothesis</th>
+                            <th>Symbol</th>
+                            <th>Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Null</strong></td>
+                            <td>H₀</td>
+                            <td>"Nothing is happening" / "No effect" — Assumed TRUE until rejected</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Alternative</strong></td>
+                            <td>Hₐ</td>
+                            <td>"Something IS happening" — What we're trying to prove</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>The Two Types of Errors</h4>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Error</th>
+                            <th>What Happens</th>
+                            <th>Memory Trick</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Type I</strong></td>
+                            <td>Reject H₀ when it's TRUE</td>
+                            <td>"False Positive" — You see something that isn't there</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type II</strong></td>
+                            <td>Fail to reject H₀ when it's FALSE</td>
+                            <td>"False Negative" — You miss something real</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="trap">
+                <strong>α (alpha)</strong> = significance level = probability of Type I error. Common values: 5% or 1%.
+            </div>
+
+            <hr>
+
+            <h3>P.2 Understanding t-Tests</h3>
+
+            <p><strong>Plain English:</strong> A t-test asks: "Is this ONE coefficient significantly different from zero
+                (or some value)?"</p>
+
+            <div class="formula-box">
+                <div class="label">t-Statistic Formula</div>
+                <div class="formula">$$t = \frac{\hat{\beta} - \beta_0}{SE(\hat{\beta})} = \frac{\text{Estimated} -
+                    \text{Hypothesized}}{\text{Standard Error}}$$</div>
+            </div>
+
+            <div class="note tip">
+                <div class="note-title">📡 Signal-to-Noise Intuition</div>
+                <p>Think of t as a <strong>signal-to-noise ratio</strong>:</p>
+                <p>• <strong>Large |t|</strong> → Strong signal relative to noise → Likely significant</p>
+                <p>• <strong>Small |t|</strong> → Weak signal drowned by noise → Probably just chance</p>
+            </div>
+
+            <div class="key-point">
+                <strong>Rule of Thumb: |t| > 2 usually means significant at 5%</strong>
+                <p>Why? Critical t-value at 5% significance ≈ 1.96 ≈ 2 for large samples.</p>
+            </div>
+
+            <hr>
+
+            <h3>P.3 Understanding F-Tests</h3>
+
+            <p><strong>Plain English:</strong> An F-test asks: "Are these MULTIPLE things jointly different from zero?"
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>t-Test</h4>
+                    <p>Tests <strong>ONE</strong> coefficient</p>
+                    <p>H₀: β = 0</p>
+                    <p>One or two-tailed</p>
+                </div>
+                <div class="comparison-card">
+                    <h4>F-Test</h4>
+                    <p>Tests <strong>MULTIPLE</strong> coefficients</p>
+                    <p>H₀: β₁ = β₂ = ... = 0</p>
+                    <p>Always one-tailed (right)</p>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <div class="label">F-Statistic Concept</div>
+                <div class="formula">$$F = \frac{MSR}{MSE} = \frac{\text{Explained Variance / df}}{\text{Unexplained
+                    Variance / df}}$$</div>
+                <div class="desc">Large F = Model explains much more than chance → Significant</div>
+            </div>
+
+            <hr>
+
+            <h3>P.4 ANOVA Tables</h3>
+
+            <p><strong>ANOVA = Analysis Of Variance</strong> — Breaks down total variation into explained and
+                unexplained parts.</p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Sum of Squares</th>
+                            <th>df</th>
+                            <th>Mean Square</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Regression</strong></td>
+                            <td>SSR</td>
+                            <td>k</td>
+                            <td>MSR = SSR/k</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Error</strong></td>
+                            <td>SSE</td>
+                            <td>n−k−1</td>
+                            <td>MSE = SSE/(n−k−1)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td>SST</td>
+                            <td>n−1</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h4>Key Relationship:</h4>
+                <p><strong>SST = SSR + SSE</strong></p>
+                <p>Total = Explained + Unexplained</p>
+            </div>
+
+            <hr>
+
+            <h3>P.5 P-Values</h3>
+
+            <p><strong>P-value:</strong> "If H₀ were true, what's the probability of seeing a result this extreme?"</p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>If p-value...</th>
+                            <th>Then...</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>p < α (e.g., 0.03 < 0.05)</td>
+                            <td><span class="hl-pink">Reject H₀</span> — Significant</td>
+                        </tr>
+                        <tr>
+                            <td>p ≥ α (e.g., 0.12 > 0.05)</td>
+                            <td><span class="hl-green">Fail to reject H₀</span> — Not significant</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <h3>P.6 Quick Reference</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Key Point</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>H₀</td>
+                            <td>Always assumed true until rejected</td>
+                        </tr>
+                        <tr>
+                            <td>Type I Error</td>
+                            <td>Reject true H₀ (false positive)</td>
+                        </tr>
+                        <tr>
+                            <td>α = 5%</td>
+                            <td>5% chance of Type I error</td>
+                        </tr>
+                        <tr>
+                            <td>|t| > 2</td>
+                            <td>Usually significant at 5%</td>
+                        </tr>
+                        <tr>
+                            <td>p < α</td>
+                            <td>Reject H₀ (significant)</td>
+                        </tr>
+                        <tr>
+                            <td>F = MSR/MSE</td>
+                            <td>Overall regression test</td>
+                        </tr>
+                        <tr>
+                            <td>F-test</td>
+                            <td>Always one-tailed (right)</td>
+                        </tr>
+                        <tr>
+                            <td>CI includes 0</td>
+                            <td>NOT significant</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- STEP 1: INTUITION -->
         <section class="section" id="intuition">
             <h2>🧠 STEP 1: INTUITION FIRST</h2>
+
 
             <h3>Why Does This Concept Exist?</h3>
 
