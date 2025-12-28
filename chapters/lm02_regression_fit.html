@@ -1961,11 +1961,172 @@
 
         <!-- PRACTICE -->
         <section class="section" id="practice">
-            <h2>✏️ Practice Questions</h2>
+            <h2>✏️ Practice: Portfolio Factor Analysis</h2>
 
+            <div class="note info">
+                <div class="note-title">📊 Vignette</div>
+                <p>You analyze 3 models of portfolio returns against various factors. Use the exhibits below to answer
+                    questions 1-5.</p>
+            </div>
 
+            <h4>Model Statistics</h4>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Factors</th>
+                            <th>R²</th>
+                            <th>Adj R²</th>
+                            <th>SSE</th>
+                            <th>AIC</th>
+                            <th>BIC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>MRKT, HML, VIX</td>
+                            <td>0.823</td>
+                            <td>0.817</td>
+                            <td>1087.62</td>
+                            <td>241.03</td>
+                            <td>251.29</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>+ SMB</td>
+                            <td>0.852</td>
+                            <td><span class="hl-green">0.846</span></td>
+                            <td>909.41</td>
+                            <td><span class="hl-green">225.85</span></td>
+                            <td><span class="hl-green">238.67</span></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>+ MOM</td>
+                            <td>0.852</td>
+                            <td>0.844</td>
+                            <td>908.65</td>
+                            <td>227.77</td>
+                            <td>243.16</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Model 3 Coefficients (n=96)</h4>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Coef</th>
+                            <th>t-stat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Intercept</td>
+                            <td>−0.823</td>
+                            <td>−2.136</td>
+                        </tr>
+                        <tr>
+                            <td>MRKT</td>
+                            <td>1.719</td>
+                            <td>6.130</td>
+                        </tr>
+                        <tr>
+                            <td>HML</td>
+                            <td>0.412</td>
+                            <td>2.989</td>
+                        </tr>
+                        <tr>
+                            <td>VIX</td>
+                            <td>0.026</td>
+                            <td>1.532</td>
+                        </tr>
+                        <tr>
+                            <td>SMB</td>
+                            <td>0.553</td>
+                            <td>3.987</td>
+                        </tr>
+                        <tr>
+                            <td>MOM</td>
+                            <td>−0.067</td>
+                            <td><span class="hl-pink">−0.276</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
 
             <div class="example">
+                <div class="example-title">Q1: Adjusted R² Change</div>
+                <p>Why did Adj R² <strong>decrease</strong> from Model 2 (0.846) to Model 3 (0.844)?</p>
+                <p><strong>A)</strong> Adding MOM does not improve explanatory power | <strong>B)</strong> Adding SMB
+                    improves power | <strong>C)</strong> Adding MOM improves power</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>A is correct.</strong> MOM's |t| = 0.276 < 1.0. When |t| < 1, Adj R² decreases.</p>
+                </details>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Q2: Best Fit Model</div>
+                <p>Which model provides the <strong>best fit</strong>?</p>
+                <p><strong>A)</strong> Model 1 | <strong>B)</strong> Model 2 | <strong>C)</strong> Model 3</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>B is correct.</strong> BIC is preferred for fit. Model 2 has lowest BIC (238.67).</p>
+                </details>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Q3: Best Prediction Model</div>
+                <p>Which model should be used for <strong>prediction</strong>?</p>
+                <p><strong>A)</strong> Model 1 | <strong>B)</strong> Model 2 | <strong>C)</strong> Model 3</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>B is correct.</strong> AIC is preferred for prediction. Model 2 has lowest AIC (225.85).
+                    </p>
+                </details>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Q4: Prediction Calculation</div>
+                <p>Calculate predicted RET for Model 3: MRKT=3, HML=−2, VIX=−5, SMB=1, MOM=3</p>
+                <p><strong>A)</strong> 3.732 | <strong>B)</strong> 3.992 | <strong>C)</strong> 4.555</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>A is correct.</strong></p>
+                    <p>RET = −0.823 + 1.719(3) + 0.412(−2) + 0.026(−5) + 0.553(1) − 0.067(3)</p>
+                    <p>= −0.823 + 5.157 − 0.824 − 0.130 + 0.553 − 0.201 = <span class="hl">3.732</span></p>
+                </details>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Q5: Joint F-Test</div>
+                <p>Do SMB and MOM <strong>together</strong> contribute to explaining RET at 1%? (Critical F = 4.849)</p>
+                <p><strong>A)</strong> F=2.216, do NOT contribute | <strong>B)</strong> F=8.863, DO contribute |
+                    <strong>C)</strong> F=9.454, DO contribute</p>
+                <hr>
+                <details>
+                    <summary style="cursor:pointer; font-weight:700; color:var(--accent);">Show Solution</summary>
+                    <p><strong>B is correct.</strong></p>
+                    <p>Restricted (Model 1): SSE = 1087.62 | Unrestricted (Model 3): SSE = 908.65</p>
+                    <p>F = [(1087.62 − 908.65)/2] / [908.65/90] = 89.49/10.10 = <span class="hl">8.863</span></p>
+                    <p>8.863 > 4.849 → <span class="hl-pink">Reject H₀</span>. SMB+MOM DO contribute.</p>
+                </details>
+            </div>
+
+            <div class="example">
+
                 <div class="example-title">Q1: Calculate & Interpret</div>
                 <p>You estimate a multiple regression with <strong>60 observations</strong> and <strong>4 independent
                         variables</strong>. The ANOVA table shows: SSR = 450, SSE = 300.</p>
