@@ -668,10 +668,38 @@
             <h2>📐 The Multiple Regression Equation</h2>
 
             <div class="formula-box">
-                <div class="label">General Form</div>
-                <div class="formula">$$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \cdots + \beta_k X_{ki} +
-                    \varepsilon_i$$</div>
-                <div class="desc">$i = 1, 2, \ldots, n$ observations</div>
+                <div class="label">General Form Breakdown</div>
+                <div class="formula">$$Y_i = \underbrace{\beta_0 + \beta_1 X_{1i} + \cdots + \beta_k
+                    X_{ki}}_{\text{Predicted Part}} + \underbrace{\varepsilon_i}_{\text{Error Part}}$$</div>
+                <div class="desc">We predict the first part. The second part is pure luck/noise.</div>
+            </div>
+
+            <p>Let's break down <strong>every single symbol</strong> so there is zero confusion:</p>
+
+            <div class="card">
+                <h4>1. The "Y" (Dependent Variable)</h4>
+                <p>This is what you want to guess. It's the <em>result</em>. In finance, it's usually Stock Returns, GDP
+                    Growth, or Default Risk.</p>
+                <p><strong>Rule:</strong> It must be continuous (meaning it can be 1.5%, 1.51%, 1.52%...). It cannot be
+                    a simple "Yes/No".</p>
+
+                <h4>2. The "X"s (Independent Variables)</h4>
+                <p>These are your clues. The raw data you feed the model. $X_1$ might remain inflation, $X_2$ might be
+                    oil prices.</p>
+                <p><strong>Rule:</strong> You need at least two "clues" for it to be <em>Multiple</em> Regression.
+                    Otherwise, it's just Simple Regression.</p>
+
+                <h4>3. The Betas ($\beta$) (Coefficients)</h4>
+                <p>These are the "weights" or "multipliers". The model calculates these for you. They tell you <em>how
+                        much</em> each clue matters.</p>
+                <ul>
+                    <li>If $\beta_1$ is huge, $X_1$ is a major driver.</li>
+                    <li>If $\beta_1$ is near zero, $X_1$ is irrelevant noise.</li>
+                </ul>
+
+                <h4>4. The Epsilon ($\varepsilon$) (Error Term)</h4>
+                <p>This is the "unknown." No model is perfect. There is always some random event—a CEO scandal, a
+                    natural disaster, a tweet—that math cannot predict. We call this the Error Term.</p>
             </div>
 
             <div class="table-wrap">
@@ -732,14 +760,19 @@
             <div class="card">
                 <p><strong>Definition:</strong> The expected value of $Y$ when ALL independent variables are equal to
                     zero.</p>
-                <p><strong>Think of it as:</strong> The "Startup Cost" or "Base Rate."</p>
-                <p>If you were modeling a cab fare, $\beta_0$ is the flag-drop fee you pay just for sitting in the car,
-                    before you've driven a single mile ($X_1=0$). In finance, it might be the return a stock generates
-                    purely from "Alpha" if the Market Return was flat (0%).</p>
-                <p class="hl-pink" style="display:inline-block; padding:2px 6px; border-radius:4px; font-size:0.8rem;">
-                    ⚠️ Theory vs. Reality: Sometimes intercepts are purely mathematical and impossible in reality (e.g.,
-                    a human with Height=0 and Weight=0). Don't overthink it; it's just where the line crosses the axis.
-                </p>
+                <hr style="border-top:1px dashed var(--border); margin:10px 0;">
+                <p><strong>Why do we need it?</strong></p>
+                <p>Imagine trying to predict a person's weight based on their height. If height is 0, does that mean
+                    weight is 0? Mathematically, yes. But in reality, a human has a "base weight" just by existing. The
+                    Intercept provides this baseline.</p>
+                <p><strong>Example:</strong> In a regression of Portfolio Returns vs. Market Returns ($R_p = \alpha +
+                    \beta R_m$), the intercept is <strong>Alpha</strong>. It's the return you get usually just for
+                    showing up, even if the market does nothing ($R_m = 0$).</p>
+                <div class="note warn">
+                    <p><strong>Warning:</strong> Sometimes the intercept makes no physical sense (e.g., a house with 0
+                        sqft costing $50k). That's okay. It's often just a mathematical anchor to make the line fit
+                        better. Don't force a real-world meaning if there isn't one.</p>
+                </div>
             </div>
 
             <h3>Slope Coefficients ($\beta_1, \beta_2, \ldots$): The "Sensitivity"</h3>
@@ -1087,13 +1120,17 @@
                 <div class="desc">Average prediction error (lower = better)</div>
             </div>
 
-            <h3>ANOVA Table Components</h3>
+            <h3>Reading the ANOVA Table (The "Scorecard")</h3>
+            <p>The exam will give you a scary looking table called "ANOVA" (Analysis of Variance). It's just a scorecard
+                telling you where the volatility in your data comes from.</p>
+
             <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
-                            <th>Measure</th>
-                            <th>Meaning</th>
+                            <th>Source</th>
+                            <th>What it means in plain English</th>
+                            <th>Formula Symbol</th>
                         </tr>
                     </thead>
                     <tbody>
