@@ -1279,26 +1279,9 @@
     <div class="footer-spacer"></div>
 
     <script>
-        // Navigation Active State
-        const sections = document.querySelectorAll('.section'); // Changed selector to be more specific if needed, but keeping logic
-        const navLinks = document.querySelectorAll('.nav-pills a');
+        // Navigation Active State - REMOVED (Not needed for Tabbed Interface)
+        const sections = document.querySelectorAll('.section');
 
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 150) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
-            });
-        });
 
         // Pill Navigation Logic
         const pills = document.querySelectorAll('.nav-pill');
@@ -1309,13 +1292,15 @@
                 pills.forEach(p => p.classList.remove('active'));
                 pill.classList.add('active');
 
-                // Scroll to section instead of toggling class
+                // 1. Hide all sections
+                sections.forEach(s => s.classList.remove('active'));
+
+                // 2. Show target section
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 100, // Offset for fixed header
-                        behavior: 'smooth'
-                    });
+                    targetSection.classList.add('active');
+                    // 3. Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'instant' });
                 }
             });
         });
