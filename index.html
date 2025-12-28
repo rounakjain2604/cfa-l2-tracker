@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Mali:wght@500;600;700&display=swap"
         rel="stylesheet">
 
     <style>
@@ -73,14 +73,19 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        h1,
+        h1 {
+            font-family: 'Mali', cursive;
+            font-weight: 700;
+        }
+
         h2,
         h3,
         .heading-font {
-            font-family: 'Mali', cursive;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
         }
 
         body {
@@ -196,44 +201,84 @@
 
         /* ========== HOME SCREEN ========== */
 
-        .countdown-banner {
-            background: var(--gradient-primary);
+        /* Hero Card */
+        .hero-card {
+            background: var(--bg-surface);
             border-radius: var(--radius-xl);
-            padding: 1.5rem;
-            color: var(--text-on-accent);
-            text-align: center;
+            padding: 1.25rem;
             margin-bottom: 1rem;
-            box-shadow: 0 8px 24px rgba(255, 75, 43, 0.25);
+            box-shadow: var(--shadow-float);
+            border: 1px solid var(--border-subtle);
             position: relative;
             overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-accent) 100%);
         }
 
-        .countdown-days {
-            font-size: 3.5rem;
+        .hero-layout {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .hero-main {
+            flex: 1;
+        }
+
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .hero-module {
+            font-size: 0.85rem;
+            color: var(--sunset-coral);
             font-weight: 700;
+            margin-bottom: 0.85rem;
+            font-family: 'Mali', cursive;
+        }
+
+        .hero-aside {
+            text-align: center;
+            border-left: 1px solid var(--border-subtle);
+            padding-left: 1rem;
+            min-width: 80px;
+        }
+
+        .hero-countdown-val {
+            font-size: 2.2rem;
+            font-weight: 800;
             font-family: 'Mali', cursive;
             line-height: 1;
-            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+            color: var(--sunset-coral);
         }
 
-        .countdown-label {
-            font-size: 0.75rem;
+        .hero-countdown-label {
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.9;
+            letter-spacing: 0.5px;
+            color: var(--text-label);
             font-weight: 700;
-            margin-top: 0.2rem;
+            margin-top: 0.1rem;
         }
 
-        .exam-date {
+        .hero-streak {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.2rem;
+            margin-top: 0.5rem;
             font-size: 0.8rem;
-            margin-top: 0.75rem;
-            opacity: 0.95;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.18);
-            display: inline-block;
-            padding: 0.35rem 0.9rem;
-            border-radius: 100px;
+            font-weight: 800;
+            color: var(--sunset-orange);
         }
 
         .progress-card {
@@ -242,6 +287,7 @@
             padding: 1.25rem;
             margin-bottom: 1rem;
             box-shadow: var(--shadow-float);
+            border: 1px solid var(--border-subtle);
         }
 
         .progress-header {
@@ -299,6 +345,7 @@
             padding: 1rem;
             text-align: center;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-subtle);
         }
 
         .stat-icon {
@@ -328,6 +375,7 @@
             border-radius: var(--radius-xl);
             padding: 1rem;
             box-shadow: var(--shadow-float);
+            border: 1px solid var(--border-subtle);
         }
 
         .topics-summary-header {
@@ -797,6 +845,532 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
+        /* ========== PREMIUM FEATURES ========== */
+
+
+        /* Insight Card */
+        .insight-card {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            padding: 0.85rem 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--sunset-orange);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-float);
+        }
+
+        .insight-card::before {
+            content: '💡';
+            font-size: 1.2rem;
+        }
+
+        .insight-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        /* Quick Actions Bar */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-action-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 0.5rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .quick-action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .quick-action-btn:hover {
+            background: var(--bg-accent);
+            border-color: var(--sunset-coral);
+        }
+
+        .quick-action-icon {
+            font-size: 1.1rem;
+        }
+
+        .quick-action-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Week Status Badge */
+        .week-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        .week-status.ahead {
+            background: #E8F9ED;
+            color: var(--success);
+        }
+
+        .week-status.on-track {
+            background: #FFF3E0;
+            color: var(--warning);
+        }
+
+        .week-status.behind {
+            background: #FFEBEE;
+            color: #E53935;
+        }
+
+        /* Timer Modal */
+        .timer-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer-modal.active {
+            display: flex;
+        }
+
+        .timer-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            text-align: center;
+            width: 90%;
+            max-width: 320px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timer-display {
+            font-size: 3.5rem;
+            font-family: 'Mali', cursive;
+            font-weight: 700;
+            color: var(--sunset-coral);
+            margin: 1rem 0;
+        }
+
+        .timer-label {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-bottom: 1.5rem;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .timer-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .timer-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+        }
+
+        .timer-btn.secondary {
+            background: var(--bg-accent);
+            color: var(--text-main);
+            border: none;
+        }
+
+        /* Confetti Container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 4000;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(-100px) rotate(0deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* Animated Number */
+        .animated-number {
+            transition: all 0.4s ease-out;
+        }
+
+        /* Pulse Animation for Progress */
+
+
+        /* Check Animation */
+        .lm-check.just-checked {
+            animation: bounce-check 0.4s ease;
+        }
+
+        @keyframes bounce-check {
+            0% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.3);
+            }
+
+            50% {
+                transform: scale(0.9);
+            }
+
+            70% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ========== PREMIUM VISUAL POLISH ========== */
+
+        /* Shimmer Effect for Loading States */
+
+        /* Floating Animation for Countdown */
+
+        .countdown-banner {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            color: var(--text-on-accent);
+            text-align: center;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 24px rgba(255, 75, 43, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Enhanced Glassmorphism */
+        .progress-card,
+        .todays-focus,
+        .stat-card,
+        .topics-summary {
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.95) 0%,
+                    rgba(255, 255, 255, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        [data-theme="dark"] .progress-card,
+        [data-theme="dark"] .todays-focus,
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .topics-summary {
+            background: linear-gradient(135deg,
+                    rgba(40, 40, 45, 0.95) 0%,
+                    rgba(30, 30, 35, 0.85) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Card Hover Effects */
+        .stat-card,
+        .topic-card,
+        .week-card,
+        .quick-action-btn {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--sunset-coral);
+            box-shadow: 0 4px 12px rgba(255, 75, 43, 0.1);
+        }
+
+        .topic-card:hover,
+        .week-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 75, 43, 0.2);
+        }
+
+        /* Gradient Border Animation for Focus Card */
+
+        .streak-flame {
+            font-size: 1.3rem;
+        }
+
+        /* Progress Bar Gradient Animation */
+        @keyframes progress-shine {
+            0% {
+                background-position: -100% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .progress-bar-inner {
+            background: var(--gradient-primary);
+        }
+
+        /* Animated Number Counter */
+        .countdown-days,
+        .stat-value,
+        .progress-percent {
+            transition: none;
+        }
+
+        /* Button Press Effect */
+        .focus-btn,
+        .timer-btn.primary,
+        .quick-action-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .focus-btn::after,
+        .timer-btn.primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.2) 0%,
+                    transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .focus-btn:hover::after,
+        .timer-btn.primary:hover::after {
+            opacity: 1;
+        }
+
+        .focus-btn:active,
+        .timer-btn:active,
+        .quick-action-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Ripple Effect Container */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple-effect 0.6s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Insight Card Floating Icon */
+        .insight-card::after {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Topic Badge Glow on Complete */
+        .topic-badge.complete {
+            box-shadow: 0 0 12px rgba(52, 199, 89, 0.4);
+            animation: pulse-glow-green 2s ease-in-out infinite;
+        }
+
+
+        /* Smooth Screen Transitions */
+        .screen {
+            animation: fadeSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Navigation Item Hover */
+        .nav-item {
+            transition: transform 0.2s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active .nav-item-icon {
+            animation: bounce-check 0.4s ease;
+        }
+
+        /* Week Card Current Glow */
+        .week-card.current {
+            box-shadow: 0 0 0 2px var(--sunset-coral),
+                0 8px 24px rgba(255, 75, 43, 0.2);
+        }
+
+        /* Timer Display Pulse when Running */
+        .timer-display.running {
+            animation: timer-pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes timer-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Streak Count Pop Animation */
+        .streak-count.updated {
+            animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Enhanced Toast Animation */
+        .toast {
+            background: linear-gradient(135deg,
+                    rgba(30, 30, 35, 0.95) 0%,
+                    rgba(40, 40, 45, 0.95) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes toastSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+        }
+
+        /* Checkbox Ripple on Toggle */
+        .lm-check {
+            position: relative;
+        }
+
+        .lm-check::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: rgba(52, 199, 89, 0.2);
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        .lm-check.checked::after {
+            animation: check-ripple 0.4s ease-out;
+        }
+
+        @keyframes check-ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -827,10 +1401,48 @@
 
         <!-- HOME SCREEN -->
         <div id="screen-home" class="screen active">
-            <div class="countdown-banner">
-                <div class="countdown-days" id="countdownDays">--</div>
-                <div class="countdown-label">Days Remaining</div>
-                <div class="exam-date">📅 May 23, 2026</div>
+            <!-- Unified Hero Section -->
+            <div class="hero-card" id="heroCard">
+                <div class="hero-layout">
+                    <div class="hero-main">
+                        <div class="hero-header">
+                            <span class="focus-greeting" id="greeting">Good morning!</span>
+                            <span class="focus-date" id="todayDate"></span>
+                        </div>
+                        <div class="hero-title" id="focusTitle">Continue your journey</div>
+                        <div class="hero-module" id="focusModule">Loading...</div>
+                        <button class="focus-btn" onclick="markNextComplete()">✓ Mark Complete</button>
+                    </div>
+                    <div class="hero-aside">
+                        <div class="hero-countdown-val" id="countdownDays">--</div>
+                        <div class="hero-countdown-label">Days Left</div>
+                        <div class="hero-streak">
+                            <span class="streak-flame">🔥</span>
+                            <span class="streak-count" id="streakCount">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="openTimer()">
+                    <span class="quick-action-icon">⏱️</span>
+                    <span class="quick-action-label">Focus</span>
+                </button>
+                <button class="quick-action-btn" onclick="showScreen('syllabus')">
+                    <span class="quick-action-icon">📚</span>
+                    <span class="quick-action-label">Syllabus</span>
+                </button>
+                <button class="quick-action-btn" onclick="installApp()">
+                    <span class="quick-action-icon">📲</span>
+                    <span class="quick-action-label">Install</span>
+                </button>
+            </div>
+
+            <!-- Insight Card -->
+            <div class="insight-card" id="insightCard">
+                <div class="insight-text" id="insightText">Loading insight...</div>
             </div>
 
             <div class="progress-card">
@@ -845,6 +1457,7 @@
                     <span><span id="completedLMs">0</span> / 45 modules</span>
                     <span id="avgPerDay">--</span>
                 </div>
+                <div id="weekStatus"></div>
             </div>
 
             <div class="stats-grid">
@@ -941,6 +1554,22 @@
     </nav>
 
     <div class="toast" id="toast"></div>
+
+    <!-- Timer Modal -->
+    <div class="timer-modal" id="timerModal">
+        <div class="timer-content">
+            <h3 style="font-family: 'Mali', cursive; margin-bottom: 0.5rem;">Focus Timer</h3>
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="timer-label" id="timerLabel">Stay focused! You've got this 💪</div>
+            <div class="timer-controls">
+                <button class="timer-btn primary" id="timerStartBtn" onclick="toggleTimer()">Start</button>
+                <button class="timer-btn secondary" onclick="closeTimer()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
 
     <script>
         // CFA Level 2 Full Syllabus
@@ -1064,13 +1693,31 @@
         ];
 
         const EXAM_DATE = new Date('2026-05-23');
-        const STORAGE_KEY = 'cfa_l2_tracker_v4';
+        const PLAN_START = new Date('2025-12-27');
+        const STORAGE_KEY = 'cfa_l2_tracker_v5';
 
-        let state = { completedLMs: [] };
+        let state = {
+            completedLMs: [],
+            streaks: {
+                current: 0,
+                longest: 0,
+                lastActiveDate: null
+            }
+        };
+
+        // Timer state
+        let timerInterval = null;
+        let timerSeconds = 25 * 60;
+        let timerRunning = false;
 
         function init() {
             loadState();
+            updateGreeting();
+            updateTodaysFocus();
             updateCountdown();
+            updateStreak();
+            updateInsight();
+            updateWeekStatus();
             renderSyllabus();
             renderTopicsSummary();
             renderPlan();
@@ -1079,7 +1726,18 @@
 
         function loadState() {
             const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) state = JSON.parse(saved);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state.completedLMs = parsed.completedLMs || [];
+                state.streaks = parsed.streaks || { current: 0, longest: 0, lastActiveDate: null };
+            }
+            // Migrate from old storage key
+            const oldSaved = localStorage.getItem('cfa_l2_tracker_v4');
+            if (oldSaved && !saved) {
+                const oldData = JSON.parse(oldSaved);
+                state.completedLMs = oldData.completedLMs || [];
+                saveState();
+            }
         }
 
         function saveState() {
@@ -1106,6 +1764,7 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(`screen-${screen}`).classList.add('active');
             document.getElementById(`nav-${screen}`).classList.add('active');
+            haptic('light');
         }
 
         function renderTopicsSummary() {
@@ -1171,8 +1830,10 @@
         }
 
         function getCurrentWeek() {
-            // Simplified: return week 1 for now (Dec 27 - Jan 2)
-            return 1;
+            const today = new Date();
+            const daysSinceStart = Math.floor((today - PLAN_START) / (1000 * 60 * 60 * 24));
+            if (daysSinceStart < 0) return 1;
+            return Math.min(17, Math.floor(daysSinceStart / 7) + 1);
         }
 
         function toggleWeek(weekNum) {
@@ -1232,8 +1893,10 @@
             if (idx === -1) {
                 state.completedLMs.push(lmId);
                 showToast('Module completed! 🎉');
+                haptic('success');
             } else {
                 state.completedLMs.splice(idx, 1);
+                haptic('light');
             }
             saveState();
             renderSyllabus();
@@ -1267,7 +1930,283 @@
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
+        // Haptic Feedback
+        function haptic(type = 'light') {
+            if ('vibrate' in navigator) {
+                switch (type) {
+                    case 'light':
+                        navigator.vibrate(10);
+                        break;
+                    case 'medium':
+                        navigator.vibrate(25);
+                        break;
+                    case 'heavy':
+                        navigator.vibrate([30, 30, 50]);
+                        break;
+                    case 'success':
+                        navigator.vibrate([15, 50, 20]);
+                        break;
+                }
+            }
+        }
+
+        // ========== PREMIUM FEATURES ==========
+
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = 'Good evening!';
+            if (hour < 12) greeting = 'Good morning! ☀️';
+            else if (hour < 17) greeting = 'Good afternoon! 💪';
+            else if (hour < 21) greeting = 'Good evening! 🌙';
+            else greeting = 'Night owl mode! 🦉';
+
+            document.getElementById('greeting').textContent = greeting;
+
+            const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-US', options);
+        }
+
+        function getNextPendingLM() {
+            for (const topic of SYLLABUS) {
+                for (const lm of topic.lms) {
+                    if (!state.completedLMs.includes(lm.id)) {
+                        return { ...lm, topic: topic.name };
+                    }
+                }
+            }
+            return null;
+        }
+
+        function updateTodaysFocus() {
+            const nextLM = getNextPendingLM();
+            const focusTitle = document.getElementById('focusTitle');
+            const focusModule = document.getElementById('focusModule');
+
+            if (nextLM) {
+                focusTitle.textContent = `Continue: ${nextLM.topic}`;
+                focusModule.textContent = `${nextLM.num}: ${nextLM.name}`;
+            } else {
+                focusTitle.textContent = '🎉 All modules complete!';
+                focusModule.textContent = 'Time for revision and practice!';
+            }
+        }
+
+        function updateStreak() {
+            const today = new Date().toDateString();
+            document.getElementById('streakCount').textContent = state.streaks.current;
+        }
+
+        function recordActivity() {
+            const today = new Date().toDateString();
+            const lastActive = state.streaks.lastActiveDate;
+
+            if (lastActive === today) return; // Already recorded today
+
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            if (lastActive === yesterday.toDateString()) {
+                // Consecutive day
+                state.streaks.current++;
+            } else if (lastActive !== today) {
+                // Streak broken, start new
+                state.streaks.current = 1;
+            }
+
+            state.streaks.lastActiveDate = today;
+            if (state.streaks.current > state.streaks.longest) {
+                state.streaks.longest = state.streaks.current;
+            }
+
+            updateStreak();
+        }
+
+        function updateInsight() {
+            const completed = state.completedLMs.length;
+            const percent = Math.round((completed / 45) * 100);
+            const currentWeek = getCurrentWeek();
+            const expectedByNow = getExpectedModulesByWeek(currentWeek);
+            const diff = completed - expectedByNow;
+
+            let insight = '';
+            if (completed === 0) {
+                insight = "Ready to start? Complete your first module today! 🚀";
+            } else if (completed === 45) {
+                insight = "🏆 Syllabus complete! Focus on practice and revision.";
+            } else if (diff >= 3) {
+                insight = `You're ${diff} modules ahead of schedule! Keep crushing it! 🔥`;
+            } else if (diff >= 0) {
+                insight = `Right on track! ${45 - completed} modules to go. You've got this! 💪`;
+            } else {
+                insight = `${Math.abs(diff)} modules behind, but totally catchable! Focus mode! ⚡`;
+            }
+
+            document.getElementById('insightText').textContent = insight;
+        }
+
+        function getExpectedModulesByWeek(weekNum) {
+            let expected = 0;
+            for (const week of STUDY_PLAN) {
+                if (week.week <= weekNum) {
+                    expected += week.lms.length;
+                }
+            }
+            return expected;
+        }
+
+        function updateWeekStatus() {
+            const currentWeek = getCurrentWeek();
+            const expectedByNow = getExpectedModulesByWeek(currentWeek);
+            const completed = state.completedLMs.length;
+            const diff = completed - expectedByNow;
+
+            let statusHTML = '';
+            if (diff >= 2) {
+                statusHTML = `<span class="week-status ahead">🚀 ${diff} modules ahead</span>`;
+            } else if (diff >= -1) {
+                statusHTML = `<span class="week-status on-track">✓ On track (Week ${currentWeek})</span>`;
+            } else {
+                statusHTML = `<span class="week-status behind">⚡ ${Math.abs(diff)} modules behind</span>`;
+            }
+
+            document.getElementById('weekStatus').innerHTML = statusHTML;
+        }
+
+        function markNextComplete() {
+            const nextLM = getNextPendingLM();
+            if (nextLM) {
+                toggleLM(nextLM.id);
+                recordActivity();
+                updateTodaysFocus();
+                updateInsight();
+                updateWeekStatus();
+
+                // Check for milestone celebration
+                const completed = state.completedLMs.length;
+                if (completed === 12 || completed === 23 || completed === 34 || completed === 45) {
+                    triggerConfetti();
+                }
+            }
+        }
+
+        function triggerConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#FF4B2B', '#FF416C', '#FFD700', '#34C759', '#667eea'];
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `confetti-fall ${2 + Math.random() * 2}s ease-out forwards`;
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                container.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        // Timer Functions
+        function openTimer() {
+            document.getElementById('timerModal').classList.add('active');
+            updateTimerDisplay();
+        }
+
+        function closeTimer() {
+            document.getElementById('timerModal').classList.remove('active');
+            if (timerRunning) {
+                pauseTimer();
+            }
+        }
+
+        function toggleTimer() {
+            if (timerRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            timerRunning = true;
+            document.getElementById('timerStartBtn').textContent = 'Pause';
+            document.getElementById('timerLabel').textContent = 'Focus mode active... 🧘';
+            document.getElementById('timerDisplay').classList.add('running');
+
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+
+                if (timerSeconds <= 0) {
+                    pauseTimer();
+                    timerSeconds = 25 * 60;
+                    updateTimerDisplay();
+                    showToast('⏰ Time\'s up! Great focus session!');
+                    document.getElementById('timerLabel').textContent = 'Session complete! 🎉';
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+            document.getElementById('timerStartBtn').textContent = 'Resume';
+            document.getElementById('timerLabel').textContent = 'Paused. Ready when you are!';
+            document.getElementById('timerDisplay').classList.remove('running');
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent =
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Ripple Effect for Premium Feel
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement('span');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            ripple.className = 'ripple';
+
+            button.appendChild(ripple);
+
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // Add ripple to all interactive elements
+        function initRippleEffects() {
+            const rippleElements = document.querySelectorAll('.focus-btn, .timer-btn, .quick-action-btn, .nav-item');
+            rippleElements.forEach(el => {
+                el.addEventListener('click', createRipple);
+            });
+        }
+
+        // Animate numbers when they change
+        function animateValue(element, start, end, duration) {
+            const startTime = performance.now();
+            const update = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(start + (end - start) * easeOut);
+                element.textContent = current;
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            };
+            requestAnimationFrame(update);
+        }
+
         init();
+        initRippleEffects();
 
         // PWA Install
         let deferredPrompt;
