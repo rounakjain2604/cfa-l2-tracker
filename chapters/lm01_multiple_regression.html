@@ -3,503 +3,758 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LM1: Basics of Multiple Regression | CFA L2 Study Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LM1: Multiple Regression | CFA L2</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Mali:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+
     <style>
         :root {
             --bg: #1a1a2e;
-            --bg-card: #16213e;
-            --bg-code: #0f0f1a;
-            --text: #eaeaea;
-            --text-sub: #a0a0b0;
-            --accent: #FF4B2B;
-            --accent-light: #FF6B4A;
-            --success: #34C759;
-            --warning: #FFD700;
-            --formula-bg: #1e2a4a;
+            --paper: #16213e;
+            --ink: #eaeaea;
+            --ink-light: #a0a0b0;
+            --accent: #6C5CE7;
+            --teal: #00B894;
+            --coral: #FF4B2B;
+            --hl-yellow: rgba(253, 203, 110, 0.4);
+            --hl-pink: rgba(253, 167, 167, 0.35);
+            --hl-green: rgba(129, 236, 168, 0.35);
+            --hl-purple: rgba(162, 155, 254, 0.35);
+            --border: #2a2a4a;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-            padding: 1.5rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        h1 {
             font-family: 'Mali', cursive;
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 0.5rem;
+            background: var(--bg);
+            color: var(--ink);
+            font-size: 15px;
+            line-height: 1.6;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        h2 {
-            font-size: 1.3rem;
-            color: var(--accent-light);
-            margin: 2rem 0 1rem;
+        /* Header */
+        .header {
+            background: var(--paper);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 0.75rem;
+            color: var(--ink-light);
+        }
+
+        /* Navigation Pills */
+        .nav-pills {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
+            padding: 12px 16px;
+            overflow-x: auto;
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .nav-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-pill {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--ink-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-pill.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* Content */
+        .content {
+            padding: 20px;
+            max-width: 100%;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--coral);
         }
 
         h3 {
-            font-size: 1.1rem;
-            color: var(--text);
-            margin: 1.5rem 0 0.75rem;
-        }
-
-        .subtitle {
-            color: var(--text-sub);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin: 1rem 0;
-            border-left: 4px solid var(--accent);
-        }
-
-        .formula-box {
-            background: var(--formula-bg);
-            border-radius: 8px;
-            padding: 1rem 1.25rem;
-            margin: 1rem 0;
-            font-family: 'Courier New', monospace;
             font-size: 1rem;
-            border: 1px solid rgba(255, 75, 43, 0.3);
-            overflow-x: auto;
-        }
-
-        .formula-box .label {
+            font-weight: 600;
             color: var(--accent);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            display: block;
+            margin: 18px 0 10px;
         }
 
-        .key-point {
-            background: linear-gradient(135deg, rgba(255, 75, 43, 0.1), rgba(255, 107, 74, 0.05));
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-left: 3px solid var(--warning);
+        h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin: 14px 0 8px;
         }
 
-        .key-point::before {
-            content: "💡 KEY POINT";
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--warning);
-            margin-bottom: 0.5rem;
-        }
-
-        .exam-tip {
-            background: rgba(52, 199, 89, 0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-left: 3px solid var(--success);
-        }
-
-        .exam-tip::before {
-            content: "📝 EXAM TIP";
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--success);
-            margin-bottom: 0.5rem;
+        p {
+            margin-bottom: 12px;
+            word-wrap: break-word;
         }
 
         ul,
         ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
+            margin: 0 0 12px 20px;
         }
 
         li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 6px;
+        }
+
+        /* Highlights */
+        .hl {
+            background: var(--hl-yellow);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .hl-pink {
+            background: var(--hl-pink);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .hl-green {
+            background: var(--hl-green);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .hl-purple {
+            background: var(--hl-purple);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, #1e2a4a 0%, #16213e 100%);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 14px 0;
+            text-align: center;
+        }
+
+        .formula-box .label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .formula-box .formula {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
+            word-break: break-word;
+        }
+
+        .formula-box .desc {
+            font-size: 0.8rem;
+            color: var(--ink-light);
+            margin-top: 8px;
+        }
+
+        /* Note Boxes */
+        .note {
+            background: rgba(253, 203, 110, 0.1);
+            border-left: 3px solid #F0C36D;
+            padding: 12px 14px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .note.tip {
+            background: rgba(0, 184, 148, 0.1);
+            border-left-color: var(--teal);
+        }
+
+        .note.warn {
+            background: rgba(255, 75, 43, 0.1);
+            border-left-color: var(--coral);
+        }
+
+        .note.info {
+            background: rgba(108, 92, 231, 0.1);
+            border-left-color: var(--accent);
+        }
+
+        .note-title {
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            color: var(--ink);
+        }
+
+        .note p {
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Tables */
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            margin: 12px 0;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
+            min-width: 280px;
             border-collapse: collapse;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-        }
-
-        th,
-        td {
-            padding: 0.75rem;
-            text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
         }
 
         th {
-            background: var(--bg-code);
-            color: var(--accent);
-            font-weight: 700;
+            background: var(--accent);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
         }
 
         tr:nth-child(even) {
             background: rgba(255, 255, 255, 0.02);
         }
 
-        code {
-            background: var(--bg-code);
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-            color: var(--accent-light);
+        /* Cards */
+        .card {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 12px 0;
         }
 
-        .toc {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin: 1.5rem 0;
-        }
-
-        .toc h3 {
-            margin-top: 0;
-            color: var(--accent);
-        }
-
-        .toc a {
-            color: var(--text-sub);
-            text-decoration: none;
-            display: block;
-            padding: 0.3rem 0;
+        .card-title {
             font-size: 0.9rem;
-        }
-
-        .toc a:hover {
+            font-weight: 700;
             color: var(--accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
+        /* Example Box */
         .example {
-            background: var(--bg-code);
-            border-radius: 8px;
-            padding: 1.25rem;
-            margin: 1rem 0;
+            background: rgba(255, 200, 100, 0.08);
+            border: 1px solid rgba(255, 200, 100, 0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 14px 0;
         }
 
         .example-title {
-            color: var(--accent);
+            font-size: 0.8rem;
             font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 0.75rem;
+            color: #F0C36D;
+            margin-bottom: 10px;
         }
 
-        @media (max-width: 600px) {
-            body {
-                padding: 1rem;
-            }
+        /* Key Point */
+        .key-point {
+            background: linear-gradient(135deg, rgba(255, 75, 43, 0.1), rgba(255, 107, 74, 0.05));
+            border-left: 3px solid var(--coral);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
 
-            h1 {
-                font-size: 1.5rem;
-            }
+        .key-point::before {
+            content: "💡 KEY";
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-bottom: 6px;
+        }
 
-            h2 {
-                font-size: 1.15rem;
-            }
+        /* Exam Tip */
+        .exam-tip {
+            background: rgba(0, 184, 148, 0.1);
+            border-left: 3px solid var(--teal);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
 
-            .formula-box {
-                font-size: 0.85rem;
+        .exam-tip::before {
+            content: "📝 EXAM TIP";
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: 6px;
+        }
+
+        /* Code */
+        code {
+            background: rgba(108, 92, 231, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: var(--accent);
+        }
+
+        /* Comparison Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        @media (max-width: 400px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
             }
+        }
+
+        /* Footer spacer */
+        .footer-spacer {
+            height: 80px;
+        }
+
+        /* Subscript/Superscript */
+        sub,
+        sup {
+            font-size: 0.7em;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>📐 LM 1: Basics of Multiple Regression</h1>
-    <p class="subtitle">CFA Level II • Quantitative Methods</p>
+    <header class="header">
+        <h1>📐 LM 1: Multiple Regression</h1>
+        <p>Quantitative Methods • CFA Level II</p>
+    </header>
 
-    <div class="toc">
-        <h3>📋 Contents</h3>
-        <a href="#overview">1. Overview & Purpose</a>
-        <a href="#model">2. The Multiple Regression Model</a>
-        <a href="#assumptions">3. Assumptions</a>
-        <a href="#interpretation">4. Interpreting Coefficients</a>
-        <a href="#anova">5. ANOVA & Goodness of Fit</a>
-        <a href="#hypothesis">6. Hypothesis Testing</a>
-        <a href="#prediction">7. Prediction</a>
-        <a href="#formulas">8. Formula Sheet</a>
-    </div>
+    <nav class="nav-pills">
+        <button class="nav-pill active" data-section="overview">Overview</button>
+        <button class="nav-pill" data-section="model">Model</button>
+        <button class="nav-pill" data-section="assumptions">Assumptions</button>
+        <button class="nav-pill" data-section="anova">ANOVA</button>
+        <button class="nav-pill" data-section="hypothesis">Testing</button>
+        <button class="nav-pill" data-section="formulas">Formulas</button>
+    </nav>
 
-    <h2 id="overview">📌 1. Overview & Purpose</h2>
+    <main class="content">
 
-    <div class="card">
-        <p><strong>Multiple Linear Regression</strong> extends simple regression by using <em>two or more</em>
-            independent variables to explain a dependent variable.</p>
-    </div>
+        <!-- OVERVIEW SECTION -->
+        <section class="section active" id="overview">
+            <h2>📌 Overview</h2>
 
-    <h3>Why Use Multiple Regression?</h3>
-    <ul>
-        <li><strong>Identify relationships</strong> between variables</li>
-        <li><strong>Test existing theories</strong> about factor relationships</li>
-        <li><strong>Forecast</strong> stock returns, earnings, bond prices, etc.</li>
-        <li><strong>Control for confounding factors</strong> by including them as independent variables</li>
-    </ul>
+            <p><span class="hl">Multiple Linear Regression</span> extends simple regression by using <strong>two or
+                    more</strong> independent variables to explain a dependent variable.</p>
 
-    <div class="key-point">
-        Multiple regression isolates the effect of each independent variable while holding others constant — this is the
-        key advantage over simple regression.
-    </div>
+            <h3>Why Use It?</h3>
+            <ul>
+                <li><strong>Identify relationships</strong> between variables</li>
+                <li><strong>Test theories</strong> about factor relationships</li>
+                <li><strong>Forecast</strong> returns, earnings, prices</li>
+                <li><strong>Control for confounding factors</strong></li>
+            </ul>
 
-    <h2 id="model">📐 2. The Multiple Regression Model</h2>
+            <div class="key-point">
+                Multiple regression isolates each variable's effect while holding others constant — the key advantage
+                over simple regression.
+            </div>
 
-    <div class="formula-box">
-        <span class="label">General Form</span>
-        Y<sub>i</sub> = β<sub>0</sub> + β<sub>1</sub>X<sub>1,i</sub> + β<sub>2</sub>X<sub>2,i</sub> + ... +
-        β<sub>k</sub>X<sub>k,i</sub> + ε<sub>i</sub>
-    </div>
+            <h3>Types of Investment Problems</h3>
+            <div class="card">
+                <ul>
+                    <li>Stock return prediction (factor models)</li>
+                    <li>Earnings forecasting</li>
+                    <li>Bond yield analysis</li>
+                    <li>Economic factor analysis</li>
+                </ul>
+            </div>
+        </section>
 
-    <table>
-        <tr>
-            <th>Term</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td><code>Y<sub>i</sub></code></td>
-            <td>Dependent variable (what we're predicting)</td>
-        </tr>
-        <tr>
-            <td><code>β<sub>0</sub></code></td>
-            <td>Intercept (Y when all X = 0)</td>
-        </tr>
-        <tr>
-            <td><code>β<sub>k</sub></code></td>
-            <td>Partial slope coefficient for X<sub>k</sub></td>
-        </tr>
-        <tr>
-            <td><code>ε<sub>i</sub></code></td>
-            <td>Error term (residual)</td>
-        </tr>
-        <tr>
-            <td><code>k</code></td>
-            <td>Number of independent variables</td>
-        </tr>
-    </table>
+        <!-- MODEL SECTION -->
+        <section class="section" id="model">
+            <h2>📐 The Regression Model</h2>
 
-    <div class="exam-tip">
-        <strong>Partial slope coefficient interpretation:</strong> β<sub>1</sub> is the expected change in Y for a
-        1-unit change in X<sub>1</sub>, <em>holding all other X variables constant</em>.
-    </div>
+            <div class="formula-box">
+                <div class="label">General Form</div>
+                <div class="formula">Y<sub>i</sub> = β<sub>0</sub> + β<sub>1</sub>X<sub>1</sub> +
+                    β<sub>2</sub>X<sub>2</sub> + ... + β<sub>k</sub>X<sub>k</sub> + ε<sub>i</sub></div>
+            </div>
 
-    <h2 id="assumptions">⚠️ 3. Assumptions of Multiple Regression</h2>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td><code>Y<sub>i</sub></code></td>
+                        <td>Dependent variable</td>
+                    </tr>
+                    <tr>
+                        <td><code>β<sub>0</sub></code></td>
+                        <td>Intercept (Y when all X = 0)</td>
+                    </tr>
+                    <tr>
+                        <td><code>β<sub>k</sub></code></td>
+                        <td>Partial slope for X<sub>k</sub></td>
+                    </tr>
+                    <tr>
+                        <td><code>ε<sub>i</sub></code></td>
+                        <td>Error term (residual)</td>
+                    </tr>
+                    <tr>
+                        <td><code>k</code></td>
+                        <td>Number of independent variables</td>
+                    </tr>
+                </table>
+            </div>
 
-    <p>For valid inference, the model must satisfy these assumptions:</p>
+            <div class="exam-tip">
+                <strong>Partial slope interpretation:</strong> β<sub>1</sub> = expected change in Y for a 1-unit change
+                in X<sub>1</sub>, <em>holding all other X constant</em>.
+            </div>
 
-    <div class="card">
-        <ol>
-            <li><strong>Linearity:</strong> Linear relationship between Y and each X</li>
-            <li><strong>Homoskedasticity:</strong> Constant variance of residuals across all observations</li>
-            <li><strong>No Serial Correlation:</strong> Errors are independent of each other (no autocorrelation)</li>
-            <li><strong>Normality:</strong> Residuals are normally distributed</li>
-            <li><strong>No Multicollinearity:</strong> No exact linear relationship among independent variables</li>
-            <li><strong>No Endogeneity:</strong> Errors are uncorrelated with independent variables</li>
-        </ol>
-    </div>
+            <h3>Example</h3>
+            <div class="example">
+                <div class="example-title">📊 Stock Return Model</div>
+                <p><code>Return = 0.02 + 0.8(Market) + 0.3(Size) + 0.1(Value)</code></p>
+                <ul>
+                    <li><strong>0.02:</strong> Expected return when all factors = 0</li>
+                    <li><strong>0.8:</strong> 1% ↑ market → 0.8% ↑ return</li>
+                    <li><strong>0.3:</strong> Size factor effect</li>
+                </ul>
+            </div>
+        </section>
 
-    <div class="key-point">
-        Violations of assumptions don't invalidate the model — they affect the reliability of statistical tests and
-        inferences.
-    </div>
+        <!-- ASSUMPTIONS SECTION -->
+        <section class="section" id="assumptions">
+            <h2>⚠️ Assumptions</h2>
 
-    <h2 id="interpretation">🔍 4. Interpreting Coefficients</h2>
+            <p>For valid inference, the model must satisfy:</p>
 
-    <div class="example">
-        <div class="example-title">📊 Example: Stock Return Model</div>
-        <p>Model: <code>Return = 0.02 + 0.8(Market) + 0.3(Size) + 0.1(Value)</code></p>
-        <ul>
-            <li><strong>Intercept (0.02):</strong> Expected return when all factors = 0</li>
-            <li><strong>Market β (0.8):</strong> 1% increase in market → 0.8% increase in return (holding size and value
-                constant)</li>
-            <li><strong>Size β (0.3):</strong> Effect of firm size factor</li>
-            <li><strong>Value β (0.1):</strong> Effect of value factor</li>
-        </ul>
-    </div>
+            <div class="card">
+                <ol>
+                    <li><span class="hl">Linearity:</span> Linear relationship between Y and each X</li>
+                    <li><span class="hl">Homoskedasticity:</span> Constant variance of residuals</li>
+                    <li><span class="hl">No Serial Correlation:</span> Errors are independent</li>
+                    <li><span class="hl">Normality:</span> Residuals are normally distributed</li>
+                    <li><span class="hl">No Multicollinearity:</span> No exact linear relationship among X's</li>
+                    <li><span class="hl">No Endogeneity:</span> Errors uncorrelated with X's</li>
+                </ol>
+            </div>
 
-    <h2 id="anova">📊 5. ANOVA & Goodness of Fit</h2>
+            <div class="note warn">
+                <div class="note-title">⚠️ Important</div>
+                <p>Violations don't invalidate the model — they affect <strong>reliability of tests and
+                        inferences</strong>.</p>
+            </div>
 
-    <h3>ANOVA Table Components</h3>
+            <h3>Detecting Violations</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Problem</th>
+                        <th>Detection</th>
+                    </tr>
+                    <tr>
+                        <td>Heteroskedasticity</td>
+                        <td>Breusch-Pagan test</td>
+                    </tr>
+                    <tr>
+                        <td>Serial correlation</td>
+                        <td>Durbin-Watson stat</td>
+                    </tr>
+                    <tr>
+                        <td>Multicollinearity</td>
+                        <td>VIF > 10</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
 
-    <div class="formula-box">
-        <span class="label">Sum of Squares Decomposition</span>
-        SST = SSR + SSE
-        <br><br>
-        Total Variation = Explained + Unexplained
-    </div>
+        <!-- ANOVA SECTION -->
+        <section class="section" id="anova">
+            <h2>📊 ANOVA & Fit</h2>
 
-    <table>
-        <tr>
-            <th>Measure</th>
-            <th>Formula</th>
-            <th>Interpretation</th>
-        </tr>
-        <tr>
-            <td><strong>SST</strong></td>
-            <td>Σ(Y<sub>i</sub> - Ȳ)²</td>
-            <td>Total variation in Y</td>
-        </tr>
-        <tr>
-            <td><strong>SSR</strong></td>
-            <td>Σ(Ŷ<sub>i</sub> - Ȳ)²</td>
-            <td>Explained by regression</td>
-        </tr>
-        <tr>
-            <td><strong>SSE</strong></td>
-            <td>Σ(Y<sub>i</sub> - Ŷ<sub>i</sub>)²</td>
-            <td>Unexplained (residuals)</td>
-        </tr>
-    </table>
+            <div class="formula-box">
+                <div class="label">Sum of Squares</div>
+                <div class="formula">SST = SSR + SSE</div>
+                <div class="desc">Total = Explained + Unexplained</div>
+            </div>
 
-    <h3>R² and Adjusted R²</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Measure</th>
+                        <th>Formula</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td><strong>SST</strong></td>
+                        <td>Σ(Y - Ȳ)²</td>
+                        <td>Total variation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SSR</strong></td>
+                        <td>Σ(Ŷ - Ȳ)²</td>
+                        <td>Explained</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SSE</strong></td>
+                        <td>Σ(Y - Ŷ)²</td>
+                        <td>Residuals</td>
+                    </tr>
+                </table>
+            </div>
 
-    <div class="formula-box">
-        <span class="label">R-Squared</span>
-        R² = SSR / SST = 1 - (SSE / SST)
-    </div>
+            <h3>R² and Adjusted R²</h3>
 
-    <div class="formula-box">
-        <span class="label">Adjusted R-Squared</span>
-        R²<sub>adj</sub> = 1 - [(n-1)/(n-k-1)] × (1 - R²)
-    </div>
+            <div class="formula-box">
+                <div class="label">R-Squared</div>
+                <div class="formula">R² = SSR / SST = 1 - (SSE / SST)</div>
+                <div class="desc">% of variance explained by model</div>
+            </div>
 
-    <div class="key-point">
-        <strong>Use Adjusted R²</strong> when comparing models with different numbers of independent variables. It
-        penalizes for adding variables that don't improve explanatory power.
-    </div>
+            <div class="formula-box">
+                <div class="label">Adjusted R²</div>
+                <div class="formula">R²<sub>adj</sub> = 1 - [(n-1)/(n-k-1)] × (1 - R²)</div>
+                <div class="desc">Penalizes adding weak variables</div>
+            </div>
 
-    <h2 id="hypothesis">🧪 6. Hypothesis Testing</h2>
+            <div class="key-point">
+                Use <strong>Adjusted R²</strong> when comparing models with different numbers of variables.
+            </div>
+        </section>
 
-    <h3>Testing Individual Coefficients (t-test)</h3>
+        <!-- HYPOTHESIS SECTION -->
+        <section class="section" id="hypothesis">
+            <h2>🧪 Hypothesis Testing</h2>
 
-    <div class="formula-box">
-        <span class="label">t-Statistic</span>
-        t = (b<sub>j</sub> - β<sub>j,hypothesized</sub>) / SE(b<sub>j</sub>)
-        <br><br>
-        Degrees of freedom = n - k - 1
-    </div>
+            <h3>Individual Coefficients (t-test)</h3>
 
-    <table>
-        <tr>
-            <th>Test</th>
-            <th>H₀</th>
-            <th>H₁</th>
-            <th>Decision</th>
-        </tr>
-        <tr>
-            <td>Two-tailed</td>
-            <td>β<sub>j</sub> = 0</td>
-            <td>β<sub>j</sub> ≠ 0</td>
-            <td>Reject if |t| > t<sub>critical</sub></td>
-        </tr>
-        <tr>
-            <td>One-tailed</td>
-            <td>β<sub>j</sub> ≤ 0</td>
-            <td>β<sub>j</sub> > 0</td>
-            <td>Reject if t > t<sub>critical</sub></td>
-        </tr>
-    </table>
+            <div class="formula-box">
+                <div class="label">t-Statistic</div>
+                <div class="formula">t = (b<sub>j</sub> - β<sub>0</sub>) / SE(b<sub>j</sub>)</div>
+                <div class="desc">df = n - k - 1</div>
+            </div>
 
-    <h3>Testing Overall Significance (F-test)</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Test</th>
+                        <th>H₀</th>
+                        <th>Decision</th>
+                    </tr>
+                    <tr>
+                        <td>Two-tailed</td>
+                        <td>β = 0</td>
+                        <td>Reject if |t| > t<sub>crit</sub></td>
+                    </tr>
+                    <tr>
+                        <td>One-tailed</td>
+                        <td>β ≤ 0</td>
+                        <td>Reject if t > t<sub>crit</sub></td>
+                    </tr>
+                </table>
+            </div>
 
-    <div class="formula-box">
-        <span class="label">F-Statistic</span>
-        F = (SSR / k) / (SSE / (n-k-1)) = MSR / MSE
-    </div>
+            <h3>Overall Model (F-test)</h3>
 
-    <div class="exam-tip">
-        The F-test answers: "Are <em>any</em> of the independent variables useful in explaining Y?" If F >
-        F<sub>critical</sub>, at least one β ≠ 0.
-    </div>
+            <div class="formula-box">
+                <div class="label">F-Statistic</div>
+                <div class="formula">F = MSR / MSE = (SSR/k) / (SSE/(n-k-1))</div>
+            </div>
 
-    <h2 id="prediction">🎯 7. Prediction</h2>
+            <div class="exam-tip">
+                F-test answers: "Are <em>any</em> of the X variables useful?" If F > F<sub>crit</sub>, at least one β ≠
+                0.
+            </div>
 
-    <div class="formula-box">
-        <span class="label">Predicted Value</span>
-        Ŷ = b<sub>0</sub> + b<sub>1</sub>X<sub>1</sub> + b<sub>2</sub>X<sub>2</sub> + ... + b<sub>k</sub>X<sub>k</sub>
-    </div>
+            <h3>Prediction</h3>
 
-    <div class="example">
-        <div class="example-title">📊 Example: Earnings Forecast</div>
-        <p>Model: <code>EPS = 0.50 + 0.03(Revenue) + 0.02(Assets)</code></p>
-        <p>If Revenue = 100 and Assets = 50:</p>
-        <p><code>EPS = 0.50 + 0.03(100) + 0.02(50) = 0.50 + 3 + 1 = 4.50</code></p>
-    </div>
+            <div class="example">
+                <div class="example-title">📊 Example</div>
+                <p>Model: <code>EPS = 0.50 + 0.03(Rev) + 0.02(Assets)</code></p>
+                <p>If Rev = 100, Assets = 50:</p>
+                <p><code>EPS = 0.50 + 3 + 1 = <span class="hl-green">4.50</span></code></p>
+            </div>
+        </section>
 
-    <div class="key-point">
-        Prediction intervals are wider than confidence intervals because they account for both estimation error AND
-        inherent variability in Y.
-    </div>
+        <!-- FORMULAS SECTION -->
+        <section class="section" id="formulas">
+            <h2>📋 Formula Sheet</h2>
 
-    <h2 id="formulas">📋 8. Formula Sheet</h2>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Formula</th>
+                    </tr>
+                    <tr>
+                        <td>Regression</td>
+                        <td>Y = β₀ + β₁X₁ + ... + ε</td>
+                    </tr>
+                    <tr>
+                        <td>t-stat</td>
+                        <td>t = (b - β₀) / SE(b)</td>
+                    </tr>
+                    <tr>
+                        <td>F-stat</td>
+                        <td>F = MSR / MSE</td>
+                    </tr>
+                    <tr>
+                        <td>R²</td>
+                        <td>R² = SSR / SST</td>
+                    </tr>
+                    <tr>
+                        <td>Adj R²</td>
+                        <td>1 - [(n-1)/(n-k-1)](1-R²)</td>
+                    </tr>
+                    <tr>
+                        <td>SEE</td>
+                        <td>√(SSE / (n-k-1))</td>
+                    </tr>
+                    <tr>
+                        <td>df</td>
+                        <td>n - k - 1</td>
+                    </tr>
+                </table>
+            </div>
 
-    <table>
-        <tr>
-            <th>Formula</th>
-            <th>Expression</th>
-        </tr>
-        <tr>
-            <td>Multiple Regression</td>
-            <td><code>Y = β₀ + β₁X₁ + β₂X₂ + ... + βₖXₖ + ε</code></td>
-        </tr>
-        <tr>
-            <td>t-statistic</td>
-            <td><code>t = (b - β₀) / SE(b)</code></td>
-        </tr>
-        <tr>
-            <td>F-statistic</td>
-            <td><code>F = MSR / MSE</code></td>
-        </tr>
-        <tr>
-            <td>R²</td>
-            <td><code>R² = SSR / SST = 1 - (SSE/SST)</code></td>
-        </tr>
-        <tr>
-            <td>Adjusted R²</td>
-            <td><code>R²ₐ = 1 - [(n-1)/(n-k-1)](1-R²)</code></td>
-        </tr>
-        <tr>
-            <td>SEE</td>
-            <td><code>SEE = √(SSE / (n-k-1))</code></td>
-        </tr>
-        <tr>
-            <td>Degrees of Freedom</td>
-            <td><code>df = n - k - 1</code></td>
-        </tr>
-    </table>
+            <div class="exam-tip">
+                <strong>Memory Trick:</strong><br>
+                • n = observations<br>
+                • k = independent variables<br>
+                • k+1 = total parameters<br>
+                • n-k-1 = error df
+            </div>
 
-    <div class="exam-tip">
-        <strong>Quick Memory Trick:</strong><br>
-        • <strong>n</strong> = number of observations<br>
-        • <strong>k</strong> = number of independent variables<br>
-        • <strong>k+1</strong> = total parameters (including intercept)<br>
-        • <strong>n-k-1</strong> = degrees of freedom for error
-    </div>
+            <div class="note tip">
+                <div class="note-title">✓ Quick Check</div>
+                <p>If p-value < α (usually 0.05), coefficient is <strong>statistically significant</strong>.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="footer-spacer"></div>
+
+    <script>
+        // Tab Navigation
+        const pills = document.querySelectorAll('.nav-pill');
+        const sections = document.querySelectorAll('.section');
+
+        pills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                const targetId = pill.dataset.section;
+
+                // Update pills
+                pills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+
+                // Update sections
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+
+                // Scroll to top of content
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
 
 </body>
 
