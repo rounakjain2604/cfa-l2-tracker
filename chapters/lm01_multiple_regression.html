@@ -11,18 +11,18 @@
 
     <style>
         :root {
-            --bg: #1a1a2e;
-            --paper: #16213e;
-            --ink: #eaeaea;
-            --ink-light: #a0a0b0;
+            --bg: #F8F6F3;
+            --paper: #FFFEF9;
+            --ink: #0D0D0D;
+            --ink-light: #555555;
             --accent: #6C5CE7;
             --teal: #00B894;
             --coral: #FF4B2B;
-            --hl-yellow: rgba(253, 203, 110, 0.4);
-            --hl-pink: rgba(253, 167, 167, 0.35);
-            --hl-green: rgba(129, 236, 168, 0.35);
-            --hl-purple: rgba(162, 155, 254, 0.35);
-            --border: #2a2a4a;
+            --hl-yellow: rgba(253, 203, 110, 0.55);
+            --hl-pink: rgba(253, 167, 167, 0.5);
+            --hl-green: rgba(129, 236, 168, 0.5);
+            --hl-purple: rgba(162, 155, 254, 0.5);
+            --border: #E8E4E0;
         }
 
         * {
@@ -55,6 +55,7 @@
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .header h1 {
@@ -91,7 +92,7 @@
             font-size: 0.8rem;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.05);
+            background: white;
             border: 1px solid var(--border);
             border-radius: 20px;
             color: var(--ink-light);
@@ -100,8 +101,8 @@
         }
 
         .nav-pill.active {
-            background: var(--accent);
-            border-color: var(--accent);
+            background: var(--coral);
+            border-color: var(--coral);
             color: white;
         }
 
@@ -109,6 +110,8 @@
         .content {
             padding: 20px;
             max-width: 100%;
+            background: var(--paper);
+            min-height: calc(100vh - 120px);
         }
 
         /* Sections */
@@ -137,7 +140,7 @@
         h2 {
             font-size: 1.15rem;
             font-weight: 700;
-            color: var(--coral);
+            color: var(--ink);
             margin-bottom: 12px;
             padding-bottom: 6px;
             border-bottom: 2px solid var(--coral);
@@ -198,7 +201,7 @@
 
         /* Formula Box */
         .formula-box {
-            background: linear-gradient(135deg, #1e2a4a 0%, #16213e 100%);
+            background: linear-gradient(135deg, #F5F3FF 0%, #E8E5FF 100%);
             border: 2px solid var(--accent);
             border-radius: 10px;
             padding: 14px 16px;
@@ -231,7 +234,7 @@
 
         /* Note Boxes */
         .note {
-            background: rgba(253, 203, 110, 0.1);
+            background: #FFFBF0;
             border-left: 3px solid #F0C36D;
             padding: 12px 14px;
             margin: 12px 0;
@@ -239,17 +242,17 @@
         }
 
         .note.tip {
-            background: rgba(0, 184, 148, 0.1);
+            background: #F0FFF8;
             border-left-color: var(--teal);
         }
 
         .note.warn {
-            background: rgba(255, 75, 43, 0.1);
+            background: #FFF5F3;
             border-left-color: var(--coral);
         }
 
         .note.info {
-            background: rgba(108, 92, 231, 0.1);
+            background: #F5F3FF;
             border-left-color: var(--accent);
         }
 
@@ -283,7 +286,7 @@
         }
 
         th {
-            background: var(--accent);
+            background: #5D4E9E;
             color: white;
             padding: 10px 12px;
             text-align: left;
@@ -299,19 +302,21 @@
             padding: 10px 12px;
             border-bottom: 1px solid var(--border);
             vertical-align: top;
+            background: white;
         }
 
-        tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.02);
+        tr:nth-child(even) td {
+            background: #FAFAFA;
         }
 
         /* Cards */
         .card {
-            background: var(--paper);
+            background: white;
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 14px 16px;
             margin: 12px 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
         }
 
         .card-title {
@@ -326,8 +331,8 @@
 
         /* Example Box */
         .example {
-            background: rgba(255, 200, 100, 0.08);
-            border: 1px solid rgba(255, 200, 100, 0.2);
+            background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E8 100%);
+            border: 1px solid #F0D9B5;
             border-radius: 10px;
             padding: 14px 16px;
             margin: 14px 0;
@@ -336,13 +341,13 @@
         .example-title {
             font-size: 0.8rem;
             font-weight: 700;
-            color: #F0C36D;
+            color: #C0792A;
             margin-bottom: 10px;
         }
 
         /* Key Point */
         .key-point {
-            background: linear-gradient(135deg, rgba(255, 75, 43, 0.1), rgba(255, 107, 74, 0.05));
+            background: linear-gradient(135deg, #FFF5F0 0%, #FFECE8 100%);
             border-left: 3px solid var(--coral);
             border-radius: 0 8px 8px 0;
             padding: 12px 14px;
@@ -361,7 +366,7 @@
 
         /* Exam Tip */
         .exam-tip {
-            background: rgba(0, 184, 148, 0.1);
+            background: #F0FFF8;
             border-left: 3px solid var(--teal);
             border-radius: 0 8px 8px 0;
             padding: 12px 14px;
@@ -380,7 +385,7 @@
 
         /* Code */
         code {
-            background: rgba(108, 92, 231, 0.15);
+            background: #F5F3FF;
             padding: 2px 6px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
