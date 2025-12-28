@@ -774,6 +774,103 @@
             color: var(--success);
         }
 
+        /* Difficulty Badge */
+        .difficulty-badge {
+            display: inline-flex;
+            gap: 2px;
+            margin-left: 0.5rem;
+        }
+
+        .difficulty-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+        }
+
+        .difficulty-badge .dot.filled {
+            background: var(--sunset-coral);
+        }
+
+        .difficulty-badge .dot.filled.hard {
+            background: #FF4136;
+        }
+
+        /* Study Screen */
+        .study-header {
+            margin-bottom: 1rem;
+        }
+
+        .study-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .study-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        .study-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .study-card-header {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .study-card-icon {
+            font-size: 1.5rem;
+        }
+
+        .study-card-info {
+            flex: 1;
+        }
+
+        .study-card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .study-card-meta {
+            font-size: 0.7rem;
+            color: var(--text-label);
+            margin-top: 0.1rem;
+        }
+
+        .study-card-link {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .study-card-link:hover {
+            opacity: 0.9;
+        }
+
+        .study-empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-label);
+        }
+
         .topic-chevron {
             color: var(--text-label);
             transition: transform 0.3s;
@@ -1604,6 +1701,15 @@
             </div>
             <div id="syllabusContainer"></div>
         </div>
+
+        <!-- STUDY SCREEN -->
+        <div id="screen-study" class="screen">
+            <div class="study-header">
+                <div class="study-title">📚 Study Notes</div>
+                <div class="study-subtitle">Your notes & dashboards for each module</div>
+            </div>
+            <div id="studyContainer"></div>
+        </div>
     </div>
 
     <!-- Bottom Navigation -->
@@ -1640,6 +1746,16 @@
             </span>
             <span class="nav-item-label">Syllabus</span>
         </button>
+        <button class="nav-item" onclick="showScreen('study')" id="nav-study">
+            <span class="nav-item-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+            </span>
+            <span class="nav-item-label">Study</span>
+        </button>
     </nav>
 
     <div class="toast" id="toast"></div>
@@ -1661,101 +1777,101 @@
     <div class="confetti-container" id="confettiContainer"></div>
 
     <script>
-        // CFA Level 2 Full Syllabus
+        // CFA Level 2 Full Syllabus with Difficulty Ratings (1=Easy, 5=Hard)
         const SYLLABUS = [
             {
                 id: 'quant', name: 'Quantitative Methods', icon: '📐',
                 lms: [
-                    { id: 'lm1', num: 'LM 1', name: 'Basics of Multiple Regression' },
-                    { id: 'lm2', num: 'LM 2', name: 'Evaluating Regression Model Fit' },
-                    { id: 'lm3', num: 'LM 3', name: 'Model Misspecification' },
-                    { id: 'lm4', num: 'LM 4', name: 'Extensions of Multiple Regression' },
-                    { id: 'lm5', num: 'LM 5', name: 'Time-Series Analysis' },
-                    { id: 'lm6', num: 'LM 6', name: 'Machine Learning' },
-                    { id: 'lm7', num: 'LM 7', name: 'Big Data Projects' }
+                    { id: 'lm1', num: 'LM 1', name: 'Basics of Multiple Regression', difficulty: 2 },
+                    { id: 'lm2', num: 'LM 2', name: 'Evaluating Regression Model Fit', difficulty: 3 },
+                    { id: 'lm3', num: 'LM 3', name: 'Model Misspecification', difficulty: 4 },
+                    { id: 'lm4', num: 'LM 4', name: 'Extensions of Multiple Regression', difficulty: 4 },
+                    { id: 'lm5', num: 'LM 5', name: 'Time-Series Analysis', difficulty: 5 },
+                    { id: 'lm6', num: 'LM 6', name: 'Machine Learning', difficulty: 3 },
+                    { id: 'lm7', num: 'LM 7', name: 'Big Data Projects', difficulty: 2 }
                 ]
             },
             {
                 id: 'econ', name: 'Economics', icon: '🌍',
                 lms: [
-                    { id: 'lm8', num: 'LM 8', name: 'Currency Exchange Rates' },
-                    { id: 'lm9', num: 'LM 9', name: 'Economic Growth' }
+                    { id: 'lm8', num: 'LM 8', name: 'Currency Exchange Rates', difficulty: 4 },
+                    { id: 'lm9', num: 'LM 9', name: 'Economic Growth', difficulty: 3 }
                 ]
             },
             {
                 id: 'fra', name: 'Financial Statement Analysis', icon: '📊',
                 lms: [
-                    { id: 'lm10', num: 'LM 10', name: 'Intercorporate Investments' },
-                    { id: 'lm11', num: 'LM 11', name: 'Employee Compensation' },
-                    { id: 'lm12', num: 'LM 12', name: 'Multinational Operations' },
-                    { id: 'lm13', num: 'LM 13', name: 'Analysis of Financial Institutions' },
-                    { id: 'lm14', num: 'LM 14', name: 'Evaluating Quality of Financial Reports' },
-                    { id: 'lm15', num: 'LM 15', name: 'Integration of FSA Techniques' }
+                    { id: 'lm10', num: 'LM 10', name: 'Intercorporate Investments', difficulty: 5, notes: 'intercorporate_investments_notes.html' },
+                    { id: 'lm11', num: 'LM 11', name: 'Employee Compensation', difficulty: 4 },
+                    { id: 'lm12', num: 'LM 12', name: 'Multinational Operations', difficulty: 5, notes: 'multinational_operations_notes.html' },
+                    { id: 'lm13', num: 'LM 13', name: 'Analysis of Financial Institutions', difficulty: 4 },
+                    { id: 'lm14', num: 'LM 14', name: 'Evaluating Quality of Financial Reports', difficulty: 3 },
+                    { id: 'lm15', num: 'LM 15', name: 'Integration of FSA Techniques', difficulty: 3 }
                 ]
             },
             {
                 id: 'corp', name: 'Corporate Issuers', icon: '🏢',
                 lms: [
-                    { id: 'lm16', num: 'LM 16', name: 'Dividends and Share Repurchases' },
-                    { id: 'lm17', num: 'LM 17', name: 'ESG Considerations' },
-                    { id: 'lm18', num: 'LM 18', name: 'Cost of Capital: Advanced' },
-                    { id: 'lm19', num: 'LM 19', name: 'Corporate Restructuring' }
+                    { id: 'lm16', num: 'LM 16', name: 'Dividends and Share Repurchases', difficulty: 2 },
+                    { id: 'lm17', num: 'LM 17', name: 'ESG Considerations', difficulty: 2 },
+                    { id: 'lm18', num: 'LM 18', name: 'Cost of Capital: Advanced', difficulty: 4 },
+                    { id: 'lm19', num: 'LM 19', name: 'Corporate Restructuring', difficulty: 3 }
                 ]
             },
             {
                 id: 'equity', name: 'Equity Valuation', icon: '📈',
                 lms: [
-                    { id: 'lm20', num: 'LM 20', name: 'Equity Valuation: Applications' },
-                    { id: 'lm21', num: 'LM 21', name: 'Discounted Dividend Valuation' },
-                    { id: 'lm22', num: 'LM 22', name: 'Free Cash Flow Valuation' },
-                    { id: 'lm23', num: 'LM 23', name: 'Market-Based Valuation' },
-                    { id: 'lm24', num: 'LM 24', name: 'Residual Income Valuation' },
-                    { id: 'lm25', num: 'LM 25', name: 'Private Company Valuation' }
+                    { id: 'lm20', num: 'LM 20', name: 'Equity Valuation: Applications', difficulty: 3 },
+                    { id: 'lm21', num: 'LM 21', name: 'Discounted Dividend Valuation', difficulty: 4, notes: 'ddm_valuation_dashboard.html' },
+                    { id: 'lm22', num: 'LM 22', name: 'Free Cash Flow Valuation', difficulty: 4, notes: 'fcf_valuation_dashboard.html' },
+                    { id: 'lm23', num: 'LM 23', name: 'Market-Based Valuation', difficulty: 3 },
+                    { id: 'lm24', num: 'LM 24', name: 'Residual Income Valuation', difficulty: 4 },
+                    { id: 'lm25', num: 'LM 25', name: 'Private Company Valuation', difficulty: 4 }
                 ]
             },
             {
                 id: 'fi', name: 'Fixed Income', icon: '💵',
                 lms: [
-                    { id: 'lm26', num: 'LM 26', name: 'Term Structure & Interest Rates' },
-                    { id: 'lm27', num: 'LM 27', name: 'Arbitrage-Free Valuation' },
-                    { id: 'lm28', num: 'LM 28', name: 'Bonds with Embedded Options' },
-                    { id: 'lm29', num: 'LM 29', name: 'Credit Analysis Models' },
-                    { id: 'lm30', num: 'LM 30', name: 'Credit Default Swaps' }
+                    { id: 'lm26', num: 'LM 26', name: 'Term Structure & Interest Rates', difficulty: 4 },
+                    { id: 'lm27', num: 'LM 27', name: 'Arbitrage-Free Valuation', difficulty: 5 },
+                    { id: 'lm28', num: 'LM 28', name: 'Bonds with Embedded Options', difficulty: 5 },
+                    { id: 'lm29', num: 'LM 29', name: 'Credit Analysis Models', difficulty: 4 },
+                    { id: 'lm30', num: 'LM 30', name: 'Credit Default Swaps', difficulty: 3 }
                 ]
             },
             {
                 id: 'deriv', name: 'Derivatives', icon: '🔀',
                 lms: [
-                    { id: 'lm31', num: 'LM 31', name: 'Pricing Forward Commitments' },
-                    { id: 'lm32', num: 'LM 32', name: 'Valuation of Contingent Claims' }
+                    { id: 'lm31', num: 'LM 31', name: 'Pricing Forward Commitments', difficulty: 5, notes: 'forward_commitments_notes.html' },
+                    { id: 'lm32', num: 'LM 32', name: 'Valuation of Contingent Claims', difficulty: 5 }
                 ]
             },
             {
                 id: 'alts', name: 'Alternative Investments', icon: '🏠',
                 lms: [
-                    { id: 'lm33', num: 'LM 33', name: 'Commodities' },
-                    { id: 'lm34', num: 'LM 34', name: 'Real Estate Investments' },
-                    { id: 'lm35', num: 'LM 35', name: 'Private Capital' },
-                    { id: 'lm36', num: 'LM 36', name: 'Hedge Fund Strategies' }
+                    { id: 'lm33', num: 'LM 33', name: 'Commodities', difficulty: 2 },
+                    { id: 'lm34', num: 'LM 34', name: 'Real Estate Investments', difficulty: 3 },
+                    { id: 'lm35', num: 'LM 35', name: 'Private Capital', difficulty: 3 },
+                    { id: 'lm36', num: 'LM 36', name: 'Hedge Fund Strategies', difficulty: 3 }
                 ]
             },
             {
                 id: 'pm', name: 'Portfolio Management', icon: '💼',
                 lms: [
-                    { id: 'lm37', num: 'LM 37', name: 'Exchange-Traded Funds' },
-                    { id: 'lm38', num: 'LM 38', name: 'Multifactor Models' },
-                    { id: 'lm39', num: 'LM 39', name: 'Measuring Market Risk' },
-                    { id: 'lm40', num: 'LM 40', name: 'Backtesting and Simulation' },
-                    { id: 'lm41', num: 'LM 41', name: 'Economics & Investment Markets' },
-                    { id: 'lm42', num: 'LM 42', name: 'Active Portfolio Management' }
+                    { id: 'lm37', num: 'LM 37', name: 'Exchange-Traded Funds', difficulty: 2 },
+                    { id: 'lm38', num: 'LM 38', name: 'Multifactor Models', difficulty: 4 },
+                    { id: 'lm39', num: 'LM 39', name: 'Measuring Market Risk', difficulty: 4 },
+                    { id: 'lm40', num: 'LM 40', name: 'Backtesting and Simulation', difficulty: 3 },
+                    { id: 'lm41', num: 'LM 41', name: 'Economics & Investment Markets', difficulty: 3 },
+                    { id: 'lm42', num: 'LM 42', name: 'Active Portfolio Management', difficulty: 3 }
                 ]
             },
             {
                 id: 'ethics', name: 'Ethics & Standards', icon: '⚖️',
                 lms: [
-                    { id: 'lm43', num: 'LM 43', name: 'Code of Ethics' },
-                    { id: 'lm44', num: 'LM 44', name: 'Guidance for Standards I–VII' },
-                    { id: 'lm45', num: 'LM 45', name: 'Application of Standards' }
+                    { id: 'lm43', num: 'LM 43', name: 'Code of Ethics', difficulty: 1 },
+                    { id: 'lm44', num: 'LM 44', name: 'Guidance for Standards I–VII', difficulty: 2 },
+                    { id: 'lm45', num: 'LM 45', name: 'Application of Standards', difficulty: 2 }
                 ]
             }
         ];
@@ -1810,6 +1926,7 @@
             renderSyllabus();
             renderTopicsSummary();
             renderPlan();
+            renderStudy();
             updateStats();
         }
 
@@ -1990,13 +2107,17 @@
                         <div class="topic-lms">
                             ${topic.lms.map(lm => {
                     const isChecked = state.completedLMs.includes(lm.id);
+                    const diff = lm.difficulty || 3;
+                    const diffDots = Array(5).fill(0).map((_, i) =>
+                        `<span class="dot ${i < diff ? 'filled' : ''} ${diff >= 4 ? 'hard' : ''}"></span>`
+                    ).join('');
                     return `
                                     <div class="lm-item ${isChecked ? 'completed' : ''}">
                                         <div class="lm-check ${isChecked ? 'checked' : ''}" onclick="toggleLM('${lm.id}')">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                         </div>
                                         <div class="lm-content">
-                                            <div class="lm-number">${lm.num}</div>
+                                            <div class="lm-number">${lm.num}<span class="difficulty-badge">${diffDots}</span></div>
                                             <div class="lm-name">${lm.name}</div>
                                         </div>
                                     </div>
@@ -2006,6 +2127,37 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        function renderStudy() {
+            const container = document.getElementById('studyContainer');
+            const notesModules = [];
+
+            SYLLABUS.forEach(topic => {
+                topic.lms.forEach(lm => {
+                    if (lm.notes) {
+                        notesModules.push({ ...lm, topicIcon: topic.icon, topicName: topic.name });
+                    }
+                });
+            });
+
+            if (notesModules.length === 0) {
+                container.innerHTML = '<div class="study-empty">No study notes yet.<br>Add notes to modules in the syllabus!</div>';
+                return;
+            }
+
+            container.innerHTML = notesModules.map(lm => `
+                <div class="study-card">
+                    <div class="study-card-header">
+                        <span class="study-card-icon">${lm.topicIcon}</span>
+                        <div class="study-card-info">
+                            <div class="study-card-title">${lm.num}: ${lm.name}</div>
+                            <div class="study-card-meta">${lm.topicName}</div>
+                        </div>
+                        <a href="../${lm.notes}" target="_blank" class="study-card-link">Open</a>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function toggleTopic(topicId) {
