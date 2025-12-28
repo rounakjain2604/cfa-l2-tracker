@@ -424,6 +424,7 @@
             border-radius: 10px;
             padding: 14px 16px;
             margin: 14px 0;
+            overflow-x: auto;
         }
 
         .example-title {
@@ -519,8 +520,8 @@
         .flow-num {
             background: var(--accent);
             color: white;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1022,11 +1023,11 @@
                 <div class="flow-diagram" style="margin: 10px 0;">
                     <div class="flow-step"><span class="flow-num">?</span><span class="flow-text">Check Absolute t-stat
                             ($|t|$)</span></div>
-                    <div class="flow-step"><span class="flow-num">>2</span><span
+                    <div class="flow-step"><span class="flow-num">&gt;2</span><span
                             class="flow-text"><strong>Significant.</strong> The variable matters.</span></div>
-                    <div class="flow-step"><span class="flow-num">
-                            <2< /span><span class="flow-text"><strong>Not Significant.</strong> It's just noise. Ignore
-                                    it.</span></div>
+                    <div class="flow-step"><span class="flow-num">&lt;2</span><span class="flow-text"><strong>Not
+                                Significant.</strong> It's just noise. Ignore
+                            it.</span></div>
                 </div>
                 <p><em>Example:</em> If "GDP Growth" has a t-stat of 0.5, it means GDP Growth doesn't actually predict
                     stock returns in your model. It's statistically zero.</p>
