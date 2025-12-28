@@ -836,6 +836,49 @@
             margin-top: 0.25rem;
         }
 
+        /* LM Items in Daily Schedule */
+        .day-lms-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .day-lm-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .day-lm-num {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--sunset-coral);
+            background: var(--bg-accent);
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .day-card.today .day-lm-num {
+            background: rgba(255, 75, 43, 0.15);
+        }
+
+        .day-lm-name {
+            font-size: 0.7rem;
+            color: var(--text-sub);
+            line-height: 1.2;
+        }
+
+        .day-card.completed .day-lm-num {
+            background: rgba(52, 199, 89, 0.15);
+            color: var(--success);
+        }
+
+        .day-card.completed .day-lm-name {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
 
         /* ========== SYLLABUS SCREEN ========== */
 
@@ -2267,34 +2310,55 @@
 
             // Get the week's date range
             const weekStartDate = parseWeekDate(currentWeek.start, currentWeek.week);
-            const days = [];
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+            // Get LMs for this week with full info
+            const weekLMs = currentWeek.lms.map(id => getLMInfo(id)).filter(Boolean);
+
+            // Distribute LMs across days intelligently
+            // Sunday: 6h (can fit 1-2 LMs), Weekdays: 3h (1 LM or continuation)
+            const dailyLMAssignments = distributeLMsAcrossDays(weekLMs, weekStartDate);
+
             // Generate 7 days for the week
+            const days = [];
             for (let i = 0; i < 7; i++) {
                 const date = new Date(weekStartDate);
                 date.setDate(weekStartDate.getDate() + i);
                 const dayOfWeek = date.getDay();
                 const isSunday = dayOfWeek === 0;
                 const hours = isSunday ? 6 : 3;
+                const dateKey = formatDateKey(date);
 
                 days.push({
                     date: date,
-                    dateKey: formatDateKey(date),
+                    dateKey: dateKey,
                     dayName: dayNames[dayOfWeek],
                     dayShort: date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
                     hours: hours,
-                    isToday: formatDateKey(date) === todayStr,
-                    isPast: date < today && formatDateKey(date) !== todayStr
+                    isToday: dateKey === todayStr,
+                    isPast: date < today && dateKey !== todayStr,
+                    lms: dailyLMAssignments[i] || []
                 });
             }
 
-            // Get LMs for this week to distribute as focus
-            const weekLMs = currentWeek.lms.map(id => getLMInfo(id)).filter(Boolean);
-            const focusText = currentWeek.focus || (weekLMs.length > 0 ? weekLMs.map(lm => lm.name).join(', ') : 'Review');
-
             const scheduleHTML = days.map(day => {
                 const isCompleted = state.completedDays.includes(day.dateKey);
+
+                // Format LM display for this day
+                let focusContent = '';
+                if (day.lms.length > 0) {
+                    focusContent = day.lms.map(lm => `
+                        <div class="day-lm-item">
+                            <span class="day-lm-num">${lm.num}</span>
+                            <span class="day-lm-name">${lm.name}</span>
+                        </div>
+                    `).join('');
+                } else if (currentWeek.note) {
+                    focusContent = `<div class="day-focus">${currentWeek.note}</div>`;
+                } else {
+                    focusContent = `<div class="day-focus">Review & Practice</div>`;
+                }
+
                 return `
                     <div class="day-card ${day.isToday ? 'today' : ''} ${isCompleted ? 'completed' : ''}">
                         <div class="day-check ${isCompleted ? 'checked' : ''}" onclick="toggleDayComplete('${day.dateKey}')">
@@ -2302,7 +2366,7 @@
                         </div>
                         <div class="day-info">
                             <div class="day-name">${day.dayShort}${day.isToday ? ' (Today)' : ''}</div>
-                            <div class="day-focus">${focusText}</div>
+                            <div class="day-lms-container">${focusContent}</div>
                         </div>
                         <div class="day-time">${day.hours}h</div>
                     </div>
@@ -2310,6 +2374,52 @@
             }).join('');
 
             containers.forEach(c => c.innerHTML = scheduleHTML);
+        }
+
+        // Distribute LMs across 7 days based on hours available
+        function distributeLMsAcrossDays(lms, weekStartDate) {
+            const distribution = [[], [], [], [], [], [], []]; // 7 days
+
+            if (lms.length === 0) return distribution;
+
+            // Calculate total hours available: Mon-Sat 3h + Sun 6h = 24h
+            // But distribute based on study pattern
+            const hoursPerDay = [];
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(weekStartDate);
+                date.setDate(weekStartDate.getDate() + i);
+                const dayOfWeek = date.getDay();
+                hoursPerDay.push(dayOfWeek === 0 ? 6 : 3);
+            }
+
+            // Smart distribution: spread LMs considering difficulty and hours
+            // Assign ~8h per LM on average (24h / 3 LMs typical)
+            let lmIndex = 0;
+            let hoursForCurrentLM = 0;
+            const hoursPerLM = 24 / Math.max(lms.length, 1);
+
+            for (let dayIdx = 0; dayIdx < 7 && lmIndex < lms.length; dayIdx++) {
+                const currentLM = lms[lmIndex];
+                distribution[dayIdx].push(currentLM);
+                hoursForCurrentLM += hoursPerDay[dayIdx];
+
+                // Move to next LM if we've allocated enough hours
+                if (hoursForCurrentLM >= hoursPerLM && lmIndex < lms.length - 1) {
+                    lmIndex++;
+                    hoursForCurrentLM = 0;
+                }
+            }
+
+            // If there are remaining days and only 1-2 LMs, show continuation
+            // Fill remaining days with the last LM or review
+            for (let dayIdx = 0; dayIdx < 7; dayIdx++) {
+                if (distribution[dayIdx].length === 0 && lms.length > 0) {
+                    // Show the last LM as continuation or review
+                    distribution[dayIdx].push(lms[lms.length - 1]);
+                }
+            }
+
+            return distribution;
         }
 
         function toggleDayComplete(dateKey) {
