@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FI LM1: Term Structure | CFA L2</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+
+    <style>
+        :root {
+            --bg: #F8F6F3;
+            --paper: #FFFEF9;
+            --ink: #0D0D0D;
+            --ink-light: #555555;
+            --accent: #6C5CE7;
+            --teal: #00B894;
+            --coral: #FF4B2B;
+            --hl-yellow: rgba(253, 203, 110, 0.55);
+            --hl-pink: rgba(253, 167, 167, 0.5);
+            --hl-green: rgba(129, 236, 168, 0.5);
+            --hl-purple: rgba(162, 155, 254, 0.5);
+            --border: #E8E4E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Mali', cursive;
+            background-color: var(--bg);
+            background-image:
+                linear-gradient(rgba(13, 13, 13, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(13, 13, 13, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--ink);
+            font-size: 15px;
+            line-height: 1.65;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--paper);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .header h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 0.75rem;
+            color: var(--ink-light);
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            overflow-x: auto;
+            background: var(--paper);
+            border-bottom: 1px solid var(--border);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .nav-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-pill {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--ink-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-pill.active {
+            background: var(--coral);
+            border-color: var(--coral);
+            color: white;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 100%;
+            background: var(--paper);
+            min-height: calc(100vh - 120px);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--coral);
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 18px 0 10px;
+        }
+
+        h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin: 14px 0 8px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            word-wrap: break-word;
+        }
+
+        ul,
+        ol {
+            margin: 0 0 12px 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .hl {
+            background: var(--hl-yellow);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .hl-pink {
+            background: var(--hl-pink);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .hl-green {
+            background: var(--hl-green);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .hl-purple {
+            background: var(--hl-purple);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #F5F3FF 0%, #E8E5FF 100%);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 14px 0;
+            text-align: center;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        .formula-box .label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .formula-box .formula {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .table-wrap {
+            width: 100%;
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background: #5D4E9E;
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            background: white;
+        }
+
+        tr:nth-child(even) td {
+            background: #FAFAFA;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 12px 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .example {
+            background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E8 100%);
+            border: 1px solid #F0D9B5;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 14px 0;
+            overflow-x: auto;
+        }
+
+        .example-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #C0792A;
+            margin-bottom: 10px;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #FFF5F0 0%, #FFECE8 100%);
+            border-left: 3px solid var(--coral);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+
+        .key-point::before {
+            content: "💡 KEY";
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-bottom: 6px;
+        }
+
+        .exam-tip {
+            background: #F0FFF8;
+            border-left: 3px solid var(--teal);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+
+        .exam-tip::before {
+            content: "📝 EXAM TIP";
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: 6px;
+        }
+
+        .trap {
+            background: #FFF5F3;
+            border-left: 3px solid var(--coral);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+
+        .trap::before {
+            content: "⚠️ EXAM TRAP";
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--coral);
+            margin-bottom: 6px;
+        }
+
+        .note {
+            background: #F5F3FF;
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+
+        .note.warn {
+            background: #FFF5F3;
+            border-left-color: var(--coral);
+        }
+
+        .note.hint {
+            background: #F0FFF8;
+            border-left-color: var(--teal);
+        }
+
+        code {
+            background: #F5F3FF;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: var(--accent);
+        }
+
+        .footer-spacer {
+            height: 80px;
+        }
+
+        @media (max-width: 600px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                margin-bottom: 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: white;
+                padding: 8px;
+            }
+
+            td {
+                border: none;
+                border-bottom: 1px dashed var(--border);
+                position: relative;
+                padding: 8px 0 8px 40%;
+                text-align: right;
+            }
+
+            td:last-child {
+                border-bottom: none;
+            }
+
+            td::before {
+                position: absolute;
+                top: 8px;
+                left: 0;
+                width: 38%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 700;
+                color: var(--ink-light);
+                content: attr(data-label);
+                font-family: 'Inter', sans-serif;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>📈 FI LM 1: Term Structure & Interest Rate Dynamics</h1>
+        <p>Fixed Income • CFA Level II</p>
+    </header>
+
+    <nav class="nav-pills">
+        <button class="nav-pill active" data-section="overview">Overview</button>
+        <button class="nav-pill" data-section="spotforward">Spot & Forward</button>
+        <button class="nav-pill" data-section="bootstrap">Bootstrapping</button>
+        <button class="nav-pill" data-section="ytm">YTM</button>
+        <button class="nav-pill" data-section="rolldown">Roll Down</button>
+        <button class="nav-pill" data-section="swap">Swap Curve</button>
+        <button class="nav-pill" data-section="spreads">Spreads</button>
+        <button class="nav-pill" data-section="theories">Theories</button>
+        <button class="nav-pill" data-section="factors">Factors</button>
+        <button class="nav-pill" data-section="volatility">Volatility</button>
+        <button class="nav-pill" data-section="macro">Macro</button>
+        <button class="nav-pill" data-section="practice">Practice</button>
+    </nav>
+
+    <main class="content">
+
+        <!-- OVERVIEW -->
+        <section class="section active" id="overview">
+            <h2>📌 Module Overview</h2>
+
+            <div class="note">
+                <strong>This is THE foundational Fixed Income module.</strong> Master this, and everything else in FI
+                builds on it. <strong>Expect 2-4 exam questions.</strong>
+            </div>
+
+            <h3>Learning Outcome Statements (LOS)</h3>
+            <div class="card">
+                <ol>
+                    <li>Describe relationships among spot rates, forward rates, YTM, expected/realized returns, and
+                        yield curve shape</li>
+                    <li>Describe bootstrapping to obtain zero-coupon rates from par curve</li>
+                    <li>Describe assumptions about spot rate evolution in active bond portfolio management</li>
+                    <li>Describe rolling down the yield curve strategy</li>
+                    <li>Explain swap rate curve and its use in valuation</li>
+                    <li>Calculate and interpret swap spreads</li>
+                    <li>Describe short-term spreads for credit/liquidity risk</li>
+                    <li>Explain traditional term structure theories</li>
+                    <li>Explain yield curve factor models and risk management</li>
+                    <li>Explain yield volatility term structure</li>
+                    <li>Explain macroeconomic factors affecting rates and spreads</li>
+                </ol>
+            </div>
+
+            <h3>Core Definitions</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Definition</th>
+                            <th>Symbol</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Term">Discount Factor</td>
+                            <td data-label="Definition">Price today of receiving ₹1 at maturity N</td>
+                            <td data-label="Symbol">$DF_N$</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Term">Spot Rate</td>
+                            <td data-label="Definition">YTM on a zero-coupon bond for maturity N</td>
+                            <td data-label="Symbol">$z_N$</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Term">Forward Rate</td>
+                            <td data-label="Definition">Rate agreed today for loan starting at time A with tenor (B-A)
+                            </td>
+                            <td data-label="Symbol">$f_{A,B-A}$</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Term">Spot Curve</td>
+                            <td data-label="Definition">Graph of spot rates across maturities</td>
+                            <td data-label="Symbol">Zero-coupon yield curve</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Term">Forward Curve</td>
+                            <td data-label="Definition">Graph of forward rates for a given start date</td>
+                            <td data-label="Symbol">—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="key-point">
+                <strong>The Intuition:</strong> Spot rate = what you earn investing TODAY. Forward rate = what you can
+                LOCK IN today for a FUTURE investment.
+            </div>
+        </section>
+
+        <!-- SPOT & FORWARD -->
+        <section class="section" id="spotforward">
+            <h2>📐 Spot Rates & Forward Rates</h2>
+
+            <h3>Formula 1: Discount Factor</h3>
+            <div class="formula-box">
+                <div class="label">Discount Factor</div>
+                <div class="formula">$$DF_N = \frac{1}{(1 + z_N)^N}$$</div>
+            </div>
+            <p>The discount factor is the present value of ₹1 received N periods from now.</p>
+
+            <h3>Formula 2: Forward Pricing Model (No-Arbitrage)</h3>
+            <div class="formula-box">
+                <div class="label">Forward Pricing Model</div>
+                <div class="formula">$$DF_B = DF_A \times F_{A,B-A}$$</div>
+            </div>
+            <p>The no-arbitrage principle: Two ways to get ₹1 at time B must cost the same today.</p>
+
+            <h3>Formula 3: Forward Rate Model (MASTER EQUATION)</h3>
+            <div class="formula-box">
+                <div class="label">⭐ The Master Equation</div>
+                <div class="formula">$$(1 + z_B)^B = (1 + z_A)^A \times (1 + f_{A,B-A})^{B-A}$$</div>
+            </div>
+
+            <p>Rearranged to solve for forward rate:</p>
+            <div class="formula-box">
+                <div class="label">Solving for Forward Rate</div>
+                <div class="formula">$$f_{A,B-A} = \left[\frac{(1 + z_B)^B}{(1 + z_A)^A}\right]^{\frac{1}{B-A}} - 1$$
+                </div>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📘 CFAI Example 1: Forward Price Calculation</div>
+                <p><strong>Given:</strong> $z_1 = 7\%$, $z_3 = 9\%$</p>
+                <p><strong>Find:</strong> Forward price $F_{1,2}$ for a 2-year bond delivered in 1 year</p>
+                <p><strong>Step 1:</strong> $DF_1 = \frac{1}{1.07} = 0.9346$</p>
+                <p><strong>Step 2:</strong> $DF_3 = \frac{1}{(1.09)^3} = 0.7722$</p>
+                <p><strong>Step 3:</strong> $F_{1,2} = \frac{0.7722}{0.9346} = 0.8262$</p>
+                <p><strong>Interpretation:</strong> Today, agree to pay 0.8262 in one year to receive 1.00 in three
+                    years.</p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📘 CFAI Example 2: Forward Rate Calculations</div>
+                <p><strong>Given:</strong> $z_1 = 9\%$, $z_2 = 10\%$, $z_3 = 11\%$</p>
+
+                <p><strong>Calculate $f_{1,1}$</strong> (one-year rate, one year from now):</p>
+                <p>$f_{1,1} = \frac{(1.10)^2}{(1.09)} - 1 = \frac{1.21}{1.09} - 1 = 11.01\%$</p>
+
+                <p><strong>Calculate $f_{2,1}$</strong> (one-year rate, two years from now):</p>
+                <p>$f_{2,1} = \frac{(1.11)^3}{(1.10)^2} - 1 = \frac{1.3676}{1.21} - 1 = 13.03\%$</p>
+
+                <p><strong>Calculate $f_{1,2}$</strong> (two-year rate, one year from now):</p>
+                <p>$f_{1,2} = \sqrt{\frac{(1.11)^3}{1.09}} - 1 = 12.01\%$</p>
+            </div>
+
+            <h3>Spot vs Forward Curve Relationship</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Spot Curve Shape</th>
+                            <th>Forward Curve Position</th>
+                            <th>Forward Rate Behavior</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Spot">Upward Sloping</td>
+                            <td data-label="Forward">ABOVE spot curve</td>
+                            <td data-label="Behavior">Forward rates rise with time</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Spot">Downward Sloping</td>
+                            <td data-label="Forward">BELOW spot curve</td>
+                            <td data-label="Behavior">Forward rates fall with time</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Spot">Flat</td>
+                            <td data-label="Forward">COINCIDENT with spot</td>
+                            <td data-label="Behavior">All forward rates equal spot rate</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="key-point">
+                <strong>Why?</strong> Think of spot rate as an AVERAGE over the period. Forward rate is the MARGINAL
+                rate for a specific future period. When an average is rising, the marginal must be above it.
+            </div>
+
+            <h3>Two Interpretations of Forward Rates (MEMORIZE!)</h3>
+            <div class="card">
+                <p>If $f_{7,1} = 3\%$ (one-year rate, seven years from now):</p>
+                <ol>
+                    <li><strong>Breakeven Rate:</strong> 3% makes you INDIFFERENT between buying an 8-year zero OR
+                        buying a 7-year zero and reinvesting for 1 year</li>
+                    <li><strong>Locked-In Rate:</strong> 3% is the rate you can LOCK IN TODAY by extending maturity from
+                        7 to 8 years</li>
+                </ol>
+            </div>
+
+            <div class="trap">
+                <strong>Confusing $f_{1,2}$ with $f_{2,1}$:</strong><br>
+                $f_{1,2}$ = 2-year loan starting in 1 year<br>
+                $f_{2,1}$ = 1-year loan starting in 2 years<br>
+                <em>The subscripts are (start date, tenor)!</em>
+            </div>
+        </section>
+
+        <!-- BOOTSTRAPPING -->
+        <section class="section" id="bootstrap">
+            <h2>🔧 Bootstrapping: Getting Spot Rates from Par Curve</h2>
+
+            <div class="note">
+                <strong>What is Bootstrapping?</strong><br>
+                The par curve shows yields of coupon bonds trading at par. But for valuation, we need spot rates.
+                Bootstrapping extracts spot rates one at a time, from shortest to longest maturity.
+            </div>
+
+            <h3>The Process</h3>
+            <div class="card">
+                <p><strong>Step 1:</strong> $z_1$ = 1-year par rate (only one cash flow, so spot = par)</p>
+                <p><strong>Step 2:</strong> Use $z_1$ to solve for $z_2$ from the 2-year par bond equation</p>
+                <p><strong>Step 3:</strong> Use $z_1$ and $z_2$ to solve for $z_3$</p>
+                <p><strong>Continue...</strong> forward substitution for longer maturities</p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📘 Complete Bootstrapping Example</div>
+                <p><strong>Given Par Rates:</strong> 1yr = 5%, 2yr = 5.97%, 3yr = 6.91%, 4yr = 7.81%</p>
+
+                <p><strong>Year 1:</strong> $z_1 = 5\%$ (direct)</p>
+
+                <p><strong>Year 2:</strong> Solve for $z_2$</p>
+                <p>$1 = \frac{0.0597}{1.05} + \frac{1.0597}{(1+z_2)^2}$</p>
+                <p>$z_2 = 6.00\%$</p>
+
+                <p><strong>Year 3:</strong> Solve for $z_3$</p>
+                <p>$1 = \frac{0.0691}{1.05} + \frac{0.0691}{(1.06)^2} + \frac{1.0691}{(1+z_3)^3}$</p>
+                <p>$z_3 = 7.00\%$</p>
+
+                <p><strong>Year 4:</strong> $z_4 = 8.00\%$</p>
+            </div>
+
+            <div class="key-point">
+                When curve slopes UP: <strong>Spot > Par</strong> for maturities > 1 year.<br>
+                When curve slopes DOWN: <strong>Spot < Par</strong> for maturities > 1 year.
+            </div>
+
+            <div class="trap">
+                It's called <strong>FORWARD substitution</strong> (earliest to latest), not backward substitution!
+            </div>
+        </section>
+
+        <!-- YTM -->
+        <section class="section" id="ytm">
+            <h2>📊 YTM vs Spot Rates vs Expected Return</h2>
+
+            <h3>YTM as Weighted Average</h3>
+            <div class="card">
+                <p>A coupon bond is priced using multiple spot rates, but YTM is a single rate. Therefore:</p>
+                <p><strong>YTM = Weighted average of spot rates</strong>, with weights based on PV of each cash flow.
+                </p>
+                <p>The largest cash flow (principal + final coupon) has the most weight, so YTM is closest to the
+                    longest spot rate.</p>
+            </div>
+
+            <div class="formula-box">
+                <div class="label">For Upward-Sloping Curve</div>
+                <div class="formula">$$z_1 < y_T < z_T$$</div>
+                </div>
+
+                <h3>When Does Realized Return = YTM?</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Condition</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Condition">Hold to maturity</td>
+                                <td data-label="Reason">Avoid price risk at exit</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Condition">No default</td>
+                                <td data-label="Reason">Cash flows as promised</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Condition">Reinvest coupons at YTM</td>
+                                <td data-label="Reason">Maintain compound growth</td>
+                            </tr>
+                            <tr>
+                                <td data-label="Condition">Flat yield curve</td>
+                                <td data-label="Reason">Reinvestment rate matches YTM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="key-point">
+                    <strong>Critical Insight:</strong> YTM = Expected return ONLY if the yield curve is FLAT. For sloped
+                    curves, they differ!
+                </div>
+
+                <div class="example">
+                    <div class="example-title">📘 Expected vs YTM Example</div>
+                    <p><strong>Given:</strong> $z_1=5\%$, $z_2=6\%$, $z_3=7\%$, $z_4=8\%$, $z_5=9\%$</p>
+                    <p><strong>Bond:</strong> 5-year, 10% coupon, Price = 105.43, YTM = 8.62%</p>
+                    <p><strong>If forwards become future spots:</strong></p>
+                    <p>Total cash at Year 5 ≈ 162.22</p>
+                    <p>Actual annualized return = $(162.22/105.43)^{0.2} - 1 = 9.00\%$</p>
+                    <p><strong>Notice:</strong> 9.00% ≠ 8.62% (YTM)</p>
+                </div>
+        </section>
+
+        <!-- ROLL DOWN -->
+        <section class="section" id="rolldown">
+            <h2>🎢 Rolling Down the Yield Curve</h2>
+
+            <div class="note">
+                <strong>The Strategy:</strong> Buy bonds with maturity LONGER than your investment horizon, then sell
+                before maturity. With an upward-sloping stable curve, the bond "rolls down" to lower yields → higher
+                prices → capital gain!
+            </div>
+
+            <h3>Required Conditions</h3>
+            <div class="card">
+                <ol>
+                    <li><strong>Upward-sloping yield curve</strong> — essential for the strategy</li>
+                    <li><strong>Curve expected to remain unchanged</strong> — if curve shifts up, you lose</li>
+                    <li><strong>Sell before maturity</strong> — you must exit to realize gains</li>
+                </ol>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📘 Rolldown Return Example</div>
+                <p><strong>Spot Rates:</strong> 1yr=2%, 3yr=4%, 4yr=5%, 5yr=6%, 6yr=7%</p>
+                <p><strong>Horizon:</strong> 2 years</p>
+
+                <p><strong>Strategy A: Maturity-Matching (5-year bond)</strong></p>
+                <p>Buy 6% bond at par → After 2 years (now 3-year at 4%): Total = 117.67</p>
+                <p>Annualized return = 8.48%</p>
+
+                <p><strong>Strategy B: Rolling Down (6-year bond)</strong></p>
+                <p>Buy 7% bond at par → After 2 years (now 4-year at 5%): Total = 121.23</p>
+                <p>Annualized return = 10.10%</p>
+
+                <p><strong>Excess return from rolling = 1.62%</strong></p>
+            </div>
+
+            <div class="key-point">
+                <strong>Key Insight:</strong> If future spot rates = forward rates → All bonds earn the same one-period
+                return.<br>
+                If future spots < forwards → Rolldown works, longer bonds outperform. </div>
+
+                    <div class="trap">
+                        <strong>Risk:</strong> If the yield curve shifts UP unexpectedly, the rolldown strategy can
+                        significantly underperform due to higher duration exposure!
+                    </div>
+        </section>
+
+        <!-- SWAP CURVE -->
+        <section class="section" id="swap">
+            <h2>💱 The Swap Rate Curve</h2>
+
+            <h3>What is the Swap Curve?</h3>
+            <div class="card">
+                <p>The <strong>swap rate</strong> is the fixed rate in a fixed-for-floating interest rate swap that
+                    makes the swap value zero at initiation.</p>
+                <p>The <strong>swap curve</strong> is essentially a par curve built from swap rates rather than
+                    government bonds.</p>
+            </div>
+
+            <h3>When to Use Swap Curve</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Situation</th>
+                            <th>Use Swap Curve Because...</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Situation">Small government bond market</td>
+                            <td data-label="Reason">More maturities available in swap market</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Situation">Large private sector</td>
+                            <td data-label="Reason">Swap curve more relevant to private borrowing</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Situation">Banks with swap-hedged balance sheets</td>
+                            <td data-label="Reason">Matches their risk exposures</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Situation">Cross-country comparisons</td>
+                            <td data-label="Reason">Swap rates more comparable than gov't rates</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Deriving Swap Rates from Spot Rates</h3>
+            <div class="formula-box">
+                <div class="label">Swap Rate Formula</div>
+                <div class="formula">$$\sum_{t=1}^{T} \frac{s_T}{(1+z_t)^t} + \frac{1}{(1+z_T)^T} = 1$$</div>
+            </div>
+            <p>Left side = PV of fixed payments + PV of notional. Right side = Value of floating leg (always 1 at
+                initiation).</p>
+
+            <div class="key-point">
+                <strong>Key Relationship:</strong> Swap rates = Par rates! Having any one series (discount factors, spot
+                rates, or swap rates) allows you to calculate all others.
+            </div>
+        </section>
+
+        <!-- SPREADS -->
+        <section class="section" id="spreads">
+            <h2>📏 Spreads & Risk Measures</h2>
+
+            <h3>Swap Spread</h3>
+            <div class="formula-box">
+                <div class="label">Swap Spread</div>
+                <div class="formula">$$\text{Swap Spread} = \text{Swap Rate} - \text{Government Bond Yield}$$</div>
+            </div>
+            <p><strong>Example:</strong> 5-year swap = 2.00%, 5-year Treasury = 1.70% → Swap spread = 30 bps</p>
+
+            <div class="note">
+                <strong>Post-2008:</strong> Long-term swap spreads have sometimes turned NEGATIVE due to regulatory
+                changes and increased dealer capital requirements.
+            </div>
+
+            <h3>I-Spread (Interpolated Spread)</h3>
+            <div class="formula-box">
+                <div class="label">I-Spread</div>
+                <div class="formula">$$\text{I-Spread} = \text{Bond YTM} - \text{Swap Rate (same maturity)}$$</div>
+            </div>
+
+            <h3>Z-Spread (Zero-Volatility Spread)</h3>
+            <div class="card">
+                <p>Constant spread added to the ENTIRE spot curve that correctly prices a bond:</p>
+                <p>$\text{Price} = \sum_{t=1}^{T} \frac{CF_t}{(1 + z_t + Z)^t}$</p>
+                <p><strong>Key:</strong> Z-spread accounts for full curve shape; I-spread uses single interpolated
+                    point.</p>
+            </div>
+
+            <h3>TED Spread</h3>
+            <div class="formula-box">
+                <div class="label">TED Spread</div>
+                <div class="formula">$$\text{TED Spread} = \text{3-month MRR} - \text{3-month T-bill Rate}$$</div>
+            </div>
+            <p>Measures overall credit and liquidity risk in money markets. Widens during stress (2008: ~450 bps).</p>
+
+            <h3>MRR-OIS Spread</h3>
+            <div class="formula-box">
+                <div class="label">MRR-OIS Spread</div>
+                <div class="formula">$$\text{MRR-OIS Spread} = \text{MRR} - \text{Overnight Index Swap Rate}$$</div>
+            </div>
+            <p>OIS is nearly risk-free. This spread captures bank credit risk specifically.</p>
+
+            <div class="exam-tip">
+                Rising TED or MRR-OIS spread → Higher credit/liquidity risk in the economy.
+            </div>
+        </section>
+
+        <!-- THEORIES -->
+        <section class="section" id="theories">
+            <h2>📚 Term Structure Theories</h2>
+
+            <h3>1. Pure (Unbiased) Expectations Theory</h3>
+            <div class="card">
+                <p><strong>Claim:</strong> Forward rates are UNBIASED predictors of future spot rates.</p>
+                <p><strong>Assumes:</strong> Risk neutrality, no risk premiums.</p>
+                <p><strong>Problem:</strong> Contradicted by evidence of risk aversion.</p>
+            </div>
+
+            <h3>2. Local Expectations Theory</h3>
+            <div class="card">
+                <p><strong>Claim:</strong> Over SHORT periods, all bonds earn the risk-free rate.</p>
+                <p><strong>Can accommodate:</strong> Risk premiums for longer horizons.</p>
+                <p><strong>Problem:</strong> Short-term returns on long bonds often exceed short bonds.</p>
+            </div>
+
+            <h3>3. Liquidity Preference Theory</h3>
+            <div class="card">
+                <p><strong>Claim:</strong> Investors demand LIQUIDITY PREMIUM for holding longer-term bonds.</p>
+                <p><strong>Implication:</strong> Forward rates are UPWARDLY BIASED predictors of future spots.</p>
+                <p><strong>Key:</strong> Even with flat rate expectations, curve slopes UP due to premiums.</p>
+            </div>
+
+            <h3>4. Segmented Markets Theory</h3>
+            <div class="card">
+                <p><strong>Claim:</strong> Each maturity is a SEPARATE market; yields determined by supply/demand in
+                    each segment.</p>
+                <p><strong>Examples:</strong> Life insurers buy long; banks buy short.</p>
+                <p><strong>Problem:</strong> Too extreme—ignores that investors CAN move across maturities.</p>
+            </div>
+
+            <h3>5. Preferred Habitat Theory</h3>
+            <div class="card">
+                <p><strong>Claim:</strong> Investors PREFER certain maturities but WILL move if compensated.</p>
+                <p><strong>Most realistic:</strong> Blends expectations and segmentation.</p>
+            </div>
+
+            <h3>Theory Comparison</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Theory</th>
+                            <th>Forward Rate Predicts</th>
+                            <th>Risk Premium?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Theory">Pure Expectations</td>
+                            <td data-label="Predicts">Future spot exactly</td>
+                            <td data-label="Premium">No</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Theory">Local Expectations</td>
+                            <td data-label="Predicts">Future spot (short-term)</td>
+                            <td data-label="Premium">Yes (long-term)</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Theory">Liquidity Preference</td>
+                            <td data-label="Predicts">Biased HIGH</td>
+                            <td data-label="Premium">Yes (↑ with maturity)</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Theory">Segmented Markets</td>
+                            <td data-label="Predicts">N/A</td>
+                            <td data-label="Premium">N/A</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Theory">Preferred Habitat</td>
+                            <td data-label="Predicts">Biased (varies)</td>
+                            <td data-label="Premium">Varies by segment</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="exam-tip">
+                <strong>Most tested:</strong> Liquidity Preference predicts forward rates are biased HIGH (above
+                expected future spots).
+            </div>
+        </section>
+
+        <!-- FACTORS -->
+        <section class="section" id="factors">
+            <h2>📈 Yield Curve Factor Models</h2>
+
+            <h3>The Three-Factor Model</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Factor</th>
+                            <th>Description</th>
+                            <th>Variance Explained</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Factor">Level</td>
+                            <td data-label="Desc">Parallel shift (all rates move together)</td>
+                            <td data-label="Var">~75-80%</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Factor">Steepness</td>
+                            <td data-label="Desc">Short vs long rates move differently</td>
+                            <td data-label="Var">~15-20%</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Factor">Curvature</td>
+                            <td data-label="Desc">Middle vs ends move differently</td>
+                            <td data-label="Var">~3-5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Key Rate Duration</h3>
+            <div class="formula-box">
+                <div class="label">Portfolio Impact</div>
+                <div class="formula">$$\%\Delta P \approx -KeyDur_1 \times \Delta z_1 - KeyDur_5 \times \Delta z_5 -
+                    KeyDur_{10} \times \Delta z_{10}$$</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Sum of Key Rate Durations = Effective Duration</strong> (for parallel shifts)
+            </div>
+
+            <h3>Curve Movements</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Movement</th>
+                            <th>Short Rates</th>
+                            <th>Long Rates</th>
+                            <th>Cause</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Movement">Bull Steepening</td>
+                            <td data-label="Short">↓↓</td>
+                            <td data-label="Long">↓</td>
+                            <td data-label="Cause">Rate cuts, recession</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Movement">Bull Flattening</td>
+                            <td data-label="Short">↓</td>
+                            <td data-label="Long">↓↓</td>
+                            <td data-label="Cause">Flight to quality</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Movement">Bear Steepening</td>
+                            <td data-label="Short">↑</td>
+                            <td data-label="Long">↑↑</td>
+                            <td data-label="Cause">Recovery, inflation</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Movement">Bear Flattening</td>
+                            <td data-label="Short">↑↑</td>
+                            <td data-label="Long">↑</td>
+                            <td data-label="Cause">Fed hiking</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="exam-tip">
+                <strong>Memory Aid:</strong><br>
+                "Bull" = rates falling = bond prices UP<br>
+                "Bear" = rates rising = bond prices DOWN<br>
+                "Steep/Flat" = spread widening/narrowing
+            </div>
+
+            <h3>Volatility Term Structure</h3>
+            <div class="card">
+                <p><strong>Pattern:</strong> Short-term rates are MORE volatile than long-term rates.</p>
+                <p><strong>Why?</strong> Short rates driven by monetary policy surprises. Long rates anchored by
+                    inflation expectations.</p>
+                <p><strong>But:</strong> Long-term bond PRICES are more volatile (higher duration).</p>
+            </div>
+        </section>
+
+        <!-- VOLATILITY -->
+        <section class="section" id="volatility">
+            <h2>📊 Yield Volatility Term Structure</h2>
+
+            <h3>Yield Volatility Formula</h3>
+            <div class="formula-box">
+                <div class="label">Annualized Yield Volatility</div>
+                <div class="formula">$$\sigma(t,T) = \frac{\sigma[\Delta r(t,T) / r(t,T)]}{\sqrt{\Delta t}}$$</div>
+            </div>
+            <p>Annualized standard deviation of PROPORTIONAL yield changes.</p>
+
+            <h3>Typical Volatility Term Structure</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Maturity</th>
+                            <th>0.25yr</th>
+                            <th>1yr</th>
+                            <th>5yr</th>
+                            <th>10yr</th>
+                            <th>30yr</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Metric">σ(t,T)</td>
+                            <td data-label="0.25yr">35.15%</td>
+                            <td data-label="1yr">29.64%</td>
+                            <td data-label="5yr">21.54%</td>
+                            <td data-label="10yr">16.21%</td>
+                            <td data-label="30yr">11.69%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="key-point">
+                <strong>Pattern:</strong> Short-term rates are MORE volatile than long-term rates.
+            </div>
+
+            <h3>Why Short Rates Are More Volatile</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Driver</th>
+                            <th>Short Rates</th>
+                            <th>Long Rates</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Driver">Primary factor</td>
+                            <td data-label="Short">Monetary policy</td>
+                            <td data-label="Long">Inflation expectations</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Driver">Volatility</td>
+                            <td data-label="Short">High (policy surprises)</td>
+                            <td data-label="Long">Lower (anchored expectations)</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Driver">Response speed</td>
+                            <td data-label="Short">Immediate</td>
+                            <td data-label="Long">Slow-moving</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Price Volatility vs Rate Volatility</h3>
+            <div class="card">
+                <p><strong>The Paradox:</strong></p>
+                <ul>
+                    <li>Short rates = HIGH volatility, LOW duration → Moderate price volatility</li>
+                    <li>Long rates = LOW volatility, HIGH duration → HIGH price volatility</li>
+                </ul>
+                <div class="formula-box">
+                    <div class="label">Price Volatility Relationship</div>
+                    <div class="formula">$$\text{Price Volatility} \propto \text{Rate Volatility} \times
+                        \text{Duration}$$</div>
+                </div>
+            </div>
+
+            <div class="exam-tip">
+                Don't confuse rate volatility with price volatility! Long-term bond PRICES are more volatile despite
+                lower RATE volatility.
+            </div>
+        </section>
+
+        <!-- MACRO -->
+        <section class="section" id="macro">
+            <h2>🌍 Macroeconomic Factors</h2>
+
+            <h3>Bond Risk Premium</h3>
+            <div class="card">
+                <p><strong>Definition:</strong> Expected excess return of long-term bonds over short-term bonds.</p>
+                <p><strong>Drivers:</strong></p>
+                <ul>
+                    <li>Duration risk</li>
+                    <li>Inflation uncertainty</li>
+                    <li>Liquidity preference</li>
+                </ul>
+            </div>
+
+            <h3>What Drives Different Parts of the Curve</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Curve Segment</th>
+                            <th>Primary Driver</th>
+                            <th>Variance Explained</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Segment">Short-term (2yr)</td>
+                            <td data-label="Driver">Monetary policy</td>
+                            <td data-label="Var">~67%</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Segment">Intermediate (5yr)</td>
+                            <td data-label="Driver">Mixed</td>
+                            <td data-label="Var">~50-50</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Segment">Long-term (10yr+)</td>
+                            <td data-label="Driver">Inflation expectations</td>
+                            <td data-label="Var">~67%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Bullet vs Barbell Strategy</h3>
+            <div class="card">
+                <p><strong>Bullet:</strong> Concentrated in single maturity (e.g., all 5-year)</p>
+                <p><strong>Barbell:</strong> Split between short and long (e.g., 2-year + 10-year)</p>
+                <p>Same duration, different curve exposure:</p>
+                <ul>
+                    <li><span class="hl">Barbell benefits from FLATTENING</span></li>
+                    <li><span class="hl">Bullet benefits from STEEPENING</span></li>
+                </ul>
+            </div>
+
+            <h3>Portfolio Positioning Based on Rate Views</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Interest Rate View</th>
+                            <th>Duration Strategy</th>
+                            <th>Curve Strategy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="View">Rates will fall</td>
+                            <td data-label="Duration">EXTEND duration</td>
+                            <td data-label="Curve">Barbell (long rates fall more)</td>
+                        </tr>
+                        <tr>
+                            <td data-label="View">Rates will rise</td>
+                            <td data-label="Duration">SHORTEN duration</td>
+                            <td data-label="Curve">Reduce exposure</td>
+                        </tr>
+                        <tr>
+                            <td data-label="View">Curve will steepen</td>
+                            <td data-label="Duration">Duration neutral</td>
+                            <td data-label="Curve">Short longs, buy shorts</td>
+                        </tr>
+                        <tr>
+                            <td data-label="View">Curve will flatten</td>
+                            <td data-label="Duration">Duration neutral</td>
+                            <td data-label="Curve">Buy longs, short shorts</td>
+                        </tr>
+                        <tr>
+                            <td data-label="View">Flight to quality</td>
+                            <td data-label="Duration">Extend duration</td>
+                            <td data-label="Curve">Buy long-end Treasuries</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="example">
+                <div class="example-title">📘 CFAI Example: Building Rate View</div>
+                <p><strong>Q1:</strong> Economic growth expected to return. Consistent yield curve change?</p>
+                <p><strong>A:</strong> Increase in term spread (long-term over short-term rates) ✓</p>
+                <p><strong>Q2:</strong> Fed decreases asset purchases. Effect on term spread?</p>
+                <p><strong>A:</strong> Amplifies effect of increased economic activity ✓ (both push long yields higher)
+                </p>
+            </div>
+
+            <div class="key-point">
+                <strong>Budget Deficit Impact:</strong> Falling government budget deficits lead to lower bond yields
+                (reduced supply).
+            </div>
+        </section>
+
+        <!-- PRACTICE -->
+        <section class="section" id="practice">
+            <h2>✏️ Practice Questions</h2>
+
+            <div id="quiz-container"></div>
+            <div id="score-card" class="note hint" style="display:none; margin-top:20px; text-align:center;"></div>
+
+            <div class="footer-spacer"></div>
+        </section>
+
+    </main>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-pill').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById(btn.dataset.section).classList.add('active');
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Quiz
+        const STORAGE_KEY = 'fi_lm1_quiz_v2';
+        const quizContainer = document.getElementById('quiz-container');
+
+        let quizState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { attempts: {}, score: 0 };
+
+        const questions = [
+            {
+                q: "Given spot rates z₁, z₂, z₃, how many forward rates can be calculated?",
+                options: ["One", "Two", "Three", "Four"],
+                correct: 2,
+                expl: "Three: f₁,₁, f₂,₁, and f₁,₂. Each pair of spot rates gives one forward rate."
+            },
+            {
+                q: "When the spot curve is upward sloping, the forward curve:",
+                options: ["Lies below the spot curve", "Lies above the spot curve", "Is coincident with the spot curve", "Cannot be determined"],
+                correct: 1,
+                expl: "When spot curve slopes upward (zB > zA), forward curve lies ABOVE the spot curve."
+            },
+            {
+                q: "If z₁ = 4% and z₂ = 5%, the forward rate f₁,₁ is closest to:",
+                options: ["4.0%", "4.5%", "5.0%", "6.0%"],
+                correct: 3,
+                expl: "f₁,₁ = (1.05)²/(1.04) - 1 = 1.1025/1.04 - 1 = 6.01% ≈ 6.0%"
+            },
+            {
+                q: "Bootstrapping involves:",
+                options: ["Backward substitution from longest to shortest maturity", "Forward substitution from shortest to longest maturity", "Simultaneous solving of all spot rates", "Interpolation between par rates"],
+                correct: 1,
+                expl: "Bootstrapping uses forward substitution, solving from earliest to latest maturities using known shorter spot rates."
+            },
+            {
+                q: "YTM equals expected return only when the yield curve is:",
+                options: ["Upward sloping", "Downward sloping", "Flat", "Humped"],
+                correct: 2,
+                expl: "YTM = expected return only if curve is flat AND coupons are reinvested at YTM, no default, and held to maturity."
+            },
+            {
+                q: "Rolling down the yield curve requires buying bonds with maturities:",
+                options: ["Shorter than the investment horizon", "Equal to the investment horizon", "Longer than the investment horizon", "It doesn't matter"],
+                correct: 2,
+                expl: "You buy longer maturity bonds and sell them before maturity as they 'roll down' to lower yields."
+            },
+            {
+                q: "According to liquidity preference theory, forward rates are:",
+                options: ["Unbiased predictors of future spots", "Upwardly biased predictors of future spots", "Downwardly biased predictors of future spots", "Equal to current spot rates"],
+                correct: 1,
+                expl: "Liquidity preference theory says forward rates include a premium, so they're biased HIGH relative to expected future spots."
+            },
+            {
+                q: "The swap spread is defined as:",
+                options: ["Swap rate minus T-bill rate", "Swap rate minus government bond yield", "Government bond yield minus swap rate", "MRR minus OIS rate"],
+                correct: 1,
+                expl: "Swap spread = Swap rate - On-the-run government bond yield of the same maturity."
+            },
+            {
+                q: "Which theory treats each maturity as a separate market?",
+                options: ["Pure expectations theory", "Liquidity preference theory", "Segmented markets theory", "Local expectations theory"],
+                correct: 2,
+                expl: "Segmented markets theory assumes investors are constrained to specific maturities and won't move across segments."
+            },
+            {
+                q: "The most important factor explaining yield curve changes is:",
+                options: ["Curvature", "Steepness", "Level", "Credit spread"],
+                correct: 2,
+                expl: "Level (parallel shifts) explains approximately 75-80% of yield curve changes."
+            },
+            {
+                q: "Short-term rate volatility is primarily driven by:",
+                options: ["Inflation expectations", "Real economic growth", "Monetary policy", "Fiscal policy"],
+                correct: 2,
+                expl: "Short-term rate volatility is most strongly linked to uncertainty regarding monetary policy actions."
+            },
+            {
+                q: "During economic expansions, central banks raising rates is most consistent with:",
+                options: ["Bull steepening", "Bull flattening", "Bear steepening", "Bear flattening"],
+                correct: 3,
+                expl: "When central banks hike rates, short-term rates rise more than long-term rates → bear flattening."
+            },
+            {
+                q: "If expected future spot rates are BELOW current forward rates, bonds are:",
+                options: ["Fairly valued", "Overvalued", "Undervalued", "Cannot determine"],
+                correct: 2,
+                expl: "If you expect lower future rates than the market (forwards), you think the market is discounting too much → bonds are undervalued → buy them."
+            },
+            {
+                q: "The TED spread measures:",
+                options: ["Credit risk only", "Liquidity risk only", "Credit and liquidity risk in money markets", "Interest rate risk"],
+                correct: 2,
+                expl: "TED spread (MRR minus T-bill) captures both credit risk (bank vs government) and liquidity risk in short-term markets."
+            },
+            {
+                q: "For a portfolio with KeyDur₁=0.5, KeyDur₅=1.5, KeyDur₁₀=3.0, what is the effective duration?",
+                options: ["1.5", "3.0", "5.0", "Cannot determine"],
+                correct: 2,
+                expl: "Sum of key rate durations = effective duration = 0.5 + 1.5 + 3.0 = 5.0"
+            },
+            {
+                q: "Given z₁=4%, z₂=5%, z₃=6%, calculate f₁,₂ (two-year rate, one year from now):",
+                options: ["5.50%", "6.00%", "7.00%", "8.03%"],
+                correct: 2,
+                expl: "f₁,₂ = √[(1.06)³/(1.04)] - 1 = √[1.1910/1.04] - 1 = √1.1452 - 1 = 7.00%"
+            },
+            {
+                q: "Preferred habitat theory differs from segmented markets theory in that investors:",
+                options: ["Never move across maturities", "Will move if compensated", "Are risk neutral", "Only hold short-term bonds"],
+                correct: 1,
+                expl: "Preferred habitat: investors PREFER certain maturities but WILL move if compensated. Segmented markets: investors CANNOT or WILL NOT move."
+            },
+            {
+                q: "Downward-sloping yield curve with liquidity premiums most likely indicates:",
+                options: ["Expected rate increases", "Expected severe rate declines", "No expectations about future rates", "Stable economy"],
+                correct: 1,
+                expl: "For curve to slope down despite upward liquidity premiums, expected rate decline must exceed the liquidity premium."
+            },
+            {
+                q: "A 'bull flattening' is most associated with:",
+                options: ["Economic expansion", "Central bank hiking rates", "Flight to quality", "Rising inflation"],
+                correct: 2,
+                expl: "Bull flattening: rates falling (bull), long rates falling more (flattening). This happens during flight to quality."
+            },
+            {
+                q: "Z-spread differs from I-spread because Z-spread:",
+                options: ["Uses shorter maturities", "Is added to a single interpolated point", "Is constant across the entire spot curve", "Always equals swap spread"],
+                correct: 2,
+                expl: "Z-spread is a constant spread added to ENTIRE spot curve. I-spread uses a single interpolated swap rate."
+            },
+            {
+                q: "The two-year spot rate is 10%. A 2-year 6% coupon bond paying annually would have YTM:",
+                options: ["Equal to 10%", "Greater than 10%", "Less than 10%", "Cannot be determined"],
+                correct: 2,
+                expl: "YTM is weighted average of spots. With upward-sloping curve, early coupon pulls YTM toward z₁ (lower), so YTM < z₂."
+            },
+            {
+                q: "If future spot rates are expected to equal forward rates, bonds are:",
+                options: ["Undervalued", "Overvalued", "Fairly valued", "Mispriced"],
+                correct: 2,
+                expl: "If actual future spots = forwards, all bonds earn the same one-period return and are fairly valued."
+            },
+            {
+                q: "A barbell portfolio strategy benefits from:",
+                options: ["Curve steepening", "Curve flattening", "Parallel shifts up", "Humped curves"],
+                correct: 1,
+                expl: "Barbell (short + long bonds) benefits from flattening. Bullet (intermediate) benefits from steepening."
+            },
+            {
+                q: "SOFR (Secured Overnight Financing Rate) is based on:",
+                options: ["Unsecured interbank lending", "Treasury repo transactions", "Federal Reserve discount window", "Commercial paper rates"],
+                correct: 1,
+                expl: "SOFR is a transaction-based rate reflecting overnight Treasury repo market. It's replacing LIBOR."
+            }
+        ];
+
+        // Render Questions
+        questions.forEach((q, idx) => {
+            const qEl = document.createElement('div');
+            qEl.className = 'card';
+            qEl.innerHTML = `
+                <h4>${idx + 1}. ${q.q}</h4>
+                <div class="options" style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+                    ${q.options.map((opt, i) => `
+                        <button class="nav-pill" style="text-align:left; width:100%;" onclick="checkAnswer(this, ${idx}, ${i})">
+                            ${String.fromCharCode(65 + i)}. ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="res-${idx}" class="note" style="display:none; margin-top:10px;"></div>
+            `;
+            quizContainer.appendChild(qEl);
+        });
+
+        const markAnswered = (qIdx, optIdx, isRestore = false) => {
+            const q = questions[qIdx];
+            const qEl = quizContainer.children[qIdx];
+            const btn = qEl.querySelectorAll('button.nav-pill')[optIdx];
+            const resEl = document.getElementById(`res-${qIdx}`);
+            const parent = btn.parentElement;
+
+            Array.from(parent.children).forEach(b => b.disabled = true);
+
+            if (optIdx === q.correct) {
+                btn.style.background = '#00B894';
+                btn.style.color = 'white';
+                resEl.className = 'note hint';
+                resEl.innerHTML = `<strong>✅ Correct!</strong> ${q.expl}`;
+            } else {
+                btn.style.background = '#FF4B2B';
+                btn.style.color = 'white';
+                resEl.className = 'note warn';
+                resEl.innerHTML = `<strong>❌ Incorrect.</strong> ${q.expl}`;
+                parent.children[q.correct].style.background = '#00B894';
+                parent.children[q.correct].style.color = 'white';
+            }
+            resEl.style.display = 'block';
+
+            if (!isRestore) {
+                quizState.attempts[qIdx] = optIdx;
+                if (optIdx === q.correct) quizState.score++;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(quizState));
+                checkScore();
+            }
+        };
+
+        const checkScore = () => {
+            if (Object.keys(quizState.attempts).length === questions.length) {
+                const sCard = document.getElementById('score-card');
+                sCard.style.display = 'block';
+                let calcScore = 0;
+                for (const [q, a] of Object.entries(quizState.attempts)) {
+                    if (questions[q].correct === a) calcScore++;
+                }
+                sCard.innerHTML = `<strong>Final Score: ${calcScore} / ${questions.length}</strong>`;
+            }
+        };
+
+        window.checkAnswer = (btn, qIdx, optIdx) => {
+            if (quizState.attempts.hasOwnProperty(qIdx)) return;
+            markAnswered(qIdx, optIdx);
+        };
+
+        // Restore Progress
+        for (const [qIdx, optIdx] of Object.entries(quizState.attempts)) {
+            markAnswered(parseInt(qIdx), parseInt(optIdx), true);
+        }
+        checkScore();
+    </script>
+</body>
+
+</html>
