@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cfa-l2-tracker-v4';
+const CACHE_NAME = 'cfa-l2-tracker-v5';
 const urlsToCache = [
     './',
     './index.html',
