@@ -23,6 +23,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         /* Nebula Theme - Claude Minimalist Style */
         :root {
@@ -52,6 +55,50 @@
             /* Legacy variable mappings */
             --sunset-coral: var(--primary-accent);
             --sunset-orange: var(--primary-accent);
+        }
+
+        /* Lucide Icon Styling */
+        .lucide {
+            width: 1em;
+            height: 1em;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            vertical-align: middle;
+        }
+
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+        }
+
+        .icon-md {
+            width: 20px;
+            height: 20px;
+        }
+
+        .icon-lg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+
+        .icon-accent {
+            color: var(--primary-accent);
+        }
+
+        .icon-success {
+            color: var(--success);
+        }
+
+        .icon-muted {
+            color: var(--text-label);
         }
 
         * {
@@ -1774,26 +1821,16 @@
             overflow: hidden;
         }
 
-        /* Enhanced Glassmorphism */
+        /* Enhanced Glassmorphism - Dark Theme Only */
         .progress-card,
         .todays-focus,
         .stat-card,
         .topics-summary {
             background: linear-gradient(135deg,
-                    rgba(255, 255, 255, 0.95) 0%,
-                    rgba(255, 255, 255, 0.85) 100%);
+                    rgba(54, 52, 50, 0.95) 0%,
+                    rgba(45, 43, 42, 0.85) 100%);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        [data-theme="dark"] .progress-card,
-        [data-theme="dark"] .todays-focus,
-        [data-theme="dark"] .stat-card,
-        [data-theme="dark"] .topics-summary {
-            background: linear-gradient(135deg,
-                    rgba(40, 40, 45, 0.95) 0%,
-                    rgba(30, 30, 35, 0.85) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
@@ -2084,7 +2121,7 @@
                         <div class="hero-countdown-val" id="countdownDays">--</div>
                         <div class="hero-countdown-label">Days Left</div>
                         <div class="hero-streak">
-                            <span class="streak-flame">🔥</span>
+                            <span class="streak-flame"><i data-lucide="flame" class="icon-md"></i></span>
                             <span class="streak-count" id="streakCount">0</span>
                         </div>
                         <div class="day-timer"
@@ -2110,7 +2147,8 @@
                 style="margin-top: 1rem; padding-top: 0; border-top: none;">
                 <div class="daily-schedule-header">
                     <div>
-                        <div class="daily-schedule-title">📆 This Week</div>
+                        <div class="daily-schedule-title"><i data-lucide="calendar" class="icon-md icon-accent"></i>
+                            This Week</div>
                         <div class="daily-schedule-sub">Mon-Sat: 3h | Sunday: 6h</div>
                     </div>
                 </div>
@@ -2120,7 +2158,8 @@
             <!-- Calendar Heat Map -->
             <div class="heatmap-container" id="heatmapContainer">
                 <div class="heatmap-header">
-                    <div class="heatmap-title">📅 Study Activity</div>
+                    <div class="heatmap-title"><i data-lucide="calendar-days" class="icon-md icon-accent"></i> Study
+                        Activity</div>
                     <div class="heatmap-streak" id="heatmapStreak">0 day streak</div>
                 </div>
                 <div class="heatmap-grid" id="heatmapGrid"></div>
@@ -2137,7 +2176,7 @@
             <div class="review-section" id="reviewSection" style="display: none;">
                 <div class="review-header">
                     <div class="review-title">
-                        🔄 Due for Review
+                        <i data-lucide="refresh-cw" class="icon-md icon-accent"></i> Due for Review
                         <span class="review-count" id="reviewCount">0</span>
                     </div>
                 </div>
@@ -2161,12 +2200,12 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon">📚</div>
+                    <div class="stat-icon"><i data-lucide="book-open" class="icon-lg icon-accent"></i></div>
                     <div class="stat-value" id="topicsStarted">0</div>
                     <div class="stat-label">Topics Started</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">✅</div>
+                    <div class="stat-icon"><i data-lucide="check-circle" class="icon-lg icon-success"></i></div>
                     <div class="stat-value" id="topicsCompleted">0</div>
                     <div class="stat-label">Topics Done</div>
                 </div>
@@ -2183,9 +2222,15 @@
 
         <!-- PLAN SCREEN -->
         <div id="screen-plan" class="screen">
-            <div class="plan-header">
-                <div class="plan-title">📅 Study Plan</div>
-                <div class="plan-subtitle">Dec 28, 2025 → Apr 30, 2026 | Quants Last</div>
+            <div class="plan-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <div class="plan-title"><i data-lucide="calendar" class="icon-lg icon-accent"></i> Study Plan</div>
+                    <div class="plan-subtitle">Dec 28, 2025 → Apr 30, 2026 | Quants Last</div>
+                </div>
+                <button onclick="openPlanEditor()" class="view-all-btn"
+                    style="display: flex; align-items: center; gap: 0.3rem;">
+                    <i data-lucide="settings" class="icon-sm"></i> Edit
+                </button>
             </div>
 
             <div class="plan-stats">
@@ -2209,7 +2254,8 @@
             <div class="daily-schedule" id="dailyScheduleContainer">
                 <div class="daily-schedule-header">
                     <div>
-                        <div class="daily-schedule-title">📆 This Week's Schedule</div>
+                        <div class="daily-schedule-title"><i data-lucide="calendar" class="icon-md icon-accent"></i>
+                            This Week's Schedule</div>
                         <div class="daily-schedule-sub">Mon-Sat: 3h | Sunday: 6h</div>
                     </div>
                 </div>
@@ -2229,7 +2275,7 @@
         <!-- STUDY SCREEN -->
         <div id="screen-study" class="screen">
             <div class="study-header">
-                <div class="study-title">📚 Study Notes</div>
+                <div class="study-title"><i data-lucide="book-open" class="icon-lg icon-accent"></i> Study Notes</div>
                 <div class="study-subtitle">Your notes & dashboards for each module</div>
             </div>
             <div id="studyContainer"></div>
@@ -2289,7 +2335,7 @@
         <div class="timer-content">
             <h3 style="font-family: 'Outfit', sans-serif; margin-bottom: 0.5rem;">Focus Timer</h3>
             <div class="timer-display" id="timerDisplay">25:00</div>
-            <div class="timer-label" id="timerLabel">Stay focused! You've got this 💪</div>
+            <div class="timer-label" id="timerLabel">Stay focused! You've got this</div>
             <div class="timer-controls">
                 <button class="timer-btn primary" id="timerStartBtn" onclick="toggleTimer()">Start</button>
                 <button class="timer-btn secondary" onclick="closeTimer()">Close</button>
@@ -2310,7 +2356,8 @@
             <div class="notes-body">
                 <textarea class="notes-textarea" id="notesTextarea"
                     placeholder="Jot down key formulas, gotchas, or exam tips..."></textarea>
-                <button class="notes-save" onclick="saveNotes()">💾 Save Notes</button>
+                <button class="notes-save" onclick="saveNotes()"><i data-lucide="save" class="icon-sm"></i> Save
+                    Notes</button>
             </div>
         </div>
     </div>
@@ -2318,20 +2365,64 @@
     <!-- Milestone Modal -->
     <div class="milestone-modal" id="milestoneModal">
         <div class="milestone-content">
-            <div class="milestone-emoji" id="milestoneEmoji">🎯</div>
+            <div class="milestone-emoji" id="milestoneEmoji"><i data-lucide="target" class="icon-xl icon-accent"></i>
+            </div>
             <div class="milestone-days" id="milestoneDays">100</div>
             <div class="milestone-label">days until exam</div>
             <div class="milestone-message" id="milestoneMessage">You're making great progress! Keep up the momentum.
             </div>
-            <button class="milestone-btn" onclick="closeMilestone()">Let's Go! 💪</button>
+            <button class="milestone-btn" onclick="closeMilestone()">Let's Go!</button>
         </div>
     </div>
+
+    <!-- Plan Editor Modal -->
+    <div class="plan-editor-modal" id="planEditorModal"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; padding: 1rem; overflow-y: auto;">
+        <div class="plan-editor-content"
+            style="background: var(--bg-surface); border-radius: var(--radius-xl); max-width: 600px; margin: 0 auto; padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.2rem; font-weight: 700;"><i data-lucide="settings"
+                        class="icon-md icon-accent"></i> Edit Study Plan</h3>
+                <button onclick="closePlanEditor()"
+                    style="background: none; border: none; font-size: 1.5rem; color: var(--text-label); cursor: pointer;">&times;</button>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <button onclick="addNewWeek()" class="focus-btn"
+                    style="flex: 1; min-width: 120px; font-size: 0.75rem; padding: 0.5rem;">
+                    <i data-lucide="plus" class="icon-sm"></i> Add Week
+                </button>
+                <button onclick="exportPlan()" class="focus-btn"
+                    style="flex: 1; min-width: 120px; font-size: 0.75rem; padding: 0.5rem; background: var(--bg-accent); color: var(--text-main);">
+                    <i data-lucide="download" class="icon-sm"></i> Export
+                </button>
+                <button onclick="importPlan()" class="focus-btn"
+                    style="flex: 1; min-width: 120px; font-size: 0.75rem; padding: 0.5rem; background: var(--bg-accent); color: var(--text-main);">
+                    <i data-lucide="upload" class="icon-sm"></i> Import
+                </button>
+                <button onclick="resetPlan()" class="focus-btn"
+                    style="flex: 1; min-width: 120px; font-size: 0.75rem; padding: 0.5rem; background: rgba(255,100,100,0.2); color: #ff6b6b;">
+                    <i data-lucide="rotate-ccw" class="icon-sm"></i> Reset
+                </button>
+            </div>
+
+            <div id="planEditorList" style="max-height: 60vh; overflow-y: auto;"></div>
+
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                <button onclick="savePlanChanges()" class="focus-btn" style="flex: 1;">Save Changes</button>
+                <button onclick="closePlanEditor()" class="focus-btn"
+                    style="flex: 1; background: var(--bg-accent); color: var(--text-main);">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="planFileInput" accept=".json" style="display: none;" onchange="handlePlanImport(event)">
 
     <script>
         // CFA Level 2 Full Syllabus with Difficulty Ratings (1=Easy, 5=Hard)
         const SYLLABUS = [
             {
-                id: 'quant', name: 'Quantitative Methods', icon: '📐', weight: '5–10%',
+                id: 'quant', name: 'Quantitative Methods', icon: 'calculator', weight: '5–10%',
                 lms: [
                     { id: 'lm1', num: 'LM 1', name: 'Basics of Multiple Regression and Underlying Assumptions', difficulty: 2, notes: 'chapters/lm01_multiple_regression.html' },
                     { id: 'lm2', num: 'LM 2', name: 'Evaluating Regression Model Fit and Interpreting Model Results', difficulty: 3, notes: 'chapters/lm02_regression_fit.html' },
@@ -2343,14 +2434,14 @@
                 ]
             },
             {
-                id: 'econ', name: 'Economics', icon: '🌍', weight: '5–10%',
+                id: 'econ', name: 'Economics', icon: 'globe', weight: '5–10%',
                 lms: [
                     { id: 'lm8', num: 'LM 8', name: 'Currency Exchange Rates: Understanding Equilibrium Value', difficulty: 4 },
                     { id: 'lm9', num: 'LM 9', name: 'Economic Growth', difficulty: 3 }
                 ]
             },
             {
-                id: 'fra', name: 'Financial Statement Analysis', icon: '📊', weight: '10–15%',
+                id: 'fra', name: 'Financial Statement Analysis', icon: 'bar-chart-2', weight: '10–15%',
                 lms: [
                     { id: 'lm10', num: 'LM 10', name: 'Intercorporate Investments', difficulty: 5 },
                     { id: 'lm11', num: 'LM 11', name: 'Employee Compensation: Post-Employment and Share-Based', difficulty: 4 },
@@ -2361,7 +2452,7 @@
                 ]
             },
             {
-                id: 'corp', name: 'Corporate Issuers', icon: '🏢', weight: '5–10%',
+                id: 'corp', name: 'Corporate Issuers', icon: 'building', weight: '5–10%',
                 lms: [
                     { id: 'lm16', num: 'LM 16', name: 'Analysis of Dividends and Share Repurchases', difficulty: 2 },
                     { id: 'lm17', num: 'LM 17', name: 'Environmental, Social, and Governance (ESG) Considerations in Investment Analysis', difficulty: 2 },
@@ -2370,7 +2461,7 @@
                 ]
             },
             {
-                id: 'equity', name: 'Equity Valuation', icon: '📈', weight: '10–15%',
+                id: 'equity', name: 'Equity Valuation', icon: 'trending-up', weight: '10–15%',
                 lms: [
                     { id: 'lm20', num: 'LM 20', name: 'Equity Valuation: Applications and Processes', difficulty: 3 },
                     { id: 'lm21', num: 'LM 21', name: 'Discounted Dividend Valuation', difficulty: 4 },
@@ -2381,7 +2472,7 @@
                 ]
             },
             {
-                id: 'fi', name: 'Fixed Income', icon: '💵', weight: '10–15%',
+                id: 'fi', name: 'Fixed Income', icon: 'banknote', weight: '10–15%',
                 lms: [
                     { id: 'lm26', num: 'LM 26', name: 'The Term Structure and Interest Rate Dynamics', difficulty: 4, notes: 'chapters/fi_lm01_term_structure.html' },
                     { id: 'lm27', num: 'LM 27', name: 'The Arbitrage-Free Valuation Framework', difficulty: 5 },
@@ -2391,14 +2482,14 @@
                 ]
             },
             {
-                id: 'deriv', name: 'Derivatives', icon: '🔀', weight: '5–10%',
+                id: 'deriv', name: 'Derivatives', icon: 'git-branch', weight: '5–10%',
                 lms: [
                     { id: 'lm31', num: 'LM 31', name: 'Pricing and Valuation of Forward Commitments', difficulty: 5 },
                     { id: 'lm32', num: 'LM 32', name: 'Valuation of Contingent Claims', difficulty: 5 }
                 ]
             },
             {
-                id: 'alts', name: 'Alternative Investments', icon: '🏠', weight: '5–10%',
+                id: 'alts', name: 'Alternative Investments', icon: 'home', weight: '5–10%',
                 lms: [
                     { id: 'lm33', num: 'LM 33', name: 'Introduction to Commodities and Commodity Derivatives', difficulty: 2 },
                     { id: 'lm34', num: 'LM 34', name: 'Overview of Types of Real Estate Investment', difficulty: 3 },
@@ -2407,7 +2498,7 @@
                 ]
             },
             {
-                id: 'pm', name: 'Portfolio Management', icon: '💼', weight: '10–15%',
+                id: 'pm', name: 'Portfolio Management', icon: 'briefcase', weight: '10–15%',
                 lms: [
                     { id: 'lm37', num: 'LM 37', name: 'Economics and Investment Markets', difficulty: 3 },
                     { id: 'lm38', num: 'LM 38', name: 'Analysis of Active Portfolio Management', difficulty: 3 },
@@ -2418,7 +2509,7 @@
                 ]
             },
             {
-                id: 'ethics', name: 'Ethical and Professional Standards', icon: '⚖️', weight: '10–15%',
+                id: 'ethics', name: 'Ethical and Professional Standards', icon: 'scale', weight: '10–15%',
                 lms: [
                     { id: 'lm43', num: 'LM 43', name: 'Code of Ethics and Standards of Professional Conduct', difficulty: 1 },
                     { id: 'lm44', num: 'LM 44', name: 'Guidance for Standards I–VII', difficulty: 2 },
@@ -2429,26 +2520,29 @@
 
         // Study Plan: Mon-Sat 3h, Sun 6h = 24h/week, unavailable Jan 27 - Feb 2
         // ORDER: FIXED INCOME (FIRST) → Economics → Corporate → Equity → FSA → Derivatives → Alts → PM → Ethics → QUANTS (LAST)
-        const STUDY_PLAN = [
-            { week: 1, start: 'Dec 28', end: 'Jan 3', hours: 24, lms: ['lm26', 'lm27'], trip: false, focus: '💵 Fixed Income: Term Structure & Arbitrage-Free' },
-            { week: 2, start: 'Jan 4', end: 'Jan 10', hours: 24, lms: ['lm28', 'lm29', 'lm30'], trip: false, focus: '💵 Fixed Income: Embedded Options & Credit' },
-            { week: 3, start: 'Jan 11', end: 'Jan 17', hours: 24, lms: ['lm8', 'lm9', 'lm10'], trip: false, focus: '🌍 Economics + FSA Start' },
-            { week: 4, start: 'Jan 18', end: 'Jan 26', hours: 27, lms: ['lm16', 'lm17', 'lm18', 'lm19'], trip: false, focus: '🏢 Corporate Issuers' },
-            { week: 5, start: 'Jan 27', end: 'Feb 2', hours: 0, lms: [], note: '🏝️ Break / Unavailable', trip: true },
+        const DEFAULT_STUDY_PLAN = [
+            { week: 1, start: 'Dec 28', end: 'Jan 3', hours: 24, lms: ['lm26', 'lm27'], trip: false, focus: 'Fixed Income: Term Structure & Arbitrage-Free' },
+            { week: 2, start: 'Jan 4', end: 'Jan 10', hours: 24, lms: ['lm28', 'lm29', 'lm30'], trip: false, focus: 'Fixed Income: Embedded Options & Credit' },
+            { week: 3, start: 'Jan 11', end: 'Jan 17', hours: 24, lms: ['lm8', 'lm9', 'lm10'], trip: false, focus: 'Economics + FSA Start' },
+            { week: 4, start: 'Jan 18', end: 'Jan 26', hours: 27, lms: ['lm16', 'lm17', 'lm18', 'lm19'], trip: false, focus: 'Corporate Issuers' },
+            { week: 5, start: 'Jan 27', end: 'Feb 2', hours: 0, lms: [], note: 'Break / Unavailable', trip: true },
             { week: 6, start: 'Feb 3', end: 'Feb 9', hours: 24, lms: ['lm20', 'lm21'], trip: false, focus: 'Equity Valuation' },
             { week: 7, start: 'Feb 10', end: 'Feb 16', hours: 24, lms: ['lm22', 'lm23'], trip: false, focus: 'Equity: FCF + Multiples' },
             { week: 8, start: 'Feb 17', end: 'Feb 23', hours: 24, lms: ['lm24', 'lm25'], trip: false, focus: 'Equity: Residual Income + Private Co' },
-            { week: 9, start: 'Feb 24', end: 'Mar 2', hours: 24, lms: ['lm11', 'lm12', 'lm13'], trip: false, focus: '📊 FSA: Employee Comp & Multinational' },
-            { week: 10, start: 'Mar 3', end: 'Mar 9', hours: 24, lms: ['lm14', 'lm15'], trip: false, focus: '📊 FSA: Quality & Integration' },
+            { week: 9, start: 'Feb 24', end: 'Mar 2', hours: 24, lms: ['lm11', 'lm12', 'lm13'], trip: false, focus: 'FSA: Employee Comp & Multinational' },
+            { week: 10, start: 'Mar 3', end: 'Mar 9', hours: 24, lms: ['lm14', 'lm15'], trip: false, focus: 'FSA: Quality & Integration' },
             { week: 11, start: 'Mar 10', end: 'Mar 16', hours: 24, lms: ['lm31', 'lm32'], trip: false, focus: 'Derivatives' },
             { week: 12, start: 'Mar 17', end: 'Mar 23', hours: 24, lms: ['lm33', 'lm34', 'lm35', 'lm36'], trip: false, focus: 'Alternative Investments' },
             { week: 13, start: 'Mar 24', end: 'Mar 30', hours: 24, lms: ['lm37', 'lm38', 'lm39'], trip: false, focus: 'Portfolio Management' },
             { week: 14, start: 'Mar 31', end: 'Apr 6', hours: 24, lms: ['lm40', 'lm41', 'lm42', 'lm43'], trip: false, focus: 'PM + Ethics Start' },
             { week: 15, start: 'Apr 7', end: 'Apr 13', hours: 24, lms: ['lm44', 'lm45', 'lm1', 'lm2'], trip: false, focus: 'Ethics Wrap + Quants Start' },
-            { week: 16, start: 'Apr 14', end: 'Apr 20', hours: 24, lms: ['lm3', 'lm4', 'lm5', 'lm6', 'lm7'], trip: false, focus: '📐 Quantitative Methods (FINAL)' },
-            { week: 17, start: 'Apr 21', end: 'Apr 27', hours: 24, lms: [], note: '📝 Comprehensive Review + Mocks', trip: false, focus: 'Review & Mock Exams' },
-            { week: 18, start: 'Apr 28', end: 'Apr 30', hours: 9, lms: [], note: '🎯 Final Light Review', trip: false, focus: 'Final Prep' }
+            { week: 16, start: 'Apr 14', end: 'Apr 20', hours: 24, lms: ['lm3', 'lm4', 'lm5', 'lm6', 'lm7'], trip: false, focus: 'Quantitative Methods (FINAL)' },
+            { week: 17, start: 'Apr 21', end: 'Apr 27', hours: 24, lms: [], note: 'Comprehensive Review + Mocks', trip: false, focus: 'Review & Mock Exams' },
+            { week: 18, start: 'Apr 28', end: 'Apr 30', hours: 9, lms: [], note: 'Final Light Review', trip: false, focus: 'Final Prep' }
         ];
+
+        // Mutable study plan (can be customized by user)
+        let STUDY_PLAN = JSON.parse(JSON.stringify(DEFAULT_STUDY_PLAN));
 
         const EXAM_DATE = new Date('2026-05-23');
         const PLAN_START = new Date('2025-12-28');
@@ -2484,6 +2578,7 @@
 
         function init() {
             loadState();
+            loadCustomPlan(); // Load user's custom plan if saved
             checkMilestones();
             updateGreeting();
             updateTodaysFocus();
@@ -2500,6 +2595,10 @@
             updateStats();
             renderReviewDue();
             startDayCountdown();
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         }
 
         function loadState() {
@@ -2540,7 +2639,7 @@
             if (diff > 0 && remaining > 0) {
                 document.getElementById('avgPerDay').textContent = `${(remaining / (diff / 7)).toFixed(1)} LMs/week needed`;
             } else if (remaining === 0) {
-                document.getElementById('avgPerDay').textContent = '🎉 Syllabus Complete!';
+                document.getElementById('avgPerDay').textContent = 'Syllabus Complete!';
             }
         }
 
@@ -2559,12 +2658,14 @@
                 const percent = Math.round((completed / topic.lms.length) * 100);
                 return `
                     <div class="topic-row">
-                        <span class="topic-row-icon">${topic.icon}</span>
+                        <span class="topic-row-icon"><i data-lucide="${topic.icon}" class="icon-md icon-accent"></i></span>
                         <span class="topic-row-name">${topic.name}</span>
                         <span class="topic-row-progress">${percent}%</span>
                     </div>
                 `;
             }).join('');
+            // Re-initialize icons after dynamic render
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function getLMInfo(lmId) {
@@ -2599,16 +2700,16 @@
                 let statusIcon = '';
                 let statusClass = '';
                 if (isTrip) {
-                    statusIcon = '🏝️';
+                    statusIcon = '⏸';
                     statusClass = 'trip';
                 } else if (isWeekComplete) {
-                    statusIcon = '✅';
+                    statusIcon = '✓';
                     statusClass = 'complete';
                 } else if (isPast && !isWeekComplete && totalInWeek > 0) {
-                    statusIcon = '⚠️';
+                    statusIcon = '!';
                     statusClass = 'behind';
                 } else if (isCurrent) {
-                    statusIcon = '📍';
+                    statusIcon = '→';
                     statusClass = 'current';
                 }
 
@@ -2617,9 +2718,9 @@
                         <div class="week-header" onclick="toggleWeek(${week.week})">
                             <span class="week-number">${statusIcon || 'W' + week.week}</span>
                             <div class="week-info">
-                                <div class="week-dates">${week.start} – ${week.end}${isTrip ? '<span class="trip-badge">🏝️ Break</span>' : ''}</div>
+                                <div class="week-dates">${week.start} – ${week.end}${isTrip ? '<span class="trip-badge">Break</span>' : ''}</div>
                                 <div class="week-lms-preview">${lmsPreview}</div>
-                                ${week.focus && !isTrip ? `<div class="week-focus-label">📌 ${week.focus}</div>` : ''}
+                                ${week.focus && !isTrip ? `<div class="week-focus-label">${week.focus}</div>` : ''}
                                 ${totalInWeek > 0 && !isTrip ? `
                                     <div class="week-progress-bar">
                                         <div class="week-progress-fill" style="width: ${weekPercent}%"></div>
@@ -2809,7 +2910,7 @@
             const idx = state.completedDays.indexOf(dateKey);
             if (idx === -1) {
                 state.completedDays.push(dateKey);
-                showToast('Day marked complete! 🎉');
+                showToast('Day marked complete!');
                 haptic('success');
                 recordActivity();
             } else {
@@ -2847,7 +2948,7 @@
                 return `
                     <div class="topic-card" id="topic-${topic.id}">
                         <div class="topic-header" onclick="toggleTopic('${topic.id}')">
-                            <span class="topic-icon">${topic.icon}</span>
+                            <span class="topic-icon"><i data-lucide="${topic.icon}" class="icon-lg icon-accent"></i></span>
                             <div class="topic-info">
                                 <div class="topic-name">${topic.name}</div>
                                 <div class="topic-meta">${completed}/${topic.lms.length} modules</div>
@@ -2871,7 +2972,7 @@
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                         </div>
                                         <div class="lm-content" onclick="openNotes('${lm.id}')" style="cursor: pointer;">
-                                            <div class="lm-number">${lm.num}<span class="difficulty-badge">${diffDots}</span><span class="lm-notes-icon ${hasNotes ? 'has-notes' : ''}">📝</span></div>
+                                            <div class="lm-number">${lm.num}<span class="difficulty-badge">${diffDots}</span><span class="lm-notes-icon ${hasNotes ? 'has-notes' : ''}"><i data-lucide="file-text" class="icon-sm"></i></span></div>
                                             <div class="lm-name">${lm.name}</div>
                                         </div>
                                     </div>
@@ -2881,6 +2982,8 @@
                     </div>
                 `;
             }).join('');
+            // Re-initialize icons after dynamic render
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function renderStudy() {
@@ -2923,7 +3026,7 @@
             if (idx === -1) {
                 state.completedLMs.push(lmId);
                 trackLMCompletion(lmId, true); // Track for spaced repetition
-                showToast('Module completed! 🎉');
+                showToast('Module completed!');
                 haptic('success');
             } else {
                 state.completedLMs.splice(idx, 1);
@@ -2988,10 +3091,10 @@
         function updateGreeting() {
             const hour = new Date().getHours();
             let greeting = 'Good evening!';
-            if (hour < 12) greeting = 'Good morning! ☀️';
-            else if (hour < 17) greeting = 'Good afternoon! 💪';
-            else if (hour < 21) greeting = 'Good evening! 🌙';
-            else greeting = 'Night owl mode! 🦉';
+            if (hour < 12) greeting = 'Good morning!';
+            else if (hour < 17) greeting = 'Good afternoon!';
+            else if (hour < 21) greeting = 'Good evening!';
+            else greeting = 'Night owl mode!';
 
             document.getElementById('greeting').textContent = greeting;
 
@@ -3024,10 +3127,10 @@
                 if (pendingLMs.length > 0) {
                     const currentWeek = getCurrentWeek();
                     const weekData = STUDY_PLAN.find(w => w.week === currentWeek);
-                    focusTitle.textContent = weekData?.focus ? `📌 ${weekData.focus}` : `Week ${currentWeek} Focus`;
+                    focusTitle.textContent = weekData?.focus ? weekData.focus : `Week ${currentWeek} Focus`;
                     focusModule.textContent = pendingLMs.map(lm => lm.num).join(', ');
                 } else {
-                    focusTitle.textContent = `✅ Today's modules done!`;
+                    focusTitle.textContent = `Today's modules done!`;
                     focusModule.textContent = todaysLMs.map(lm => lm.num).join(', ') + ' ✓';
                 }
             } else {
@@ -3036,7 +3139,7 @@
                 const weekData = STUDY_PLAN.find(w => w.week === currentWeek);
 
                 if (weekData?.trip) {
-                    focusTitle.textContent = '🏝️ Break Week';
+                    focusTitle.textContent = 'Break Week';
                     focusModule.textContent = 'Enjoy your time off!';
                 } else if (weekData?.note) {
                     focusTitle.textContent = weekData.focus || 'Review';
@@ -3048,7 +3151,7 @@
                         focusTitle.textContent = `Continue: ${nextLM.topic}`;
                         focusModule.textContent = `${nextLM.num}: ${nextLM.name}`;
                     } else {
-                        focusTitle.textContent = '🎉 All modules complete!';
+                        focusTitle.textContent = 'All modules complete!';
                         focusModule.textContent = 'Time for revision and practice!';
                     }
                 }
@@ -3145,15 +3248,15 @@
 
             let insight = '';
             if (completed === 0) {
-                insight = "Ready to start? Complete your first module today! 🚀";
+                insight = "Ready to start? Complete your first module today!";
             } else if (completed === 45) {
-                insight = "🏆 Syllabus complete! Focus on practice and revision.";
+                insight = "Syllabus complete! Focus on practice and revision.";
             } else if (diff >= 3) {
-                insight = `You're ${diff} modules ahead of schedule! Keep crushing it! 🔥`;
+                insight = `You're ${diff} modules ahead of schedule! Keep crushing it!`;
             } else if (diff >= 0) {
-                insight = `Right on track! ${45 - completed} modules to go. You've got this! 💪`;
+                insight = `Right on track! ${45 - completed} modules to go. You've got this!`;
             } else {
-                insight = `${Math.abs(diff)} modules behind, but totally catchable! Focus mode! ⚡`;
+                insight = `${Math.abs(diff)} modules behind, but totally catchable! Focus mode!`;
             }
 
             document.getElementById('insightText').textContent = insight;
@@ -3177,11 +3280,11 @@
 
             let statusHTML = '';
             if (diff >= 2) {
-                statusHTML = `<span class="week-status ahead">🚀 ${diff} modules ahead</span>`;
+                statusHTML = `<span class="week-status ahead">↑ ${diff} modules ahead</span>`;
             } else if (diff >= -1) {
                 statusHTML = `<span class="week-status on-track">✓ On track (Week ${currentWeek})</span>`;
             } else {
-                statusHTML = `<span class="week-status behind">⚡ ${Math.abs(diff)} modules behind</span>`;
+                statusHTML = `<span class="week-status behind">↓ ${Math.abs(diff)} modules behind</span>`;
             }
 
             document.getElementById('weekStatus').innerHTML = statusHTML;
@@ -3245,7 +3348,7 @@
         function startTimer() {
             timerRunning = true;
             document.getElementById('timerStartBtn').textContent = 'Pause';
-            document.getElementById('timerLabel').textContent = 'Focus mode active... 🧘';
+            document.getElementById('timerLabel').textContent = 'Focus mode active...';
             document.getElementById('timerDisplay').classList.add('running');
 
             timerInterval = setInterval(() => {
@@ -3256,8 +3359,8 @@
                     pauseTimer();
                     timerSeconds = 25 * 60;
                     updateTimerDisplay();
-                    showToast('⏰ Time\'s up! Great focus session!');
-                    document.getElementById('timerLabel').textContent = 'Session complete! 🎉';
+                    showToast('Time\'s up! Great focus session!');
+                    document.getElementById('timerLabel').textContent = 'Session complete!';
                 }
             }, 1000);
         }
@@ -3424,7 +3527,7 @@
 
             // Update streak display
             document.getElementById('heatmapStreak').textContent =
-                `${state.streaks.current} day streak 🔥`;
+                `${state.streaks.current} day streak`;
         }
 
         // ========== SPACED REPETITION ==========
@@ -3517,10 +3620,163 @@
             }
 
             saveState();
-            showToast('Notes saved! 📝');
+            showToast('Notes saved!');
             haptic('success');
             closeNotes();
             renderSyllabus(); // Refresh to show notes icon
+        }
+
+        // ========== PLAN EDITOR FUNCTIONS ==========
+        let editingPlan = [];
+
+        function openPlanEditor() {
+            editingPlan = JSON.parse(JSON.stringify(STUDY_PLAN));
+            renderPlanEditorList();
+            document.getElementById('planEditorModal').style.display = 'block';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closePlanEditor() {
+            document.getElementById('planEditorModal').style.display = 'none';
+            editingPlan = [];
+        }
+
+        function renderPlanEditorList() {
+            const container = document.getElementById('planEditorList');
+            container.innerHTML = editingPlan.map((week, idx) => `
+                <div style="background: var(--bg-card); border-radius: var(--radius-md); padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--border-subtle);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: var(--primary-accent);">Week ${week.week}</strong>
+                        <button onclick="deleteWeek(${idx})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; padding: 0.25rem;">
+                            <i data-lucide="trash-2" class="icon-sm"></i>
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="text" placeholder="Start (e.g. Dec 28)" value="${week.start}" 
+                            onchange="updateWeekField(${idx}, 'start', this.value)"
+                            style="background: var(--bg-accent); border: none; border-radius: var(--radius-sm); padding: 0.4rem; color: var(--text-main); font-size: 0.75rem;">
+                        <input type="text" placeholder="End (e.g. Jan 3)" value="${week.end}" 
+                            onchange="updateWeekField(${idx}, 'end', this.value)"
+                            style="background: var(--bg-accent); border: none; border-radius: var(--radius-sm); padding: 0.4rem; color: var(--text-main); font-size: 0.75rem;">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="number" placeholder="Hours" value="${week.hours}" 
+                            onchange="updateWeekField(${idx}, 'hours', parseInt(this.value) || 0)"
+                            style="background: var(--bg-accent); border: none; border-radius: var(--radius-sm); padding: 0.4rem; color: var(--text-main); font-size: 0.75rem;">
+                        <input type="text" placeholder="Focus text" value="${week.focus || ''}" 
+                            onchange="updateWeekField(${idx}, 'focus', this.value)"
+                            style="background: var(--bg-accent); border: none; border-radius: var(--radius-sm); padding: 0.4rem; color: var(--text-main); font-size: 0.75rem;">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <label style="font-size: 0.7rem; color: var(--text-label); display: flex; align-items: center; gap: 0.25rem;">
+                            <input type="checkbox" ${week.trip ? 'checked' : ''} onchange="updateWeekField(${idx}, 'trip', this.checked)">
+                            Break/Trip
+                        </label>
+                        <input type="text" placeholder="LMs (comma-separated, e.g. lm1,lm2)" value="${(week.lms || []).join(',')}" 
+                            onchange="updateWeekField(${idx}, 'lms', this.value.split(',').map(s => s.trim()).filter(s => s))"
+                            style="flex: 1; background: var(--bg-accent); border: none; border-radius: var(--radius-sm); padding: 0.4rem; color: var(--text-main); font-size: 0.7rem;">
+                    </div>
+                </div>
+            `).join('');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function updateWeekField(idx, field, value) {
+            if (editingPlan[idx]) {
+                editingPlan[idx][field] = value;
+            }
+        }
+
+        function addNewWeek() {
+            const lastWeek = editingPlan[editingPlan.length - 1];
+            const newWeekNum = lastWeek ? lastWeek.week + 1 : 1;
+            editingPlan.push({
+                week: newWeekNum,
+                start: '',
+                end: '',
+                hours: 24,
+                lms: [],
+                trip: false,
+                focus: ''
+            });
+            renderPlanEditorList();
+        }
+
+        function deleteWeek(idx) {
+            if (confirm('Delete this week?')) {
+                editingPlan.splice(idx, 1);
+                // Renumber weeks
+                editingPlan.forEach((w, i) => w.week = i + 1);
+                renderPlanEditorList();
+            }
+        }
+
+        function savePlanChanges() {
+            STUDY_PLAN = JSON.parse(JSON.stringify(editingPlan));
+            localStorage.setItem('cfa_custom_plan', JSON.stringify(STUDY_PLAN));
+            closePlanEditor();
+            renderPlan();
+            renderDailySchedule();
+            updateTodaysFocus();
+            showToast('Plan saved!');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function exportPlan() {
+            const dataStr = JSON.stringify(STUDY_PLAN, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cfa_study_plan.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Plan exported!');
+        }
+
+        function importPlan() {
+            document.getElementById('planFileInput').click();
+        }
+
+        function handlePlanImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported) && imported.length > 0) {
+                        editingPlan = imported;
+                        renderPlanEditorList();
+                        showToast('Plan imported! Review and save.');
+                    } else {
+                        showToast('Invalid plan format');
+                    }
+                } catch (err) {
+                    showToast('Failed to parse file');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function resetPlan() {
+            if (confirm('Reset to default plan? This will discard all customizations.')) {
+                editingPlan = JSON.parse(JSON.stringify(DEFAULT_STUDY_PLAN));
+                renderPlanEditorList();
+                showToast('Reset to defaults. Save to apply.');
+            }
+        }
+
+        function loadCustomPlan() {
+            const saved = localStorage.getItem('cfa_custom_plan');
+            if (saved) {
+                try {
+                    STUDY_PLAN = JSON.parse(saved);
+                } catch (e) {
+                    STUDY_PLAN = JSON.parse(JSON.stringify(DEFAULT_STUDY_PLAN));
+                }
+            }
         }
 
         function checkMilestones() {
