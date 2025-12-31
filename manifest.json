@@ -1,11 +1,11 @@
 {
-    "name": "CFA Level 2 Tracker",
-    "short_name": "CFA L2",
-    "description": "Track your CFA Level 2 study progress",
+    "name": "Nebula - CFA L2 Study",
+    "short_name": "Nebula",
+    "description": "Nebula - Your CFA Level 2 Study Companion",
     "start_url": "./index.html",
     "display": "standalone",
-    "background_color": "#FFFBF9",
-    "theme_color": "#FF4B2B",
+    "background_color": "#2D2B2A",
+    "theme_color": "#2D2B2A",
     "orientation": "portrait",
     "icons": [
         {
