@@ -3006,7 +3006,7 @@
             container.innerHTML = notesModules.map(lm => `
                 <div class="study-card">
                     <div class="study-card-header">
-                        <span class="study-card-icon">${lm.topicIcon}</span>
+                        <span class="study-card-icon"><i data-lucide="${lm.topicIcon}" class="icon-lg icon-accent"></i></span>
                         <div class="study-card-info">
                             <div class="study-card-title">${lm.num}: ${lm.name}</div>
                             <div class="study-card-meta">${lm.topicName}</div>
@@ -3015,6 +3015,8 @@
                     </div>
                 </div>
             `).join('');
+            // Re-initialize icons after dynamic render
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function toggleTopic(topicId) {
