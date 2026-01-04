@@ -457,6 +457,13 @@
             text-align: right;
         }
 
+        .week-completion {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--sunset-coral);
+            text-align: right;
+        }
+
         /* ========== PLAN SCREEN ========== */
 
         .plan-header {
@@ -2227,10 +2234,16 @@
                     <div class="plan-title"><i data-lucide="calendar" class="icon-lg icon-accent"></i> Study Plan</div>
                     <div class="plan-subtitle">Dec 28, 2025 → Apr 30, 2026 | Quants Last</div>
                 </div>
-                <button onclick="openPlanEditor()" class="view-all-btn"
-                    style="display: flex; align-items: center; gap: 0.3rem;">
-                    <i data-lucide="settings" class="icon-sm"></i> Edit
-                </button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button onclick="confirmFixSchedule()" class="view-all-btn"
+                        style="display: flex; align-items: center; gap: 0.3rem; background: rgba(232, 155, 90, 0.1); padding: 0.4rem 0.8rem; border-radius: 100px;">
+                        <i data-lucide="sparkles" class="icon-sm"></i> Fix It
+                    </button>
+                    <button onclick="openPlanEditor()" class="view-all-btn"
+                        style="display: flex; align-items: center; gap: 0.3rem; border: 1px solid var(--border-subtle); padding: 0.4rem 0.8rem; border-radius: 100px;">
+                        <i data-lucide="settings" class="icon-sm"></i> Edit
+                    </button>
+                </div>
             </div>
 
             <div class="plan-stats">
@@ -2372,6 +2385,47 @@
             <div class="milestone-message" id="milestoneMessage">You're making great progress! Keep up the momentum.
             </div>
             <button class="milestone-btn" onclick="closeMilestone()">Let's Go!</button>
+        </div>
+    </div>
+
+    <!-- Analysis Modal -->
+    <div class="milestone-modal" id="analysisModal" style="z-index: 5000;">
+        <div class="milestone-content" style="max-width: 380px;">
+            <div
+                style="margin-bottom: 1.5rem; position: relative; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <div class="ai-pulse"
+                    style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 50%; opacity: 0.2; position: absolute; animation: pulse 1.5s infinite;">
+                </div>
+                <div class="ai-pulse"
+                    style="width: 30px; height: 30px; background: var(--gradient-primary); border-radius: 50%; opacity: 0.6; position: absolute; z-index: 2;">
+                </div>
+                <i data-lucide="sparkles" class="icon-lg" style="color: white; position: relative; z-index: 3;"></i>
+            </div>
+            <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">AI Schedule Optimizer</h3>
+            <div id="analysisSteps"
+                style="text-align: left; margin: 1.5rem 0; font-size: 0.85rem; color: var(--text-sub);">
+                <div class="step" id="step1" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; opacity: 0.5;">
+                    <i data-lucide="circle" class="icon-sm"></i> Analyzing syllabus progress...
+                </div>
+                <div class="step" id="step2" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; opacity: 0.5;">
+                    <i data-lucide="circle" class="icon-sm"></i> Calculating weekly velocity...
+                </div>
+                <div class="step" id="step3" style="display: flex; gap: 0.5rem; opacity: 0.5;">
+                    <i data-lucide="circle" class="icon-sm"></i> Redistributing pending modules...
+                </div>
+            </div>
+            <div id="analysisAction" style="display: none;">
+                <p style="margin-bottom: 1.5rem; font-size: 0.9rem;">Found <span id="fixCount"
+                        style="color: var(--sunset-coral); font-weight: 700;">0</span> pending modules. Redistribute
+                    them across remaining weeks?</p>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button onclick="closeAnalysis()"
+                        style="flex: 1; background: var(--bg-accent); color: var(--text-main); border: none; padding: 0.75rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer;">Cancel</button>
+                    <button onclick="runSmartReschedule()"
+                        style="flex: 1; background: var(--gradient-primary); color: white; border: none; padding: 0.75rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer;">Fix
+                        It</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -3795,6 +3849,138 @@
                     break; // Only show one milestone at a time
                 }
             }
+        }
+
+        // ========== FIX IT / SMART RESCHEDULE LOGIC ==========
+
+        function confirmFixSchedule() {
+            // Count pending LMs
+            let pendingCount = 0;
+            for (const topic of SYLLABUS) {
+                for (const lm of topic.lms) {
+                    if (!state.completedLMs.includes(lm.id)) {
+                        pendingCount++;
+                    }
+                }
+            }
+
+            if (pendingCount === 0) {
+                showToast("All modules complete! Nothing to fix.");
+                return;
+            }
+
+            document.getElementById('fixCount').textContent = pendingCount;
+            document.getElementById('analysisModal').classList.add('active');
+
+            // Reset state
+            document.getElementById('analysisSteps').style.display = 'block';
+            document.getElementById('analysisAction').style.display = 'none';
+            document.querySelectorAll('.step').forEach(el => el.style.opacity = '0.5');
+
+            // Simulate AI Analysis
+            setTimeout(() => {
+                document.getElementById('step1').style.opacity = '1';
+                document.getElementById('step1').innerHTML = '<i data-lucide="check-circle" class="icon-sm icon-success"></i> Syllabus progress analyzed';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }, 800);
+
+            setTimeout(() => {
+                document.getElementById('step2').style.opacity = '1';
+                document.getElementById('step2').innerHTML = '<i data-lucide="check-circle" class="icon-sm icon-success"></i> Velocity calculated';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }, 1800);
+
+            setTimeout(() => {
+                document.getElementById('step3').style.opacity = '1';
+                document.getElementById('step3').innerHTML = '<i data-lucide="check-circle" class="icon-sm icon-success"></i> Optimization ready';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                // Show Action
+                setTimeout(() => {
+                    document.getElementById('analysisSteps').style.display = 'none';
+                    document.getElementById('analysisAction').style.display = 'block';
+                }, 500);
+            }, 2800);
+        }
+
+        function closeAnalysis() {
+            document.getElementById('analysisModal').classList.remove('active');
+        }
+
+        function runSmartReschedule() {
+            // 1. Get all pending LMs
+            const pendingLMs = [];
+            for (const topic of SYLLABUS) {
+                for (const lm of topic.lms) {
+                    if (!state.completedLMs.includes(lm.id)) {
+                        pendingLMs.push(lm.id);
+                    }
+                }
+            }
+
+            // 2. Get available weeks (future, non-trip weeks)
+            const currentWeek = getCurrentWeek();
+            const availableWeeks = STUDY_PLAN.filter(w => w.week >= currentWeek && !w.trip);
+
+            if (availableWeeks.length === 0) {
+                showToast("No available weeks to reschedule!");
+                closeAnalysis();
+                return;
+            }
+
+            // 3. Clear LMs from future weeks in the plan
+            STUDY_PLAN.forEach(w => {
+                if (w.week >= currentWeek) {
+                    // Keep completed LMs in their current week if they were done? 
+                    // Simpler: Just clear all LMs assigned to future weeks and redistribute pending
+                    // We only redistribute PENDING LMs. Completed LMs stay "done" (we don't track when they were done in the plan, only in state)
+                    // But waiting... if a LM is done, we don't need to schedule it.
+                    w.lms = [];
+                }
+            });
+
+            // 4. Distribute pending LMs
+            const totalPending = pendingLMs.length;
+            const weeksCount = availableWeeks.length;
+            const basePerWeek = Math.floor(totalPending / weeksCount);
+            let remainder = totalPending % weeksCount;
+
+            let lmIndex = 0;
+
+            for (const week of availableWeeks) {
+                const countForThisWeek = basePerWeek + (remainder > 0 ? 1 : 0);
+                remainder--;
+
+                for (let i = 0; i < countForThisWeek; i++) {
+                    if (lmIndex < pendingLMs.length) {
+                        week.lms.push(pendingLMs[lmIndex]);
+                        lmIndex++;
+                    }
+                }
+
+                // Update focus text if empty
+                if (!week.focus || week.focus === '') {
+                    // Find topics in this week
+                    const topicsInWeek = new Set();
+                    week.lms.forEach(lmId => {
+                        const lm = getLMInfo(lmId);
+                        if (lm) topicsInWeek.add(lm.topicName);
+                    });
+                    if (topicsInWeek.size > 0) {
+                        week.focus = Array.from(topicsInWeek)[0] + (topicsInWeek.size > 1 ? ' +' : '');
+                    }
+                }
+            }
+
+            // 5. Save and Render
+            localStorage.setItem('cfa_custom_plan', JSON.stringify(STUDY_PLAN));
+            closeAnalysis();
+            renderPlan();
+            renderDailySchedule();
+            updateTodaysFocus();
+            showToast("Schedule optimized! 🚀");
+            haptic('success');
+            triggerConfetti();
         }
 
         function showMilestone(days, emoji, message) {
