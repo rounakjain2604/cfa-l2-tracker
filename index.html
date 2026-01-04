@@ -3908,12 +3908,17 @@
         }
 
         function runSmartReschedule() {
-            // 1. Get all pending LMs
+            // 1. Get all pending LMs in PREFERRED ORDER (Quants Last)
+            const topicOrder = ['fi', 'econ', 'corp', 'equity', 'fra', 'deriv', 'alts', 'pm', 'ethics', 'quant'];
             const pendingLMs = [];
-            for (const topic of SYLLABUS) {
-                for (const lm of topic.lms) {
-                    if (!state.completedLMs.includes(lm.id)) {
-                        pendingLMs.push(lm.id);
+
+            for (const topicId of topicOrder) {
+                const topic = SYLLABUS.find(t => t.id === topicId);
+                if (topic) {
+                    for (const lm of topic.lms) {
+                        if (!state.completedLMs.includes(lm.id)) {
+                            pendingLMs.push(lm.id);
+                        }
                     }
                 }
             }
@@ -3945,6 +3950,7 @@
                 } else if (w.week > currentWeek) {
                     // For pure future weeks, clear everything
                     w.lms = [];
+                    w.focus = ''; // specific fix: Reset focus so it regenerates based on new LMs
                 }
             });
 
