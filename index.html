@@ -3930,11 +3930,12 @@
 
             // 3. Clear LMs from future weeks in the plan
             STUDY_PLAN.forEach(w => {
-                if (w.week >= currentWeek) {
-                    // Keep completed LMs in their current week if they were done? 
-                    // Simpler: Just clear all LMs assigned to future weeks and redistribute pending
-                    // We only redistribute PENDING LMs. Completed LMs stay "done" (we don't track when they were done in the plan, only in state)
-                    // But waiting... if a LM is done, we don't need to schedule it.
+                if (w.week === currentWeek) {
+                    // For current week, KEEP completed LMs (so they show as done today/this week)
+                    // Only remove pending ones so we can reschedule them intelligently
+                    w.lms = w.lms.filter(id => state.completedLMs.includes(id));
+                } else if (w.week > currentWeek) {
+                    // For pure future weeks, clear everything
                     w.lms = [];
                 }
             });
