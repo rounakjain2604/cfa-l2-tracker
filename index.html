@@ -3920,7 +3920,12 @@
 
             // 2. Get available weeks (future, non-trip weeks)
             const currentWeek = getCurrentWeek();
+            // Filter returns shallow copies of references, so modifying these objects modifies STUDY_PLAN
             const availableWeeks = STUDY_PLAN.filter(w => w.week >= currentWeek && !w.trip);
+
+            console.log('FixIt: Pending LMs:', pendingLMs.length);
+            console.log('FixIt: Available Weeks:', availableWeeks.length);
+            console.log('FixIt: Current Week:', currentWeek);
 
             if (availableWeeks.length === 0) {
                 showToast("No available weeks to reschedule!");
@@ -3929,11 +3934,14 @@
             }
 
             // 3. Clear LMs from future weeks in the plan
+            // 3. Clear LMs from future weeks in the plan
             STUDY_PLAN.forEach(w => {
                 if (w.week === currentWeek) {
                     // For current week, KEEP completed LMs (so they show as done today/this week)
                     // Only remove pending ones so we can reschedule them intelligently
+                    const beforeCount = w.lms.length;
                     w.lms = w.lms.filter(id => state.completedLMs.includes(id));
+                    console.log(`FixIt: Week ${w.week} cleared. Before: ${beforeCount}, After (completed only): ${w.lms.length}`);
                 } else if (w.week > currentWeek) {
                     // For pure future weeks, clear everything
                     w.lms = [];
@@ -3951,6 +3959,8 @@
             for (const week of availableWeeks) {
                 const countForThisWeek = basePerWeek + (remainder > 0 ? 1 : 0);
                 remainder--;
+
+                console.log(`FixIt: Assigning ${countForThisWeek} LMs to Week ${week.week}`);
 
                 for (let i = 0; i < countForThisWeek; i++) {
                     if (lmIndex < pendingLMs.length) {
